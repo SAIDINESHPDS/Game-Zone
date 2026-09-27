@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Game Zone - Modern Web Gaming Hub</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="site-wrapper">
+
+    <!-- Top Navigation Bar -->
+    <header class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="brand">
+          <div class="brand-logo">🎮</div>
+          <div class="brand-text">
+            <span class="title">GAME ZONE</span>
+            <span class="tagline">Play • Compete • Have Fun</span>
+          </div>
+        </a>
+
+        <div class="nav-stats">
+          <div class="stat-badge">
+            <span class="pulse-dot"></span>
+            <span>Online Hub</span>
+          </div>
+          <div class="stat-badge games-count">
+            <span>2 Games Live</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Showcase Section -->
+    <section class="hero-section">
+      <div class="hero-content">
+        <div class="hero-pill">🔥 Multi-Game Platform</div>
+        <h1 class="hero-title">Level Up Your <span class="gradient-text">Game Night</span></h1>
+        <p class="hero-desc">
+          Challenge smart AI bots or play local multiplayer with your friends right in your browser. Fast, responsive, and beautifully built.
+        </p>
+      </div>
+
+      <!-- Quick Category Filters -->
+      <div class="category-tabs" id="category-tabs">
+        <button class="cat-btn active" data-category="all">All Games</button>
+        <button class="cat-btn" data-category="board">Board Games</button>
+        <button class="cat-btn" data-category="multiplayer">Multiplayer</button>
+        <button class="cat-btn" data-category="upcoming">Coming Soon</button>
+      </div>
+    </section>
+
+    <!-- Games Showcase Grid -->
+    <main class="main-content">
+      <div class="section-header">
+        <h2>Choose Your Game</h2>
+        <span class="section-sub">Select an arena to enter the match</span>
+      </div>
+
+      <div class="games-grid" id="games-grid">
+
+        <!-- GAME 1: LUDO MASTER -->
+        <article class="game-card featured" data-tags="board multiplayer">
+          <div class="card-banner ludo-banner">
+            <div class="banner-badge">POPULAR</div>
+            <div class="banner-visual">
+              <span class="game-icon-large">🎲</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="meta-tag">1-4 Players</span>
+              <span class="meta-tag color-tag">5 Colors</span>
+              <span class="meta-tag bot-tag">Smart Bot</span>
+            </div>
+            <h3 class="card-title">Ludo Master</h3>
+            <p class="card-desc">
+              The classic Indian 15×15 board game with 5 rich saturated colors, custom letter home bases, 3D conical pawns, and metallic gold star safe cells.
+            </p>
+            <div class="card-actions">
+              <a href="games/Ludo/Ludo.html" class="play-btn primary-btn">
+                <span>Play Ludo</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- GAME 2: SNAKES & LADDERS -->
+        <article class="game-card" data-tags="board multiplayer">
+          <div class="card-banner snakes-banner">
+            <div class="banner-badge hot">CLASSIC</div>
+            <div class="banner-visual">
+              <span class="game-icon-large">🐍🪜</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="meta-tag">1-4 Players</span>
+              <span class="meta-tag">Dice Roll</span>
+              <span class="meta-tag">Quick Play</span>
+            </div>
+            <h3 class="card-title">Snakes & Ladders</h3>
+            <p class="card-desc">
+              Climb ladders to leap ahead, avoid sneaky snakes that pull you down, and race your opponents to reach tile 100 first!
+            </p>
+            <div class="card-actions">
+              <a href="games/SnakesAndLadders/index.html" class="play-btn secondary-btn" onclick="checkGameLink(event, 'SnakesAndLadders')">
+                <span>Play Snakes & Ladders</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- GAME 3: CHESS PRO (Upcoming) -->
+        <article class="game-card upcoming-card" data-tags="board upcoming">
+          <div class="card-banner chess-banner">
+            <div class="banner-badge upcoming">IN DEVELOPMENT</div>
+            <div class="banner-visual">
+              <span class="game-icon-large">♟️</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="meta-tag">2 Players</span>
+              <span class="meta-tag">Strategy</span>
+            </div>
+            <h3 class="card-title">Chess Arena</h3>
+            <p class="card-desc">
+              Grandmaster tactics and timed blitz matches. Battle against intelligent bot engines or invite a friend for an epic duel.
+            </p>
+            <div class="card-actions">
+              <button class="play-btn disabled-btn" disabled>
+                <span>Coming Soon</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- GAME 4: CARROM CLUB (Upcoming) -->
+        <article class="game-card upcoming-card" data-tags="board upcoming">
+          <div class="card-banner carrom-banner">
+            <div class="banner-badge upcoming">IN DEVELOPMENT</div>
+            <div class="banner-visual">
+              <span class="game-icon-large">🎯</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="meta-tag">2-4 Players</span>
+              <span class="meta-tag">Physics</span>
+            </div>
+            <h3 class="card-title">Carrom Club</h3>
+            <p class="card-desc">
+              Authentic striker bounce and pocket physics. Smooth carrom men action with Queen cover rules and board angle controls.
+            </p>
+            <div class="card-actions">
+              <button class="play-btn disabled-btn" disabled>
+                <span>Coming Soon</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </main>
+
+    <!-- Platform Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-brand">
+          <span class="footer-icon">🎮</span>
+          <span>Game Zone Portal • Play Free Web Games</span>
+        </div>
+        <div class="footer-copy">
+          Designed with standard 15×15 Indian Ludo rules & modular game architecture.
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
