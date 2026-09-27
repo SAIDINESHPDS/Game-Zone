@@ -16,9 +16,9 @@
     <!-- TOP NAVIGATION HEADER -->
     <header class="gamezone-header">
       <div class="header-left">
-        <a href="../../index.html" class="portal-back-btn" title="Back to Game Zone Hub">
+        <a href="../../index.html" class="portal-back-btn" title="Back to Game Zone Home">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          <span>Game Zone</span>
+          <span>Home</span>
         </a>
         <div class="game-brand">
           <span class="brand-crown">👑</span>
@@ -31,6 +31,7 @@
         <div class="active-badge bot-badge" id="hud-diff-badge" style="display: none;">Hard Bot</div>
         <button id="btn-mobile-help" class="btn btn-secondary" onclick="LudoModule.openMobileGuide()" title="How to play on Phone">📱 Mobile</button>
         <button id="btn-open-lobby" class="btn btn-secondary" onclick="LudoModule.openLobby()">⚙ Match Setup</button>
+        <button id="btn-quit" class="btn btn-quit" onclick="LudoModule.confirmQuit()">🚪 Quit</button>
         <button id="btn-reset" class="btn btn-primary" onclick="LudoModule.confirmRestart()">Restart</button>
       </div>
     </header>
@@ -54,6 +55,7 @@
           <button class="seat-exit-btn" id="exit-btn-0" title="Exit match" onclick="LudoModule.confirmPlayerExit(0)">Exit</button>
         </div>
         
+        <!-- Edge-Cut 3D Realistic Dice Dock -->
         <div class="corner-dice-dock" id="dice-dock-0" onclick="LudoModule.triggerSlotDice(0)">
           <div class="dice-scene">
             <div class="cube-dice show-1" id="dice-cube-0">
@@ -244,14 +246,18 @@
   </div>
 
   <!-- =========================================================
-       PRE-MATCH SETUP LOBBY MODAL (1 to 6 Players)
+       PRE-MATCH SETUP LOBBY MODAL (With Back to Home Button)
        ========================================================= -->
   <div id="lobby-modal" class="modal-overlay">
     <div class="lobby-card">
       <div class="lobby-header">
+        <button class="lobby-back-btn" onclick="LudoModule.lobbyBack()" title="Back to Home Page">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          <span>Home</span>
+        </button>
         <span class="lobby-icon">🎲</span>
         <h2>Match Setup</h2>
-        <p>Edit player names, pick exclusive colors & choose coin style</p>
+        <p>Edit player names, choose colors & select your coin</p>
       </div>
 
       <!-- Step 1: Number of Players (1 to 6) -->
@@ -289,7 +295,6 @@
       <div class="lobby-section">
         <label class="section-label">2. Select Your Coin</label>
         <div class="coin-style-options" id="coin-style-selector">
-          <!-- Option 1: Slim Royal Pawn (Default Best) -->
           <div class="coin-option-card active" data-style="pawn" onclick="LudoModule.setCoinStyle('pawn')">
             <div class="coin-preview-box">
               <div class="token-demo token-style-pawn color-red"></div>
@@ -300,7 +305,6 @@
             </div>
           </div>
 
-          <!-- Option 2: Crown Sovereign Token -->
           <div class="coin-option-card" data-style="crown" onclick="LudoModule.setCoinStyle('crown')">
             <div class="coin-preview-box">
               <div class="token-demo token-style-crown color-yellow">👑</div>
@@ -311,7 +315,6 @@
             </div>
           </div>
 
-          <!-- Option 3: Celestial Star Medallion -->
           <div class="coin-option-card" data-style="star" onclick="LudoModule.setCoinStyle('star')">
             <div class="coin-preview-box">
               <div class="token-demo token-style-star color-blue">⚝</div>
@@ -380,7 +383,7 @@
     </div>
   </div>
 
-  <!-- CLEAN & DIRECT EXIT CONFIRMATION MODAL -->
+  <!-- EXIT CONFIRMATION MODAL -->
   <div id="exit-modal" class="modal-overlay hidden">
     <div class="modal-card mini-card">
       <div class="exit-warn-icon">⚠️</div>
@@ -393,7 +396,7 @@
     </div>
   </div>
 
-  <!-- CLEAN & DIRECT RESTART CONFIRMATION MODAL -->
+  <!-- RESTART CONFIRMATION MODAL -->
   <div id="restart-modal" class="modal-overlay hidden">
     <div class="modal-card mini-card">
       <div class="exit-warn-icon">🔄</div>
@@ -402,6 +405,19 @@
       <div class="modal-actions">
         <button class="btn btn-secondary" onclick="LudoModule.cancelRestart()">Cancel</button>
         <button class="btn btn-primary" onclick="LudoModule.executeRestart()">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIT MATCH CONFIRMATION MODAL (Returns to Match Setup) -->
+  <div id="quit-modal" class="modal-overlay hidden">
+    <div class="modal-card mini-card">
+      <div class="exit-warn-icon">🚪</div>
+      <h3>Quit Match?</h3>
+      <p>Are you sure you want to quit? You will return to the match setup.</p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="LudoModule.cancelQuit()">Cancel</button>
+        <button class="btn btn-danger" onclick="LudoModule.executeQuit()">Confirm Quit</button>
       </div>
     </div>
   </div>

@@ -1,12 +1,12 @@
 /* =========================================================================
-   LUDO.JS - ARCHITECTURE: Multi-Bot Engine, 6 Players, Restart Modal & Sound
+   LUDO.JS - ARCHITECTURE: Multi-Bot Engine, 6 Players, High Audio & Quit Flow
    ========================================================================= */
 
 (function () {
   'use strict';
 
   /* ---------------------------------------------------------
-     SYNTHESIZED AUDIO ENGINE (Zero external dependencies)
+     SYNTHESIZED HIGH-VOLUME AUDIO ENGINE (0.45 - 0.55 GAIN)
      --------------------------------------------------------- */
   const SoundFX = {
     ctx: null,
@@ -19,7 +19,7 @@
         this.ctx.resume();
       }
     },
-    play(freq, type = 'sine', duration = 0.1) {
+    play(freq, type = 'sine', duration = 0.1, gainVal = 0.45) {
       try {
         this.init();
         if (!this.ctx) return;
@@ -27,7 +27,7 @@
         const gain = this.ctx.createGain();
         osc.type = type;
         osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-        gain.gain.setValueAtTime(0.14, this.ctx.currentTime);
+        gain.gain.setValueAtTime(gainVal, this.ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
         osc.connect(gain);
         gain.connect(this.ctx.destination);
@@ -36,52 +36,75 @@
       } catch (_) {}
     },
     roll() {
-      this.play(340, 'triangle', 0.12);
-      setTimeout(() => this.play(460, 'sine', 0.08), 80);
-      setTimeout(() => this.play(580, 'triangle', 0.1), 160);
+      this.play(340, 'triangle', 0.12, 0.45);
+      setTimeout(() => this.play(480, 'sine', 0.08, 0.45), 70);
+      setTimeout(() => this.play(600, 'triangle', 0.1, 0.5), 150);
     },
-    move() { this.play(540, 'sine', 0.08); },
+    move() { this.play(560, 'sine', 0.09, 0.4); },
 
-    // PUNCHY MULTI-STAGE KNOCKOUT / KILL SOUND
+    // UNIQUE STAR / SAFE-ZONE SPARKLE CHIME
+    safeZone() {
+      try {
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        // Ascending shimmering crystal chord: D5 -> F#5 -> A5 -> D6
+        const notes = [587.33, 739.99, 880.00, 1174.66];
+        notes.forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.045);
+          gain.gain.setValueAtTime(0.38, now + idx * 0.045);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.045 + 0.28);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.045);
+          osc.stop(now + idx * 0.045 + 0.3);
+        });
+      } catch (_) {}
+    },
+
+    // PUNCHY KNOCKOUT IMPACT & DEFEAT SLIDE
     capture() {
       try {
         this.init();
         if (!this.ctx) return;
         const now = this.ctx.currentTime;
 
-        // Stage 1: Heavy punch impact
+        // Heavy bass punch
         const punchOsc = this.ctx.createOscillator();
         const punchGain = this.ctx.createGain();
         punchOsc.type = 'sawtooth';
-        punchOsc.frequency.setValueAtTime(320, now);
-        punchOsc.frequency.exponentialRampToValueAtTime(50, now + 0.18);
+        punchOsc.frequency.setValueAtTime(340, now);
+        punchOsc.frequency.exponentialRampToValueAtTime(45, now + 0.2);
 
-        punchGain.gain.setValueAtTime(0.35, now);
-        punchGain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+        punchGain.gain.setValueAtTime(0.55, now);
+        punchGain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
 
         punchOsc.connect(punchGain);
         punchGain.connect(this.ctx.destination);
         punchOsc.start(now);
-        punchOsc.stop(now + 0.18);
+        punchOsc.stop(now + 0.2);
 
-        // Stage 2: Descending retro defeat whistle
+        // Slide down whistle
         const whistleOsc = this.ctx.createOscillator();
         const whistleGain = this.ctx.createGain();
         whistleOsc.type = 'triangle';
-        whistleOsc.frequency.setValueAtTime(700, now + 0.06);
-        whistleOsc.frequency.exponentialRampToValueAtTime(110, now + 0.38);
+        whistleOsc.frequency.setValueAtTime(740, now + 0.06);
+        whistleOsc.frequency.exponentialRampToValueAtTime(100, now + 0.4);
 
-        whistleGain.gain.setValueAtTime(0.22, now + 0.06);
-        whistleGain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+        whistleGain.gain.setValueAtTime(0.35, now + 0.06);
+        whistleGain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
 
         whistleOsc.connect(whistleGain);
         whistleGain.connect(this.ctx.destination);
         whistleOsc.start(now + 0.06);
-        whistleOsc.stop(now + 0.38);
+        whistleOsc.stop(now + 0.4);
       } catch (_) {}
     },
 
-    win() { this.play(760, 'square', 0.4); }
+    win() { this.play(780, 'square', 0.45, 0.55); }
   };
 
   // Clockwise 52-tile Perimeter Track Coordinates
@@ -110,14 +133,13 @@
 
   const SAFE_POSITIONS = [8, 21, 34, 47];
 
-  // 6 Available Colors
   const COLOR_DEFINITIONS = {
-    red:    { name: 'Red', letter: 'R', hex: '#dc2626' },
-    green:  { name: 'Green', letter: 'G', hex: '#15803d' },
-    yellow: { name: 'Yellow', letter: 'Y', hex: '#eab308' },
-    orange: { name: 'Orange', letter: 'O', hex: '#ea580c' },
-    blue:   { name: 'Blue', letter: 'B', hex: '#1d4ed8' },
-    purple: { name: 'Purple', letter: 'P', hex: '#7e22ce' }
+    red:    { name: 'Red', letter: 'R', hex: '#e63946' },
+    green:  { name: 'Green', letter: 'G', hex: '#059669' },
+    yellow: { name: 'Yellow', letter: 'Y', hex: '#fbbf24' },
+    orange: { name: 'Orange', letter: 'O', hex: '#f97316' },
+    blue:   { name: 'Blue', letter: 'B', hex: '#2563eb' },
+    purple: { name: 'Purple', letter: 'P', hex: '#9333ea' }
   };
 
   const SLOT_CONFIGS = [
@@ -133,8 +155,8 @@
      LOBBY STATE (Setup Screen)
      --------------------------------------------------------- */
   const LobbyState = {
-    playerCount: 4, // 1 to 6
-    coinStyle: 'pawn', // 'pawn', 'crown', 'star'
+    playerCount: 4,
+    coinStyle: 'pawn',
     botDifficulty: 'hard',
     seatNames: { 0: 'Player 1', 1: 'Player 2', 2: 'Player 3', 3: 'Player 4', 4: 'Player 5', 5: 'Player 6' },
     seatColors: { 0: 'red', 1: 'green', 2: 'yellow', 3: 'blue', 4: 'orange', 5: 'purple' },
@@ -157,6 +179,7 @@
     hasRolled: false,
     isMoving: false,
     pendingExitSlot: null,
+    matchActive: false,
     tokens: {},
 
     isBot(slot) {
@@ -240,7 +263,7 @@
           if (r === 7 && c >= 9 && c <= 13) cell.classList.add(`color-${GameState.slotColors[2]}`);
           if (c === 7 && r >= 9 && r <= 13) cell.classList.add(`color-${GameState.slotColors[3]}`);
 
-          // Alt+9885 (⚝) Fixed Safe Star
+          // Alt+9885 (⚝) Safe Stars
           const trackIdx = TRACK_COORDS.findIndex(coord => coord.r === r && coord.c === c);
           if (trackIdx !== -1 && SAFE_POSITIONS.includes(trackIdx)) {
             cell.classList.add('star-cell');
@@ -252,7 +275,6 @@
     },
 
     renderTokens() {
-      // Clear all existing tokens and empty stacks for fresh layout
       document.querySelectorAll('.token').forEach(t => t.remove());
       document.querySelectorAll('.tokens-stack').forEach(s => s.remove());
 
@@ -393,7 +415,6 @@
           nameEl.style.color = def.hex;
         }
 
-        // BOTS CANNOT BE REMOVED/EXITED DURING PLAY
         if (exitBtn) {
           if (isActive && !isExited && !isBot) {
             exitBtn.style.display = 'inline-block';
@@ -510,6 +531,7 @@
       if (token.state === 'home') {
         token.state = 'track';
         token.step = config.startIndex;
+        SoundFX.safeZone(); // Unlock sound
         this.finishMove(slot, true);
         return;
       }
@@ -526,6 +548,7 @@
           if (token.step === config.endTrackIndex) {
             token.state = 'runway';
             token.step = 0;
+            SoundFX.safeZone(); // Entering safe runway
           } else {
             token.step = (token.step + 1) % 52;
           }
@@ -551,7 +574,12 @@
     evaluateLanding(slot, token) {
       let getsBonus = (GameState.diceValue === 6);
 
-      // Capture opponent token (PLAYS SATISFYING KNOCKOUT SOUND)
+      // Play special chime when landing on safe star
+      if (token.state === 'track' && SAFE_POSITIONS.includes(token.step)) {
+        SoundFX.safeZone();
+      }
+
+      // Capture opponent token (Punch impact + defeat slide sound)
       if (token.state === 'track' && !SAFE_POSITIONS.includes(token.step)) {
         GameState.activeSlots.forEach(otherSlot => {
           if (otherSlot !== slot && !GameState.exitedSlots.has(otherSlot)) {
@@ -756,6 +784,12 @@
       if (modal) modal.classList.add('hidden');
     },
 
+    // Back option in setup / coin selection phase
+    // Unconditionally go directly to the Game Zone home page
+    lobbyBack() {
+      window.location.href = '../../index.html';
+    },
+
     changeSetupFromWinner() {
       const winModal = document.getElementById('winner-modal');
       if (winModal) winModal.classList.add('hidden');
@@ -780,6 +814,7 @@
       } else {
         for (let i = 0; i < 6; i++) LobbyState.seatRoles[i] = 'human';
       }
+      this.ensureUniqueQuadrantColors();
       this.refreshLobbyUI();
     },
 
@@ -825,6 +860,7 @@
       }
       LobbyState.seatColors[slot] = newColor;
 
+      this.ensureUniqueQuadrantColors();
       this.refreshLobbyUI();
     },
 
@@ -843,24 +879,47 @@
       if (count === 3) return [0, 1, 2];
       if (count === 4) return [0, 1, 2, 3];
       if (count === 5) return [0, 1, 2, 3, 4];
-      return [0, 1, 2, 3, 4, 5]; // 6 Players
+      return [0, 1, 2, 3, 4, 5];
+    },
+
+    // GUARANTEES 4 STRICTLY UNIQUE QUADRANT COLORS IN ALL MODES
+    ensureUniqueQuadrantColors() {
+      const all5 = ['red', 'green', 'yellow', 'blue', 'purple'];
+      const activeList = this.getActiveSlotsForCount(LobbyState.playerCount);
+      const assigned = [];
+
+      // Give priority to active players
+      activeList.forEach(slot => {
+        let color = LobbyState.seatColors[slot];
+        if (!color || assigned.includes(color)) {
+          color = all5.find(c => !assigned.includes(c)) || all5[0];
+          LobbyState.seatColors[slot] = color;
+        }
+        assigned.push(color);
+      });
+
+      // Fill remaining board quadrants with unique colors
+      for (let s = 0; s < 4; s++) {
+        if (!LobbyState.seatColors[s] || assigned.filter(c => c === LobbyState.seatColors[s]).length > 1) {
+          const available = all5.find(c => !assigned.includes(c)) || all5[s % all5.length];
+          LobbyState.seatColors[s] = available;
+          assigned.push(available);
+        }
+      }
     },
 
     refreshLobbyUI() {
-      // 1. Update Player Count Buttons
       document.querySelectorAll('#player-count-pills .pill-btn').forEach(btn => {
         const c = parseInt(btn.dataset.count, 10);
         if (c === LobbyState.playerCount) btn.classList.add('active');
         else btn.classList.remove('active');
       });
 
-      // 2. Update Coin Selector
       document.querySelectorAll('#coin-style-selector .coin-option-card').forEach(card => {
         if (card.dataset.style === LobbyState.coinStyle) card.classList.add('active');
         else card.classList.remove('active');
       });
 
-      // 3. Render Seats List with Name Edit & Blurred Exclusive Color Chips
       const container = document.getElementById('seats-config-container');
       if (container) {
         container.innerHTML = '';
@@ -925,7 +984,6 @@
         quickBtn.innerText = hasBots ? '👥 Remove All Bots (All Friends)' : '🤖 Add Bots to Empty Seats';
       }
 
-      // Toughness strictly hidden if playerCount > 2 or if no bots
       const activeSlotList = this.getActiveSlotsForCount(LobbyState.playerCount);
       const anyBotActive = activeSlotList.some(s => s !== 0 && LobbyState.seatRoles[s] === 'bot') || LobbyState.playerCount === 1;
       
@@ -946,6 +1004,7 @@
 
     startConfiguredMatch() {
       this.closeLobby();
+      this.ensureUniqueQuadrantColors();
 
       document.querySelectorAll('.seat-name-input').forEach((input, idx) => {
         const activeSlotList = this.getActiveSlotsForCount(LobbyState.playerCount);
@@ -968,6 +1027,7 @@
       GameState.seatNames = { ...LobbyState.seatNames };
       GameState.coinStyle = LobbyState.coinStyle;
       GameState.botDifficulty = LobbyState.botDifficulty;
+      GameState.matchActive = true;
 
       if (LobbyState.playerCount === 1) {
         GameState.seatRoles[0] = 'human';
@@ -991,6 +1051,7 @@
 
       document.getElementById('winner-modal').classList.add('hidden');
       document.getElementById('exit-modal').classList.add('hidden');
+      document.getElementById('quit-modal').classList.add('hidden');
       const restartModal = document.getElementById('restart-modal');
       if (restartModal) restartModal.classList.add('hidden');
 
@@ -1006,7 +1067,7 @@
     },
 
     /* ---------------------------------------------------------
-       RESTART CONFIRMATION MODAL SYSTEM
+       RESTART & QUIT CONFIRMATION FLOWS
        --------------------------------------------------------- */
     confirmRestart() {
       const modal = document.getElementById('restart-modal');
@@ -1021,6 +1082,22 @@
     executeRestart() {
       this.cancelRestart();
       this.restartCurrentMatch();
+    },
+
+    confirmQuit() {
+      const modal = document.getElementById('quit-modal');
+      if (modal) modal.classList.remove('hidden');
+    },
+
+    cancelQuit() {
+      const modal = document.getElementById('quit-modal');
+      if (modal) modal.classList.add('hidden');
+    },
+
+    executeQuit() {
+      this.cancelQuit();
+      GameState.matchActive = false;
+      this.openLobby(); // Return directly to coin selection and setup phase
     },
 
     /* ---------------------------------------------------------
