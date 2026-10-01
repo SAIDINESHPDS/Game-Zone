@@ -1,0 +1,985 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --wood-bg: #140f0c;
+
+  /* Default theme values */
+  --board-wood: #fffdf8;
+  --board-border: #421008;
+  --board-gold-trim: #fde047;
+  --board-frame-glow: rgba(245, 158, 11, 0.45);
+  --cell-cross-bg: #991b1b;
+  --cell-cross-line: #fef08a;
+  --center-goal-bg: #5a0c0c;
+  --line-color: #5c180e;
+
+  --color-red: #e63946;
+  --color-green: #059669;
+  --color-yellow: #f59e0b;
+  --color-blue: #2563eb;
+  --color-purple: #9333ea;
+  --color-orange: #ea580c;
+}
+
+/* =========================================================================
+   9 REFERENCE BOARD THEMES (LIGHT INTERIOR TILES & ORNATE BORDER FRAMES)
+   ========================================================================= */
+
+/* 01. CLASSIC PARCHMENT (Reference #01) */
+.theme-classic-parchment {
+  --board-wood: #fffdf7;          /* Soft light parchment */
+  --board-border: #45220c;        /* Rich walnut frame */
+  --board-gold-trim: #fbbf24;      /* Gold pinstripe */
+  --board-frame-glow: rgba(245, 158, 11, 0.4);
+  --cell-cross-bg: #d97706;       /* Warm Amber Saffron */
+  --cell-cross-line: #ffffff;     /* Crisp white-gold cross */
+  --center-goal-bg: #9a3412;      /* Deep spiced amber */
+  --line-color: #572c10;
+}
+
+/* 02. ROYAL MAHOGANY (Reference #02) */
+.theme-royal-mahogany {
+  --board-wood: #fcf9f2;          /* Pearl ivory */
+  --board-border: #3d0c02;        /* Deep carved mahogany */
+  --board-gold-trim: #fef08a;      /* Polished gold trim */
+  --board-frame-glow: rgba(220, 38, 38, 0.45);
+  --cell-cross-bg: #881337;       /* Velvet crimson */
+  --cell-cross-line: #fef08a;     /* Bright gold cross */
+  --center-goal-bg: #4c0519;      /* Wine red core */
+  --line-color: #53140a;
+}
+
+/* 03. TEAL BRASS (Reference #03) */
+.theme-teal-brass {
+  --board-wood: #f4fbf9;          /* Pale crystal mint */
+  --board-border: #042f2e;        /* Dark antique teal frame */
+  --board-gold-trim: #fde047;      /* Brass gold pinstripe */
+  --board-frame-glow: rgba(20, 184, 166, 0.45);
+  --cell-cross-bg: #0d9488;       /* Persian turquoise */
+  --cell-cross-line: #fef08a;     /* Polished brass cross */
+  --center-goal-bg: #115e59;      /* Oceanic teal */
+  --line-color: #134e4a;
+}
+
+/* 04. SAPPHIRE SILVER (Reference #04) */
+.theme-sapphire-silver {
+  --board-wood: #f8fafc;          /* Pure crisp white */
+  --board-border: #0f172a;        /* Royal midnight navy frame */
+  --board-gold-trim: #e2e8f0;      /* Fine silver pinstripe */
+  --board-frame-glow: rgba(59, 130, 246, 0.45);
+  --cell-cross-bg: #2563eb;       /* Royal sapphire blue */
+  --cell-cross-line: #ffffff;     /* Pure silver white cross */
+  --center-goal-bg: #1e3a8a;      /* Deep midnight blue */
+  --line-color: #1e293b;
+}
+
+/* 05. FOREST JADE (Reference #05) */
+.theme-forest-jade {
+  --board-wood: #f7fdf9;          /* Light dew porcelain */
+  --board-border: #022c22;        /* Dark malachite frame */
+  --board-gold-trim: #fef08a;      /* Gold pinstripe */
+  --board-frame-glow: rgba(16, 185, 129, 0.45);
+  --cell-cross-bg: #059669;       /* Lush emerald jade */
+  --cell-cross-line: #fef08a;     /* Bright gold cross */
+  --center-goal-bg: #064e3b;      /* Deep forest core */
+  --line-color: #064e3b;
+}
+
+/* 06. TERRACOTTA SAND (Reference #06) */
+.theme-terracotta-sand {
+  --board-wood: #fffbf5;          /* Warm morning sand */
+  --board-border: #431407;        /* Cedar terracotta frame */
+  --board-gold-trim: #fed7aa;      /* Peach-gold pinstripe */
+  --board-frame-glow: rgba(234, 88, 12, 0.45);
+  --cell-cross-bg: #ea580c;       /* Radiant terracotta */
+  --cell-cross-line: #fff7ed;     /* Sandy ivory cross */
+  --center-goal-bg: #9a3412;      /* Deep amber cedar */
+  --line-color: #7c2d12;
+}
+
+/* 07. PLUM GOLD (Reference #07) */
+.theme-plum-gold {
+  --board-wood: #fbf7ff;          /* Pale silk violet */
+  --board-border: #3b0764;        /* Deep imperial plum frame */
+  --board-gold-trim: #fde047;      /* Radiant gold trim */
+  --board-frame-glow: rgba(168, 85, 247, 0.45);
+  --cell-cross-bg: #9333ea;       /* Royal amethyst purple */
+  --cell-cross-line: #fef08a;     /* Bright gold cross */
+  --center-goal-bg: #581c87;      /* Deep purple sanctum */
+  --line-color: #581c87;
+}
+
+/* 08. SLATE COPPER (Reference #08) */
+.theme-slate-copper {
+  --board-wood: #fafafa;          /* Light clean pearl */
+  --board-border: #18181b;        /* Jet graphite frame */
+  --board-gold-trim: #fb923c;      /* Shimmering copper pinstripe */
+  --board-frame-glow: rgba(251, 146, 60, 0.45);
+  --cell-cross-bg: #3f3f46;       /* Dark graphite slate */
+  --cell-cross-line: #fb923c;     /* Bright polished copper */
+  --center-goal-bg: #27272a;      /* Burnished copper core */
+  --line-color: #3f3f46;
+}
+
+/* 09. INDIGO NIGHT (Reference #09) */
+.theme-indigo-night {
+  --board-wood: #f8fafc;          /* Starlight paper */
+  --board-border: #030712;        /* Pitch midnight frame */
+  --board-gold-trim: #93c5fd;      /* Moonlit cyan trim */
+  --board-frame-glow: rgba(99, 102, 241, 0.45);
+  --cell-cross-bg: #1d4ed8;       /* Deep celestial blue */
+  --cell-cross-line: #ffffff;     /* Pure white cross */
+  --center-goal-bg: #1e1b4b;      /* Obsidian night core */
+  --line-color: #1e3a8a;
+}
+
+body {
+  background: radial-gradient(circle at 50% 25%, #2a201c 0%, #0c0908 100%);
+  color: #f8fafc;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  overflow-x: hidden;
+}
+
+#confetti-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 2500;
+}
+
+.gamezone-app-shell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 1160px;
+}
+
+.gamezone-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(25, 18, 14, 0.94);
+  backdrop-filter: blur(12px);
+  padding: 10px 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.header-left { display: flex; align-items: center; gap: 14px; }
+
+.portal-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #38281f;
+  color: #d1b8a5;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.portal-back-btn:hover { background: #4d362a; color: #ffffff; }
+
+.game-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.35rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.header-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+.active-badge {
+  background: rgba(43, 31, 23, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 14px;
+}
+
+.btn {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+.btn-primary { background: linear-gradient(135deg, #d97706, #b45309); color: white; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(217, 119, 6, 0.45); }
+.btn-secondary { background: #38281f; color: #e2e8f0; }
+.btn-secondary:hover { background: #4d362a; }
+.btn-danger { background: #7f1d1d; color: #fecaca; }
+.btn-danger:hover { background: #991b1b; color: white; }
+
+.players-bar {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.player-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(30, 22, 17, 0.85);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+.player-pill.active {
+  border-color: #f59e0b;
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.4);
+  background: #38281f;
+}
+
+.color-dot { width: 10px; height: 10px; border-radius: 50%; }
+.team-tag { font-size: 0.68rem; padding: 2px 6px; border-radius: 6px; font-weight: 800; }
+.team-tag-1 { background: rgba(59, 130, 246, 0.25); color: #93c5fd; }
+.team-tag-2 { background: rgba(245, 158, 11, 0.25); color: #fde047; }
+.p-score { font-size: 0.72rem; color: #94a3b8; }
+
+/* =========================================================
+   ARENA STAGE: DUAL FIXED GAVVA STATIONS
+   ========================================================= */
+.arena-stage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 28px;
+  width: 100%;
+}
+
+.cowrie-station {
+  background: rgba(25, 18, 14, 0.94);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  padding: 16px 18px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  min-width: 220px;
+  transition: all 0.25s ease;
+}
+
+.cowrie-station.active-station {
+  border-color: #f59e0b;
+  box-shadow: 0 0 24px rgba(245, 158, 11, 0.45);
+  opacity: 1;
+  pointer-events: auto;
+}
+.cowrie-station.disabled-station {
+  opacity: 0.35;
+  pointer-events: none;
+  filter: grayscale(40%);
+}
+
+.gavva-player-card {
+  width: 100%;
+  background: #120d0a;
+  border: 1px solid #3d2b20;
+  border-radius: 14px;
+  padding: 10px 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.gavva-team-title {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #94a3b8;
+  letter-spacing: 0.8px;
+}
+.gavva-player-name {
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: #f8fafc;
+}
+.gavva-unlock-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+.gavva-unlock-badge.unlocked {
+  background: rgba(34, 197, 94, 0.25);
+  color: #86efac;
+  border: 1px solid #22c55e;
+}
+.gavva-unlock-badge.locked {
+  background: rgba(239, 68, 68, 0.22);
+  color: #fca5a5;
+  border: 1px solid #ef4444;
+}
+
+/* =========================================================
+   TRUE 3D COWRIE SHELL TRAY & PERSPECTIVE FLIP
+   ========================================================= */
+.cowrie-tray {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 16px;
+  background: #120d0a;
+  border-radius: 16px;
+  border: 1.5px solid #3d2b20;
+  cursor: pointer;
+  perspective: 700px;
+  box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.8);
+}
+
+.cowrie-shell {
+  width: 48px;
+  height: 32px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.65s cubic-bezier(0.25, 1.25, 0.5, 1);
+}
+
+.cowrie-shell .shell-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 50% 50% 45% 45%;
+  backface-visibility: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.cowrie-shell .shell-face-front {
+  background: radial-gradient(ellipse at 50% 40%, #ffffff 0%, #f3eee3 70%, #d8caa7 100%);
+  border: 1.5px solid #b8a688;
+  transform: rotateX(0deg);
+}
+
+.shell-mouth-ridge {
+  width: 74%;
+  height: 7px;
+  background: #3e2617;
+  border-radius: 10px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.9);
+  border-bottom: 2px dashed #fdfbf7;
+}
+
+.cowrie-shell .shell-face-back {
+  background: radial-gradient(ellipse at 35% 30%, #ffffff 0%, #ece2cb 55%, #9b8465 100%);
+  border: 1.5px solid #a89476;
+  transform: rotateX(180deg);
+}
+
+.cowrie-shell.mouth-up {
+  transform: rotateX(0deg);
+}
+.cowrie-shell.mouth-down {
+  transform: rotateX(180deg);
+}
+
+.cowrie-tray.rolling .cowrie-shell {
+  animation: shell-3d-tumble 0.5s ease-in-out infinite alternate;
+}
+@keyframes shell-3d-tumble {
+  0% { transform: translateY(-16px) rotateX(120deg) rotateY(180deg) rotateZ(-30deg) scale(1.15); }
+  100% { transform: translateY(-4px) rotateX(320deg) rotateY(360deg) rotateZ(30deg) scale(0.95); }
+}
+
+.roll-result-card { display: flex; flex-direction: column; align-items: center; }
+.roll-number { font-size: 2.2rem; font-weight: 900; color: #f59e0b; line-height: 1.1; }
+.roll-label { font-size: 0.78rem; color: #94a3b8; font-weight: 600; }
+
+.btn-roll {
+  width: 100%;
+  background: linear-gradient(135deg, #d97706, #92400e);
+  color: white;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-weight: 800;
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.4);
+}
+.btn-roll:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(217, 119, 6, 0.55); }
+
+/* =========================================================
+   ORNATE SIDE BORDER FRAME WITH CORNER ACCENTS (AS IN REFERENCE)
+   ========================================================= */
+.board-wrapper {
+  position: relative;
+  margin: 70px 30px;
+}
+
+/* Wide outer wooden frame with inlaid pinstripe */
+.ashta-board {
+  width: min(52vw, 420px);
+  height: min(52vw, 420px);
+  background: var(--board-wood);
+  border: 18px solid var(--board-border);
+  outline: 2.5px solid var(--board-gold-trim);
+  outline-offset: -10px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.85), 0 0 25px var(--board-frame-glow);
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* 4 Delicate Traditional Corner Filigree Accents */
+.board-corner-accent {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  pointer-events: none;
+  z-index: 8;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));
+}
+.corner-tl { top: -14px; left: -14px; }
+.corner-tr { top: -14px; right: -14px; transform: scaleX(-1); }
+.corner-bl { bottom: -14px; left: -14px; transform: scaleY(-1); }
+.corner-br { bottom: -14px; right: -14px; transform: scale(-1); }
+
+/* Regular interior path cells (light, airy, crisp) */
+.board-cell {
+  position: relative;
+  border: 2px solid var(--line-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--board-wood);
+  transition: all 0.2s ease;
+}
+
+/* =========================================================
+   VIBRANT GADDI (CROSSED CELLS) WITH BRIGHT CRISP LINES
+   ========================================================= */
+.board-cell.crossed-cell {
+  background: var(--cell-cross-bg) !important;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.board-cell.crossed-cell::before,
+.board-cell.crossed-cell::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+}
+
+.board-cell.crossed-cell::before {
+  background: linear-gradient(to top right, transparent calc(50% - 3px), var(--cell-cross-line) calc(50% - 2px), var(--cell-cross-line) calc(50% + 2px), transparent calc(50% + 3px));
+}
+.board-cell.crossed-cell::after {
+  background: linear-gradient(to bottom right, transparent calc(50% - 3px), var(--cell-cross-line) calc(50% - 2px), var(--cell-cross-line) calc(50% + 2px), transparent calc(50% + 3px));
+}
+
+/* =========================================================
+   CENTER GOAL / WINNING BOX ORNATE 8-POINTED STAR
+   ========================================================= */
+.board-cell.center-goal {
+  background: var(--center-goal-bg) !important;
+  box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.6);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.board-cell.center-goal::before,
+.board-cell.center-goal::after {
+  display: none !important;
+}
+
+.center-star-svg {
+  position: absolute;
+  width: 86%;
+  height: 86%;
+  pointer-events: none;
+  z-index: 1;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6));
+  animation: star-ambient-pulse 2.8s infinite alternate ease-in-out;
+}
+
+@keyframes star-ambient-pulse {
+  0% {
+    transform: scale(0.96);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+  }
+  100% {
+    transform: scale(1.04);
+    filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.9));
+  }
+}
+
+/* PATH & DESTINATION LANDING PREVIEW */
+.board-cell.preview-path {
+  background: rgba(245, 158, 11, 0.32) !important;
+  box-shadow: inset 0 0 10px rgba(245, 158, 11, 0.7);
+}
+
+.board-cell.preview-landing {
+  background: rgba(34, 197, 94, 0.42) !important;
+  box-shadow: inset 0 0 0 3px #22c55e, 0 0 20px rgba(34, 197, 94, 0.9) !important;
+  animation: pulse-landing 0.7s infinite alternate ease-in-out;
+  z-index: 15;
+}
+@keyframes pulse-landing {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.05); }
+}
+
+/* =========================================================
+   PORCHES (HARMONIZED FRAME WITH LIGHT INTERIOR)
+   ========================================================= */
+.porch {
+  position: absolute;
+  background: var(--board-wood);
+  border: 5px solid var(--board-border);
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  gap: 3px;
+  z-index: 5;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.25), 0 8px 18px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+  padding: 4px;
+  transition: all 0.3s ease;
+}
+
+.porch-top {
+  top: -64px; left: 50%; transform: translateX(-50%);
+  width: 26%; height: 64px; border-radius: 90px 90px 0 0; border-bottom: none;
+}
+.porch-bottom {
+  bottom: -64px; left: 50%; transform: translateX(-50%);
+  width: 26%; height: 64px; border-radius: 0 0 90px 90px; border-top: none;
+}
+.porch-left {
+  left: -64px; top: 50%; transform: translateY(-50%);
+  width: 64px; height: 26%; border-radius: 90px 0 0 90px; border-right: none;
+}
+.porch-right {
+  right: -64px; top: 50%; transform: translateY(-50%);
+  width: 64px; height: 26%; border-radius: 0 90px 90px 0; border-left: none;
+}
+
+.porch.porch-inactive { opacity: 0.18; filter: grayscale(80%); }
+
+/* Tokens */
+.token {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  position: relative;
+  z-index: 10;
+  cursor: pointer;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5), inset 0 2px 3px rgba(255,255,255,0.7);
+  transition: transform 0.15s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1.5px solid rgba(0,0,0,0.5);
+}
+.token::after {
+  content: "";
+  width: 38%;
+  height: 38%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.token.color-red    { background: radial-gradient(circle at 35% 35%, #ef4444, var(--color-red)); }
+.token.color-green  { background: radial-gradient(circle at 35% 35%, #10b981, var(--color-green)); }
+.token.color-yellow { background: radial-gradient(circle at 35% 35%, #fef08a, var(--color-yellow)); }
+.token.color-blue   { background: radial-gradient(circle at 35% 35%, #60a5fa, var(--color-blue)); }
+.token.color-purple { background: radial-gradient(circle at 35% 35%, #c084fc, var(--color-purple)); }
+.token.color-orange { background: radial-gradient(circle at 35% 35%, #fb923c, var(--color-orange)); }
+
+.token.highlight-move {
+  animation: pulse-jump 0.7s infinite alternate ease-in-out;
+  box-shadow: 0 0 0 3px #ffffff, 0 0 14px 4px #f59e0b;
+  z-index: 25;
+}
+@keyframes pulse-jump {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.22); }
+}
+
+.tokens-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  height: 100%;
+}
+.tokens-cluster .token { width: 18px; height: 18px; }
+
+/* MATCH LOG FEED */
+.match-log-panel {
+  width: 100%;
+  background: rgba(20, 14, 11, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 8px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.log-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: #f59e0b;
+}
+.log-clear-btn {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+.log-clear-btn:hover { color: white; }
+
+.match-log-list {
+  max-height: 52px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.match-log-list::-webkit-scrollbar { width: 4px; }
+.match-log-list::-webkit-scrollbar-thumb { background: #3d2b20; border-radius: 4px; }
+
+.log-entry {
+  font-size: 0.76rem;
+  color: #cbd5e1;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.03);
+}
+.log-entry.kill-log {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  font-weight: 700;
+}
+.log-entry.entry-log {
+  background: rgba(34, 197, 94, 0.18);
+  color: #86efac;
+}
+
+.gamezone-statusbar {
+  background: rgba(25, 18, 14, 0.94);
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* VICTORY CARD */
+.victory-card {
+  max-width: 480px !important;
+}
+.animate-bounce {
+  animation: victory-bounce 1s infinite alternate ease-in-out;
+}
+@keyframes victory-bounce {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-10px) scale(1.1); }
+}
+
+.match-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 16px 0 20px;
+}
+.stat-box {
+  background: #120d0a;
+  border: 1px solid #3d2b20;
+  padding: 10px 4px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.stat-value {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: #f59e0b;
+}
+.stat-lbl {
+  font-size: 0.68rem;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+/* Modals */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(12, 9, 8, 0.88); backdrop-filter: blur(8px);
+  display: flex; justify-content: center; align-items: center; z-index: 2000; padding: 16px; overflow-y: auto;
+}
+.modal-overlay.hidden { display: none; }
+
+.lobby-card {
+  background: #1e1713; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85); max-width: 640px; width: 100%;
+  padding: 22px 26px; display: flex; flex-direction: column; gap: 16px; margin: auto;
+}
+
+.lobby-header { text-align: center; position: relative; }
+.lobby-back-btn {
+  position: absolute; left: 0; top: 4px;
+  background: #120d0a; border: 1px solid #3d2b20; color: #cbd5e1;
+  padding: 6px 12px; border-radius: 8px; display: flex; align-items: center;
+  gap: 6px; font-size: 0.8rem; font-weight: 700; text-decoration: none;
+}
+.lobby-back-btn:hover { background: #3d2b20; color: white; }
+
+.lobby-icon { font-size: 2.2rem; display: block; margin-bottom: 4px; }
+.lobby-header h2 { font-size: 1.55rem; font-weight: 900; color: #f8fafc; }
+.lobby-header p { font-size: 0.8rem; color: #94a3b8; }
+
+.lobby-section { display: flex; flex-direction: column; gap: 8px; }
+.section-label { font-size: 0.84rem; font-weight: 700; color: #f1f5f9; }
+.sub-label { font-size: 0.75rem; color: #94a3b8; font-weight: 600; margin-top: 4px; }
+
+.player-count-pills { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.pill-btn {
+  background: #120d0a; border: 1px solid #3d2b20; border-radius: 12px;
+  padding: 10px 4px; display: flex; flex-direction: column; align-items: center;
+  cursor: pointer; color: #94a3b8;
+}
+.pill-btn:hover { background: #2b1f17; color: white; }
+.pill-btn.active {
+  background: linear-gradient(135deg, #d97706, #92400e);
+  border-color: #f59e0b; color: white;
+}
+.pill-btn .count-num { font-size: 1.3rem; font-weight: 900; }
+.pill-btn .count-desc { font-size: 0.72rem; font-weight: 600; }
+
+.team-toggle-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.team-mode-btn {
+  background: #120d0a; border: 1.5px solid #3d2b20; border-radius: 12px;
+  padding: 10px 12px; display: flex; flex-direction: column; align-items: flex-start;
+  gap: 2px; cursor: pointer; color: #94a3b8; text-align: left;
+}
+.team-mode-btn span { font-weight: 800; font-size: 0.86rem; color: #f8fafc; }
+.team-mode-btn small { font-size: 0.7rem; color: #94a3b8; }
+.team-mode-btn.active {
+  border-color: #f59e0b; background: #2b1f17;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.3);
+}
+
+.axis-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+.axis-btn {
+  background: #120d0a; border: 1px solid #3d2b20; border-radius: 8px;
+  padding: 8px; color: #cbd5e1; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+}
+.axis-btn.active { border-color: #3b82f6; background: #1e3a8a; color: white; }
+
+.seats-config-list { display: flex; flex-direction: column; gap: 8px; }
+.seat-row-card {
+  background: #120d0a; border: 1px solid #3d2b20; border-radius: 12px;
+  padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 8px;
+}
+.seat-left-group { display: flex; align-items: center; gap: 10px; }
+.seat-name-input {
+  background: #2b1f17; border: 1px solid #4a3629; border-radius: 8px;
+  color: #ffffff; padding: 6px 10px; font-size: 0.82rem; font-weight: 700;
+  width: 120px; outline: none;
+}
+.seat-name-input:focus { border-color: #f59e0b; }
+
+.seat-color-chips { display: flex; align-items: center; gap: 6px; }
+.mini-color-chip {
+  width: 24px; height: 24px; border-radius: 6px; cursor: pointer; border: 2px solid transparent;
+}
+.mini-color-chip.chip-active { border-color: #ffffff; transform: scale(1.15); }
+
+.role-toggle-group { display: flex; background: #2b1f17; border-radius: 8px; padding: 2px; }
+.role-btn {
+  background: none; border: none; padding: 4px 8px; border-radius: 6px;
+  font-size: 0.72rem; font-weight: 700; color: #94a3b8; cursor: pointer;
+}
+.role-btn.active { background: #d97706; color: white; }
+
+.btn-start-match {
+  width: 100%; padding: 12px; background: linear-gradient(135deg, #10b981, #059669);
+  color: white; border: none; border-radius: 12px; font-size: 1.05rem; font-weight: 900;
+  cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+}
+.btn-start-match:hover { transform: translateY(-2px); }
+
+/* Settings Modal */
+.settings-card {
+  max-width: 540px; text-align: left; display: flex; flex-direction: column; gap: 16px;
+}
+.settings-header {
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid #3d2b20; padding-bottom: 8px;
+}
+.settings-header h3 { font-size: 1.25rem; font-weight: 800; color: #f59e0b; }
+.close-x-btn {
+  background: none; border: none; color: #94a3b8; font-size: 1.2rem; cursor: pointer;
+}
+.close-x-btn:hover { color: white; }
+
+.settings-section { display: flex; flex-direction: column; gap: 8px; }
+.settings-label { font-size: 0.82rem; font-weight: 700; color: #f1f5f9; }
+
+.settings-toggle-row {
+  display: flex; justify-content: space-between; align-items: center;
+  background: #120d0a; border: 1px solid #3d2b20; padding: 10px 14px; border-radius: 12px;
+}
+.settings-title-inline { display: block; font-size: 0.84rem; font-weight: 700; color: white; }
+.settings-sub-inline { font-size: 0.72rem; color: #94a3b8; }
+
+/* THEME PALETTE GRID (MULTI-TONE REFERENCE SWATCHES) */
+.theme-palette-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.theme-chip {
+  background: #120d0a;
+  border: 1.5px solid #3d2b20;
+  border-radius: 10px;
+  padding: 8px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.theme-chip span {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #cbd5e1;
+  text-align: center;
+  line-height: 1.1;
+}
+.theme-chip.active {
+  border-color: #f59e0b;
+  background: #2b1f17;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+}
+
+/* Multi-tone Preview Swatches: Outer border + light tile + jewel Gaddi */
+.chip-swatch {
+  width: 38px;
+  height: 22px;
+  border-radius: 4px;
+  border: 2px solid #000;
+  position: relative;
+  overflow: hidden;
+}
+.chip-swatch::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 48%;
+  height: 100%;
+}
+
+.swatch-parchment { background: #fffdf7; border-color: #45220c; }
+.swatch-parchment::after { background: #d97706; }
+
+.swatch-mahogany { background: #fcf9f2; border-color: #3d0c02; }
+.swatch-mahogany::after { background: #881337; }
+
+.swatch-teal { background: #f4fbf9; border-color: #042f2e; }
+.swatch-teal::after { background: #0d9488; }
+
+.swatch-sapphire { background: #f8fafc; border-color: #0f172a; }
+.swatch-sapphire::after { background: #2563eb; }
+
+.swatch-jade { background: #f7fdf9; border-color: #022c22; }
+.swatch-jade::after { background: #059669; }
+
+.swatch-terracotta { background: #fffbf5; border-color: #431407; }
+.swatch-terracotta::after { background: #ea580c; }
+
+.swatch-plum { background: #fbf7ff; border-color: #3b0764; }
+.swatch-plum::after { background: #9333ea; }
+
+.swatch-copper { background: #fafafa; border-color: #18181b; }
+.swatch-copper::after { background: #3f3f46; }
+
+.swatch-indigo { background: #f8fafc; border-color: #030712; }
+.swatch-indigo::after { background: #1d4ed8; }
+
+.settings-actions-stack { display: flex; flex-direction: column; gap: 8px; }
+.action-full-btn { width: 100%; padding: 10px; border-radius: 10px; font-weight: 700; }
+.settings-footer { display: flex; justify-content: flex-end; margin-top: 4px; }
+
+.modal-card {
+  background: #1e1713; padding: 24px 28px; border-radius: 20px; text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 20px 48px rgba(0,0,0,0.8);
+  max-width: 440px; width: 100%; margin: auto;
+}
+.modal-card.rules-card { text-align: left; max-width: 520px; }
+.rules-list { font-size: 0.84rem; color: #cbd5e1; display: flex; flex-direction: column; gap: 8px; margin: 16px 0 20px; }
+.trophy-emoji { font-size: 3rem; margin-bottom: 8px; }
+.modal-card h2 { color: #f59e0b; font-size: 1.6rem; font-weight: 900; }
+.modal-card p { color: #cbd5e1; margin-bottom: 18px; font-size: 0.9rem; }
+.modal-actions { display: flex; gap: 12px; justify-content: center; }
+
+@media (max-width: 960px) {
+  .arena-stage { flex-wrap: wrap; }
+  .board-wrapper { margin: 55px 15px; }
+  .ashta-board { width: min(78vw, 340px); height: min(78vw, 340px); border-width: 14px; }
+  .porch-top, .porch-bottom { height: 52px; width: 30%; }
+  .porch-left, .porch-right { width: 52px; height: 30%; }
+  .cowrie-station { width: 45%; min-width: 150px; }
+  .theme-palette-grid { grid-template-columns: repeat(3, 1fr); }
+}

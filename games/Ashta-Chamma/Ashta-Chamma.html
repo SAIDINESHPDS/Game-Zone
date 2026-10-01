@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Game Zone - Ashta-Chamma</title>
+  <link rel="stylesheet" href="Ashta-Chamma.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- FULL SCREEN VICTORY CONFETTI CANVAS -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <div class="gamezone-app-shell">
+    
+    <!-- TOP NAVIGATION HEADER -->
+    <header class="gamezone-header">
+      <div class="header-left">
+        <a href="../../index.html" class="portal-back-btn" title="Back to Game Zone Hub">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          <span>Game Zone</span>
+        </a>
+        <div class="game-brand">
+          <span class="brand-icon">🐚</span>
+          <span class="brand-text">ASHTA-CHAMMA</span>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <div class="active-badge" id="hud-mode-badge">Match Active</div>
+        <button class="btn btn-secondary" onclick="AshtaChamma.openSettings()">⚙️ Settings</button>
+        <button class="btn btn-secondary" onclick="AshtaChamma.openRules()">📜 Rules</button>
+        <button class="btn btn-primary" onclick="AshtaChamma.resetGame()">Restart</button>
+      </div>
+    </header>
+
+    <!-- LIVE PLAYER SEATS BAR -->
+    <div class="players-bar" id="players-bar"></div>
+
+    <!-- MAIN ARENA STAGE (Fixed Left Gavva + Center Board + Fixed Right Gavva) -->
+    <main class="arena-stage">
+      
+      <!-- FIXED LEFT GAVVA STATION -->
+      <aside class="cowrie-station station-left" id="station-left">
+        <div class="gavva-player-card">
+          <span class="gavva-team-title" id="gavva-team-left">TEAM 1</span>
+          <h4 class="gavva-player-name" id="gavva-name-left">Player 1</h4>
+          <span class="gavva-unlock-badge locked" id="gavva-unlock-left">🔒 Needs 4 or 8</span>
+        </div>
+
+        <!-- 3D Cowrie Tray -->
+        <div class="cowrie-tray" id="tray-left" onclick="AshtaChamma.rollCowries('left')">
+          <div class="cowrie-shell mouth-down" id="shell-left-0">
+            <div class="shell-face shell-face-front"><div class="shell-mouth-ridge"></div></div>
+            <div class="shell-face shell-face-back"></div>
+          </div>
+          <div class="cowrie-shell mouth-down" id="shell-left-1">
+            <div class="shell-face shell-face-front"><div class="shell-mouth-ridge"></div></div>
+            <div class="shell-face shell-face-back"></div>
+          </div>
+          <div class="cowrie-shell mouth-down" id="shell-left-2">
+            <div class="shell-face shell-face-front"><div class="shell-mouth-ridge"></div></div>
+            <div class="shell-face shell-face-back"></div>
+          </div>
+          <div class="cowrie-shell mouth-down" id="shell-left-3">
+            <div class="shell-face shell-face-front"><div class="shell-mouth-ridge"></div></div>
+            <div class="shell-face shell-face-back"></div>
+          </div>
+        </div>
+
+        <div class="roll-result-card">
+          <span class="roll-number" id="roll-points-left">-</span>
+          <span class="roll-label" id="roll-label-left">Tap to Throw</span>
+        </div>
+
+        <button class="btn btn-roll" id="btn-throw-left" onclick="AshtaChamma.rollCowries('left')">
+          <span>THROW COWRIES</span>
+        </button>
+      </aside>
+
+      <!-- 5x5 BOARD WRAPPER WITH ORNATE INLAY FRAME & FLOURISHES -->
+      <div class="board-wrapper" id="board-wrapper">
+        <div class="porch porch-top" id="porch-top" title="Top Porch"></div>
+        <div class="porch porch-right" id="porch-right" title="Right Porch"></div>
+        <div class="porch porch-bottom" id="porch-bottom" title="Bottom Porch"></div>
+        <div class="porch porch-left" id="porch-left" title="Left Porch"></div>
+
+        <!-- 5x5 Main Board Grid -->
+        <div class="ashta-board theme-royal-mahogany" id="ashta-board"></div>
+      </div>
+
+      <!-- FIXED RIGHT GAVVA STATION -->
+      <aside class="cowrie-station station-right" id="station-right">
+        <div class="gavva-player-card">
+          <span class="gavva-team-title" id="gavva-team-right">TEAM 2</span>
+          <h4 class="gavva-player-name" id="gavva-name-right">Player 2</h4>
+          <span class="gavva-unlock-badge locked" id="gavva-unlock-right">🔒 Needs 4 or 8</span>
+        </div>
+
+        <!-- 3D Cowrie Tray -->
+        <div class="cowrie-tray" id="tray-right" onclick="AshtaChamma.rollCowries('right')">
+          <div class="cowrie-shell mouth-down" id="shell-right-0">
+            <div class="shell-face shell-face-front"><div class="shell-mouth-ridge"></div></div>
+            <div class="shell-face shell-face-back"></div>
+          </div>
+          <div class="cowrie-shell mouth-down" id="shell-right-1">
+            <div class="shell-face shell-face-front"><div class="shell-mouth-ridge"></div></div>
+            <div class="shell-face shell-face-back"></div>
+          </div>
+          <div class="cowrie-shell mouth-down" id="shell-right-2">
+            <div class="shell-face shell-face-front"><div class="shell-mouth-ridge"></div></div>
+            <div class="shell-face shell-face-back"></div>
+          </div>
+          <div class="cowrie-shell mouth-down" id="shell-right-3">
+            <div class="shell-face shell-face-front"><div class="shell-mouth-ridge"></div></div>
+            <div class="shell-face shell-face-back"></div>
+          </div>
+        </div>
+
+        <div class="roll-result-card">
+          <span class="roll-number" id="roll-points-right">-</span>
+          <span class="roll-label" id="roll-label-right">Tap to Throw</span>
+        </div>
+
+        <button class="btn btn-roll" id="btn-throw-right" onclick="AshtaChamma.rollCowries('right')">
+          <span>THROW COWRIES</span>
+        </button>
+      </aside>
+
+    </main>
+
+    <!-- LIVE MATCH ACTIVITY LOG TICKER -->
+    <div class="match-log-panel">
+      <div class="log-title-row">
+        <span>📜 Match Feed</span>
+        <button class="log-clear-btn" onclick="AshtaChamma.clearFeed()">Clear</button>
+      </div>
+      <div class="match-log-list" id="match-log-list">
+        <div class="log-entry sys-entry">Match arena ready! Tap cowrie shells to begin.</div>
+      </div>
+    </div>
+
+    <!-- LIVE STATUS ANNOUNCER -->
+    <footer class="gamezone-statusbar">
+      <span id="turn-announcer">Click cowrie shells to begin!</span>
+    </footer>
+  </div>
+
+  <!-- PRE-MATCH SETUP LOBBY MODAL -->
+  <div id="lobby-modal" class="modal-overlay">
+    <div class="lobby-card">
+      <div class="lobby-header">
+        <a href="../../index.html" class="lobby-back-btn" title="Back to Game Zone Home">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          <span>Home</span>
+        </a>
+        <span class="lobby-icon">🐚</span>
+        <h2>Ashta-Chamma Setup</h2>
+        <p>Choose number of players, match format & coin colors</p>
+      </div>
+
+      <!-- Step 1: Number of Players -->
+      <div class="lobby-section">
+        <label class="section-label">1. Number of Players</label>
+        <div class="player-count-pills">
+          <button class="pill-btn" data-count="1" onclick="AshtaChamma.setLobbyCount(1)">
+            <span class="count-num">1</span>
+            <span class="count-desc">vs Bot</span>
+          </button>
+          <button class="pill-btn" data-count="2" onclick="AshtaChamma.setLobbyCount(2)">
+            <span class="count-num">2</span>
+            <span class="count-desc">Players</span>
+          </button>
+          <button class="pill-btn" data-count="3" onclick="AshtaChamma.setLobbyCount(3)">
+            <span class="count-num">3</span>
+            <span class="count-desc">Players</span>
+          </button>
+          <button class="pill-btn active" data-count="4" onclick="AshtaChamma.setLobbyCount(4)">
+            <span class="count-num">4</span>
+            <span class="count-desc">Players</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2: Match Format (Only 4 Players have Teams option) -->
+      <div class="lobby-section" id="team-format-section">
+        <label class="section-label">2. Match Format</label>
+        <div class="team-toggle-group">
+          <button class="team-mode-btn active" id="btn-mode-solo" onclick="AshtaChamma.setTeamMode(false)">
+            <span>⚔️ Solo (Free For All)</span>
+            <small>4 Coins per player</small>
+          </button>
+          <button class="team-mode-btn" id="btn-mode-teams" onclick="AshtaChamma.setTeamMode(true)">
+            <span>🤝 2 Teams (8 Coins vs 8 Coins)</span>
+            <small>2 Colors only (Teammates share color)</small>
+          </button>
+        </div>
+
+        <div class="team-axis-picker" id="team-axis-picker" style="display: none;">
+          <span class="sub-label">Select Opposite Base Positions:</span>
+          <div class="axis-buttons">
+            <button class="axis-btn active" id="axis-tb" onclick="AshtaChamma.setTeamAxis('TB')">
+              <span>Top & Bottom</span>
+            </button>
+            <button class="axis-btn" id="axis-lr" onclick="AshtaChamma.setTeamAxis('LR')">
+              <span>Left & Right</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Profiles & Colors -->
+      <div class="lobby-section">
+        <label class="section-label" id="profiles-section-label">3. Player Profiles & Coin Colors</label>
+        <div class="seats-config-list" id="seats-config-container"></div>
+      </div>
+
+      <div class="lobby-footer">
+        <button class="btn btn-start-match" onclick="AshtaChamma.startMatchFromLobby()">
+          <span>START MATCH</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- IN-GAME SETTINGS MODAL (9 HERITAGE BOARD REFERENCE THEMES) -->
+  <div id="settings-modal" class="modal-overlay hidden">
+    <div class="modal-card settings-card">
+      <div class="settings-header">
+        <h3>⚙️ Game Settings</h3>
+        <button class="close-x-btn" onclick="AshtaChamma.closeSettings()">✕</button>
+      </div>
+
+      <div class="settings-section">
+        <label class="settings-label">Board Reference Themes (Light Interior Tiles & Rich Borders)</label>
+        <div class="theme-palette-grid">
+          <!-- 01 Classic Parchment -->
+          <div class="theme-chip" data-theme="theme-classic-parchment" onclick="AshtaChamma.setBoardTheme('theme-classic-parchment')">
+            <div class="chip-swatch swatch-parchment"></div>
+            <span>01 Parchment</span>
+          </div>
+          <!-- 02 Royal Mahogany -->
+          <div class="theme-chip active" data-theme="theme-royal-mahogany" onclick="AshtaChamma.setBoardTheme('theme-royal-mahogany')">
+            <div class="chip-swatch swatch-mahogany"></div>
+            <span>02 Mahogany</span>
+          </div>
+          <!-- 03 Teal Brass -->
+          <div class="theme-chip" data-theme="theme-teal-brass" onclick="AshtaChamma.setBoardTheme('theme-teal-brass')">
+            <div class="chip-swatch swatch-teal"></div>
+            <span>03 Teal Brass</span>
+          </div>
+          <!-- 04 Sapphire Silver -->
+          <div class="theme-chip" data-theme="theme-sapphire-silver" onclick="AshtaChamma.setBoardTheme('theme-sapphire-silver')">
+            <div class="chip-swatch swatch-sapphire"></div>
+            <span>04 Sapphire</span>
+          </div>
+          <!-- 05 Forest Jade -->
+          <div class="theme-chip" data-theme="theme-forest-jade" onclick="AshtaChamma.setBoardTheme('theme-forest-jade')">
+            <div class="chip-swatch swatch-jade"></div>
+            <span>05 Forest Jade</span>
+          </div>
+          <!-- 06 Terracotta Sand -->
+          <div class="theme-chip" data-theme="theme-terracotta-sand" onclick="AshtaChamma.setBoardTheme('theme-terracotta-sand')">
+            <div class="chip-swatch swatch-terracotta"></div>
+            <span>06 Terracotta</span>
+          </div>
+          <!-- 07 Plum Gold -->
+          <div class="theme-chip" data-theme="theme-plum-gold" onclick="AshtaChamma.setBoardTheme('theme-plum-gold')">
+            <div class="chip-swatch swatch-plum"></div>
+            <span>07 Plum Gold</span>
+          </div>
+          <!-- 08 Slate Copper -->
+          <div class="theme-chip" data-theme="theme-slate-copper" onclick="AshtaChamma.setBoardTheme('theme-slate-copper')">
+            <div class="chip-swatch swatch-copper"></div>
+            <span>08 Slate Copper</span>
+          </div>
+          <!-- 09 Indigo Night -->
+          <div class="theme-chip" data-theme="theme-indigo-night" onclick="AshtaChamma.setBoardTheme('theme-indigo-night')">
+            <div class="chip-swatch swatch-indigo"></div>
+            <span>09 Indigo Night</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-toggle-row">
+          <div>
+            <span class="settings-title-inline">Audio Effects</span>
+            <small class="settings-sub-inline">Play authentic shell rattling & victory sounds</small>
+          </div>
+          <button id="btn-toggle-sound" class="btn btn-secondary" onclick="AshtaChamma.toggleSound()">🔊 Sound: ON</button>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <label class="settings-label">Match Management</label>
+        <div class="settings-actions-stack">
+          <button class="btn btn-secondary action-full-btn" onclick="AshtaChamma.openLobbyFromSettings()">
+            <span>⚙ Match Setup (Players & Teams)</span>
+          </button>
+          <button class="btn btn-secondary action-full-btn" onclick="AshtaChamma.resetGameFromSettings()">
+            <span>🔄 Restart Match</span>
+          </button>
+          <a href="../../index.html" class="btn btn-danger action-full-btn">
+            <span>🚪 Exit to Game Zone</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="settings-footer">
+        <button class="btn btn-primary" onclick="AshtaChamma.closeSettings()">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VICTORY CELEBRATION MODAL WITH MATCH STATS -->
+  <div id="winner-modal" class="modal-overlay hidden">
+    <div class="modal-card victory-card">
+      <div class="trophy-emoji animate-bounce">🏆</div>
+      <h2 id="winner-title">Victory!</h2>
+      <p id="winner-desc">Congratulations! All coins reached the inner sanctum!</p>
+
+      <div class="match-stats-grid">
+        <div class="stat-box">
+          <span class="stat-value" id="stat-time">00:00</span>
+          <span class="stat-lbl">Match Time</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-value" id="stat-turns">0</span>
+          <span class="stat-lbl">Total Turns</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-value" id="stat-kills">0</span>
+          <span class="stat-lbl">Knockouts</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-value" id="stat-ashtas">0</span>
+          <span class="stat-lbl">8(Astha)</span>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="AshtaChamma.openLobbyFromWin()">Match Setup</button>
+        <button class="btn btn-primary" onclick="AshtaChamma.resetGame()">Play Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES MODAL -->
+  <div id="rules-modal" class="modal-overlay hidden">
+    <div class="modal-card rules-card">
+      <h2>📜 Ashta-Chamma Rules</h2>
+      <div class="rules-list">
+        <p><strong>🐚 Cowrie Points & Names:</strong></p>
+        <ul style="padding-left: 20px; font-size: 0.82rem; margin-bottom: 8px;">
+          <li><strong>1 mouth up:</strong> 1(Kannu)</li>
+          <li><strong>2 mouths up:</strong> 2(Duga)</li>
+          <li><strong>3 mouths up:</strong> 3(Theeni)</li>
+          <li><strong>4 mouths up:</strong> 4(Chamma) ★ — Extra Throw</li>
+          <li><strong>0 mouths up:</strong> 8(Astha) ★ — Extra Throw</li>
+        </ul>
+
+        <p><strong>🔓 Individual Player Unlock Rule:</strong> Every player must personally roll 4(Chamma) or 8(Astha) to qualify. Until unlocked, you cannot move any coins (even coins entered by a teammate)!</p>
+
+        <p><strong>⛔ Stopping at the Cross (Gaddi):</strong> Coins without a registered kill CANNOT advance past the crossed safe square (Step 12) located 3 boxes before the home corner. They must halt at the cross and wait until an opponent coin is captured before entering the inner sanctum.</p>
+
+        <p><strong>⚡ Automatic Movement:</strong> If a player has only one movable coin on the board and rolls 1(Kannu), 2(Duga), or 3(Theeni), it advances automatically!</p>
+
+        <p><strong>🟢 ASHTA (8) Entry Rules:</strong></p>
+        <ul style="padding-left: 20px; font-size: 0.82rem; margin-bottom: 8px;">
+          <li><strong>No coins on board:</strong> Exactly 2 coins enter the board (they don't move 8 spaces). The player rolls again to decide which coin to move!</li>
+          <li><strong>Exactly 1 coin outside:</strong> That coin enters the board and moves 4 steps (mandatory) + Extra Throw.</li>
+          <li><strong>No coins outside:</strong> Select any eligible coin on the board to move 8 steps + Extra Throw.</li>
+        </ul>
+
+        <p><strong>🔴 CHAMMA (4) Entry Rules:</strong></p>
+        <ul style="padding-left: 20px; font-size: 0.82rem; margin-bottom: 8px;">
+          <li><strong>1 or more outside:</strong> Exactly 1 token enters the board (does not move 4 spaces) + Extra Throw.</li>
+          <li><strong>0 outside:</strong> Player selects which eligible coin advances 4 spaces + Extra Throw.</li>
+        </ul>
+
+        <p><strong>🤝 4-Player 2 Teams:</strong> 8 coins vs 8 coins. Both players of a team share the exact same color. Opposite boxes (Top & Bottom or Left & Right) are used.</p>
+        <p><strong>⚔️ Mandatory Kill Rule:</strong> A capture is required to enter the inner ring towards the goal.</p>
+        <p><strong>✖ Safe Cells (Gaddi):</strong> Tokens on any of the 9 crossed squares cannot be captured.</p>
+      </div>
+      <button class="btn btn-primary" onclick="AshtaChamma.closeRules()">Got It!</button>
+    </div>
+  </div>
+
+  <script src="Ashta-Chamma.js"></script>
+</body>
+</html>
