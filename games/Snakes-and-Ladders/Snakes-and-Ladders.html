@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Snakes &amp; Ladders | Game Zone</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="Snakes-and-Ladders.css" />
+</head>
+<body>
+
+  <!-- TOP HEADER -->
+  <header class="game-header">
+    <div class="header-left">
+      <a href="../../index.html" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span>Game Zone</span>
+      </a>
+      <div class="header-divider"></div>
+      <div class="game-brand">
+        <span class="brand-badge"><i class="fa-solid fa-dice-d20"></i> Classic</span>
+        <h1 class="brand-title">Snakes &amp; Ladders</h1>
+      </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="header-actions">
+      <button id="sound-toggle-btn" class="header-btn" title="Toggle Sound">
+        <i class="fa-solid fa-volume-high"></i>
+      </button>
+      <button id="rules-btn" class="header-btn" title="Game Rules">
+        <i class="fa-solid fa-circle-question"></i>
+        <span>Rules</span>
+      </button>
+      <button id="new-game-btn" class="header-btn primary-btn">
+        <i class="fa-solid fa-rotate-right"></i>
+        <span>New Match</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ARENA GRID -->
+  <main class="arena-layout">
+    <!-- LEFT PANEL: ROSTER -->
+    <aside class="panel players-panel">
+      <div class="panel-header">
+        <h2><i class="fa-solid fa-users"></i> Standings</h2>
+        <span id="player-count-badge" class="count-pill">2 Players</span>
+      </div>
+
+      <div id="players-list" class="players-list">
+        <!-- Rendered by JS -->
+      </div>
+    </aside>
+
+    <!-- CENTER PANEL: 10x10 BOARD -->
+    <section class="board-stage">
+      <div id="board-wrapper" class="board-wrapper theme-cartoon">
+        <!-- 100 Tiles Grid -->
+        <div id="board-grid" class="board-grid"></div>
+
+        <!-- SVG Visual Layer for Snakes and Ladders -->
+        <svg id="board-svg" class="board-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+          <defs id="svg-defs"></defs>
+          <g id="ladders-group"></g>
+          <g id="snakes-group"></g>
+        </svg>
+
+        <!-- Player Tokens -->
+        <div id="pawns-layer" class="pawns-layer"></div>
+      </div>
+    </section>
+
+    <!-- RIGHT PANEL: 3D DICE STATION -->
+    <aside class="panel controls-panel">
+      <div class="dice-station">
+        <div class="station-header">
+          <span class="turn-sub">CURRENT TURN</span>
+          <h3 id="current-turn-name">Player 1</h3>
+        </div>
+
+        <div class="dice-scene">
+          <div id="dice-cube" class="dice-cube">
+            <div class="dice-face front">
+              <span class="pip pip-center"></span>
+            </div>
+            <div class="dice-face back">
+              <div class="pip-column"><span class="pip"></span><span class="pip"></span><span class="pip"></span></div>
+              <div class="pip-column"><span class="pip"></span><span class="pip"></span><span class="pip"></span></div>
+            </div>
+            <div class="dice-face right">
+              <span class="pip pip-top-left"></span>
+              <span class="pip pip-center"></span>
+              <span class="pip pip-bottom-right"></span>
+            </div>
+            <div class="dice-face left">
+              <div class="pip-column"><span class="pip"></span><span class="pip"></span></div>
+              <div class="pip-column"><span class="pip"></span><span class="pip"></span></div>
+            </div>
+            <div class="dice-face top">
+              <div class="pip-column"><span class="pip"></span><span class="pip"></span></div>
+              <div class="pip-column"><span class="pip"></span></div>
+              <div class="pip-column"><span class="pip"></span><span class="pip"></span></div>
+            </div>
+            <div class="dice-face bottom">
+              <span class="pip pip-top-left"></span>
+              <span class="pip pip-bottom-right"></span>
+            </div>
+          </div>
+        </div>
+
+        <button id="roll-button" class="roll-action-btn">
+          <span>ROLL DICE</span>
+          <kbd>SPACE</kbd>
+        </button>
+        <p id="roll-feedback" class="roll-feedback">Waiting for turn...</p>
+      </div>
+    </aside>
+  </main>
+
+  <!-- LOBBY SETUP MODAL (WITH TOP BACK BUTTON) -->
+  <div id="lobby-modal" class="modal-backdrop">
+    <div class="modal-card lobby-card">
+      <div class="modal-head">
+        <div class="modal-title-wrap">
+          <button id="lobby-back-btn" class="modal-top-back-btn hidden" title="Back to Current Game">
+            <i class="fa-solid fa-arrow-left"></i> Back to Game
+          </button>
+          <h2><i class="fa-solid fa-gamepad"></i> Match Setup</h2>
+        </div>
+        <p>Choose board layout, players, and bots.</p>
+      </div>
+      
+      <div class="lobby-form">
+        <div class="form-group">
+          <label class="form-label">Board Layout &amp; Theme</label>
+          <div class="theme-cards-grid">
+            <button type="button" class="theme-card-btn active" data-theme="cartoon">
+              <span class="theme-card-icon">🎨</span>
+              <strong>Classic Cartoon</strong>
+              <small>Layout P1</small>
+            </button>
+            <button type="button" class="theme-card-btn" data-theme="jungle">
+              <span class="theme-card-icon">🌿</span>
+              <strong>Realistic Jungle</strong>
+              <small>Layout P2</small>
+            </button>
+            <button type="button" class="theme-card-btn" data-theme="royal">
+              <span class="theme-card-icon">👑</span>
+              <strong>Royal Gold</strong>
+              <small>Layout P3</small>
+            </button>
+            <button type="button" class="theme-card-btn" data-theme="cyber">
+              <span class="theme-card-icon">⚡</span>
+              <strong>Cyber Neon</strong>
+              <small>Layout P4</small>
+            </button>
+            <button type="button" class="theme-card-btn" data-theme="inferno">
+              <span class="theme-card-icon">🔥</span>
+              <strong>Lava Inferno</strong>
+              <small>Layout P5</small>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Player Count</label>
+          <div class="player-count-selector">
+            <button type="button" class="count-btn active" data-count="2">2 Players</button>
+            <button type="button" class="count-btn" data-count="3">3 Players</button>
+            <button type="button" class="count-btn" data-count="4">4 Players</button>
+          </div>
+        </div>
+
+        <div id="lobby-slots" class="lobby-slots">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+
+      <div class="modal-foot">
+        <button id="start-match-btn" class="modal-btn-primary">
+          <i class="fa-solid fa-play"></i> Launch Match
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIRMATION MODAL -->
+  <div id="confirm-modal" class="modal-backdrop hidden">
+    <div class="modal-card confirm-card">
+      <div class="modal-head">
+        <h2><i class="fa-solid fa-triangle-exclamation" style="color: #f59e0b;"></i> Start New Match?</h2>
+      </div>
+      <div class="confirm-body">
+        <p>A match is currently active.</p>
+        <p class="confirm-sub">
+          Opening match setup will discard current player positions and progress. Do you want to proceed?
+        </p>
+      </div>
+      <div class="modal-foot confirm-actions">
+        <button id="cancel-confirm-btn" class="header-btn">
+          <i class="fa-solid fa-arrow-left"></i> Keep Playing
+        </button>
+        <button id="accept-confirm-btn" class="modal-btn-danger">
+          <i class="fa-solid fa-rotate-right"></i> Start New Match
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES MODAL -->
+  <div id="rules-modal" class="modal-backdrop hidden">
+    <div class="modal-card rules-card">
+      <div class="modal-head">
+        <h2><i class="fa-solid fa-book-open"></i> Rules of the Board</h2>
+        <button id="close-rules-btn" class="icon-close-btn">&times;</button>
+      </div>
+      <div class="rules-body">
+        <div class="rule-item">
+          <span class="rule-icon"><i class="fa-solid fa-flag-checkered"></i></span>
+          <div>
+            <strong>Goal: Reach Tile 100</strong>
+            <p>First player to reach square 100 wins the match.</p>
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-icon"><i class="fa-solid fa-arrow-up-right-dots"></i></span>
+          <div>
+            <strong>Ladders</strong>
+            <p>Landing on a ladder base vaults you forward to its highest rung.</p>
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-icon"><i class="fa-solid fa-skull"></i></span>
+          <div>
+            <strong>Snakes</strong>
+            <p>Landing on a snake's head forces you to slide all the way down to its tail.</p>
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-icon"><i class="fa-solid fa-dice-six"></i></span>
+          <div>
+            <strong>Bonus Roll on 6</strong>
+            <p>Rolling a 6 grants you an immediate extra throw.</p>
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-icon"><i class="fa-solid fa-bullseye"></i></span>
+          <div>
+            <strong>Exact Finish</strong>
+            <p>An exact roll is required for 100; any overshoot bounces backwards.</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button id="rules-ack-btn" class="modal-btn-primary">Got It</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VICTORY MODAL -->
+  <div id="victory-modal" class="modal-backdrop hidden">
+    <div class="modal-card victory-card">
+      <div class="trophy-emitter">
+        <i class="fa-solid fa-crown"></i>
+      </div>
+      <h2 class="victory-title">VICTORY!</h2>
+      <p id="winner-announcement" class="winner-announcement">Player 1 wins the match!</p>
+      
+      <div class="victory-stats">
+        <div class="stat-box">
+          <span class="stat-label">Total Turns</span>
+          <span id="stat-turns" class="stat-value">0</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Ladders Climbed</span>
+          <span id="stat-ladders" class="stat-value">0</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Snake Bites</span>
+          <span id="stat-snakes" class="stat-value">0</span>
+        </div>
+      </div>
+
+      <div class="modal-foot">
+        <button id="victory-replay-btn" class="modal-btn-primary">
+          <i class="fa-solid fa-rotate-right"></i> Play Again
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="Snakes-and-Ladders.js"></script>
+</body>
+</html>

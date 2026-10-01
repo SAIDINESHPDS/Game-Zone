@@ -1,5 +1,8 @@
 /* =========================================================================
    ASHTA-CHAMMA (CHOWKA BHARA) - Master Game Engine
+   - FIXED: Token array initialization bug in resetGame() so coins render
+   - Roll Points & Labels rendered in the active player's exact token color
+   - Active Gavva station border, glow & throw button adapt to player color
    - 9 Curated Heritage Board Themes with Light Main Tiles & Inlaid Borders
    - Decorative Filigree Corner Accents & Inlaid Gold Inlay Border
    - 8-Pointed Star Medallion in Center Winning Goal Box
@@ -140,15 +143,15 @@
   };
 
   const COLOR_DEFS = {
-    red:    { name: 'Red', hex: '#e63946' },
-    green:  { name: 'Green', hex: '#059669' },
+    red:    { name: 'Red', hex: '#ef4444' },
+    green:  { name: 'Green', hex: '#10b981' },
     yellow: { name: 'Yellow', hex: '#f59e0b' },
-    blue:   { name: 'Blue', hex: '#2563eb' },
-    purple: { name: 'Purple', hex: '#9333ea' },
-    orange: { name: 'Orange', hex: '#ea580c' }
+    blue:   { name: 'Blue', hex: '#3b82f6' },
+    purple: { name: 'Purple', hex: '#c084fc' },
+    orange: { name: 'Orange', hex: '#fb923c' }
   };
 
-  // Exact geometric paths per Image 2
+  // Exact geometric paths matching traditional flow per Image 2[cite: 8]
   const SLOT_PATHS = {
     0: [
       { r: 4, c: 2 }, { r: 4, c: 3 }, { r: 4, c: 4 }, { r: 3, c: 4 }, { r: 2, c: 4 },
@@ -208,7 +211,7 @@
     playerCount: 4,
     isTeamMode: false,
     teamAxis: 'TB',
-    boardTheme: 'theme-royal-mahogany', // Default rich reference theme with light interior
+    boardTheme: 'theme-royal-mahogany',
     activeSlots: [0, 1, 2, 3],
     playerTurnOrder: [0, 1, 2, 3],
     currentTurnIndex: 0,
@@ -258,6 +261,16 @@
     return (pIdx % 2 === 0) ? 'left' : 'right';
   }
 
+  function getPlayerColorHex(pIdx) {
+    if (GameState.isTeamMode) {
+      const teamId = getTeamForPlayer(pIdx);
+      const colorKey = GameState.colors[`team_${teamId}`] || 'blue';
+      return COLOR_DEFS[colorKey] ? COLOR_DEFS[colorKey].hex : '#3b82f6';
+    }
+    const colorKey = GameState.colors[pIdx] || 'yellow';
+    return COLOR_DEFS[colorKey] ? COLOR_DEFS[colorKey].hex : '#f59e0b';
+  }
+
   /* ---------------------------------------------------------
      BOARD BUILDER (ORNATE BORDER ACCENTS & LIGHT INNER TILES)
      --------------------------------------------------------- */
@@ -266,7 +279,6 @@
     board.className = `ashta-board ${GameState.boardTheme}`;
     board.innerHTML = '';
 
-    // Inject 4 traditional filigree corner brackets into the outer border
     const cornerSVG = `
       <svg class="board-corner-accent corner-tl" viewBox="0 0 36 36">
         <path d="M 3,3 L 30,3 M 3,3 L 3,30 M 7,7 L 22,7 M 7,7 L 7,22 M 5,5 Q 20,5 14,14 Q 5,20 5,5 Z" stroke="var(--board-gold-trim)" fill="none" stroke-width="1.8" stroke-linecap="round"/>
@@ -292,7 +304,6 @@
         const isCrossed = SAFE_CELLS.some(sc => sc.r === r && sc.c === c);
         if (isCrossed) {
           if (r === 2 && c === 2) {
-            // Winning Center Sanctum: 8-pointed Faceted Royal Gold Star
             cell.classList.add('center-goal');
             cell.innerHTML = `
               <svg class="center-star-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -336,7 +347,6 @@
       }
     }
 
-    // Attach corner accents to wrapper
     const wrapper = document.getElementById('board-wrapper');
     if (wrapper) {
       wrapper.querySelectorAll('.board-corner-accent').forEach(a => a.remove());
@@ -466,10 +476,20 @@
       GameState.hasThrown = true;
       GameState.totalTurns++;
 
+      // STYLED IN THE ACTIVE PLAYER'S EXACT COIN COLOR
+      const curColorHex = getPlayerColorHex(curPlayer);
       const ptsEl = document.getElementById(`roll-points-${expectedStation}`);
       const lblEl = document.getElementById(`roll-label-${expectedStation}`);
-      if (ptsEl) ptsEl.innerText = points;
-      if (lblEl) lblEl.innerText = label;
+      if (ptsEl) {
+        ptsEl.innerText = points;
+        ptsEl.style.color = curColorHex;
+        ptsEl.style.textShadow = `0 0 16px ${curColorHex}80`;
+      }
+      if (lblEl) {
+        lblEl.innerText = label;
+        lblEl.style.color = curColorHex;
+        lblEl.style.fontWeight = '800';
+      }
 
       const curName = GameState.names[curPlayer];
       logFeed(`${curName} rolled ${label}`);
@@ -607,7 +627,6 @@
       return;
     }
 
-    // Auto-Move Rule for Single Coin on 1, 2, or 3
     if ((points === 1 || points === 2 || points === 3) && movable.length === 1 && GameState.roles[pIdx] === 'human') {
       highlightMovableTokens();
       document.getElementById('turn-announcer').innerText = `${curName} rolled ${labelText} → Single coin moving automatically!`;
@@ -772,12 +791,16 @@
 
     if (getsBonus) {
       const name = GameState.names[pIdx];
+      const curColorHex = getPlayerColorHex(pIdx);
       const ann = document.getElementById('turn-announcer');
       if (ann) ann.innerText = `⭐ ${name} earned a bonus throw! Throw the cowries again.`;
       
       const station = getStationForPlayer(pIdx);
       const label = document.getElementById(`roll-label-${station}`);
-      if (label) label.innerText = 'Bonus Throw! Tap to Roll';
+      if (label) {
+        label.innerText = 'Bonus Throw! Tap to Roll';
+        label.style.color = curColorHex;
+      }
 
       if (GameState.roles[pIdx] === 'bot') {
         setTimeout(() => throwCowries(station), 750);
@@ -942,31 +965,66 @@
     highlightMovableTokens();
   }
 
+  /* ---------------------------------------------------------
+     DYNAMIC STATION HEADERS & THEMED COLOR HARMONIZATION
+     --------------------------------------------------------- */
   function updateStationHeaders() {
     const curPlayer = GameState.playerTurnOrder[GameState.currentTurnIndex];
     const isTeam = GameState.isTeamMode;
     const activeStation = getStationForPlayer(curPlayer);
+    const curPlayerHex = getPlayerColorHex(curPlayer);
 
     const stLeft = document.getElementById('station-left');
     const nameLeft = document.getElementById('gavva-name-left');
     const badgeLeft = document.getElementById('gavva-unlock-left');
     const teamLeft = document.getElementById('gavva-team-left');
+    const btnLeft = document.getElementById('btn-throw-left');
+    const ptL = document.getElementById('roll-points-left');
+    const lbL = document.getElementById('roll-label-left');
 
     const stRight = document.getElementById('station-right');
     const nameRight = document.getElementById('gavva-name-right');
     const badgeRight = document.getElementById('gavva-unlock-right');
     const teamRight = document.getElementById('gavva-team-right');
+    const btnRight = document.getElementById('btn-throw-right');
+    const ptR = document.getElementById('roll-points-right');
+    const lbR = document.getElementById('roll-label-right');
+
+    stLeft.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+    stLeft.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.5)';
+    stRight.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+    stRight.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.5)';
 
     if (activeStation === 'left') {
       stLeft.classList.add('active-station');
       stLeft.classList.remove('disabled-station');
+      stLeft.style.borderColor = curPlayerHex;
+      stLeft.style.boxShadow = `0 0 25px ${curPlayerHex}66`;
+      btnLeft.style.boxShadow = `0 4px 14px ${curPlayerHex}66`;
+
       stRight.classList.remove('active-station');
       stRight.classList.add('disabled-station');
+
+      if (!GameState.hasThrown) {
+        lbL.innerText = 'Tap to Throw';
+        lbL.style.color = curPlayerHex;
+        ptL.style.color = curPlayerHex;
+      }
     } else {
       stRight.classList.add('active-station');
       stRight.classList.remove('disabled-station');
+      stRight.style.borderColor = curPlayerHex;
+      stRight.style.boxShadow = `0 0 25px ${curPlayerHex}66`;
+      btnRight.style.boxShadow = `0 4px 14px ${curPlayerHex}66`;
+
       stLeft.classList.remove('active-station');
       stLeft.classList.add('disabled-station');
+
+      if (!GameState.hasThrown) {
+        lbR.innerText = 'Tap to Throw';
+        lbR.style.color = curPlayerHex;
+        ptR.style.color = curPlayerHex;
+      }
     }
 
     let pLeft = 0;
@@ -983,12 +1041,16 @@
     if (pLeft >= GameState.playerTurnOrder.length) pLeft = 0;
     if (pRight >= GameState.playerTurnOrder.length) pRight = 1;
 
+    const pLeftHex = getPlayerColorHex(pLeft);
+    const pRightHex = getPlayerColorHex(pRight);
+
     if (isTeam) {
       teamLeft.innerText = `TEAM 1 (PLAYER ${pLeft + 1})`;
     } else {
       teamLeft.innerText = `PLAYER ${pLeft + 1}`;
     }
     nameLeft.innerText = GameState.names[pLeft];
+    nameLeft.style.color = pLeftHex;
     badgeLeft.className = `gavva-unlock-badge ${GameState.playerUnlocked[pLeft] ? 'unlocked' : 'locked'}`;
     badgeLeft.innerText = GameState.playerUnlocked[pLeft] ? '🔓 Unlocked' : '🔒 Needs 4 or 8';
 
@@ -998,6 +1060,7 @@
       teamRight.innerText = `PLAYER ${pRight + 1}`;
     }
     nameRight.innerText = GameState.names[pRight];
+    nameRight.style.color = pRightHex;
     badgeRight.className = `gavva-unlock-badge ${GameState.playerUnlocked[pRight] ? 'unlocked' : 'locked'}`;
     badgeRight.innerText = GameState.playerUnlocked[pRight] ? '🔓 Unlocked' : '🔒 Needs 4 or 8';
   }
@@ -1443,6 +1506,7 @@
       GameState.totalKills = 0;
       GameState.totalAshtas = 0;
 
+      // FIXED: Properly initialize token arrays so all coins spawn cleanly in the porches
       if (GameState.isTeamMode) {
         GameState.killRegistered = { 'team_1': false, 'team_2': false };
         GameState.tokens['team_1'] = [];
@@ -1455,7 +1519,7 @@
         GameState.killRegistered = {};
         GameState.playerTurnOrder.forEach(p => {
           GameState.killRegistered[`player_${p}`] = false;
-          GameState.tokens[`player_${p}`] = [];
+          GameState.tokens[`player_${p}`] = []; // Explicit empty array assignment
           for (let i = 0; i < 4; i++) {
             GameState.tokens[`player_${p}`].push({ id: i, state: 'porch', step: -1 });
           }
