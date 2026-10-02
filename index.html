@@ -249,7 +249,7 @@
 
     .games-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 2rem;
     }
 
@@ -276,7 +276,6 @@
       box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6), 0 0 25px -5px var(--card-glow, rgba(99, 102, 241, 0.3));
     }
 
-    /* Top Badge */
     .card-badge {
       position: absolute;
       top: 1.1rem;
@@ -297,18 +296,17 @@
     }
 
     .badge-ancient {
+      background: rgba(245, 158, 11, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fbbf24;
+    }
+
+    .badge-classic {
       background: rgba(16, 185, 129, 0.2);
       border: 1px solid rgba(16, 185, 129, 0.4);
       color: #34d399;
     }
 
-    .badge-classic {
-      background: rgba(234, 179, 8, 0.2);
-      border: 1px solid rgba(234, 179, 8, 0.4);
-      color: #facc15;
-    }
-
-    /* Art Showcase */
     .card-art {
       height: 220px;
       display: flex;
@@ -327,17 +325,20 @@
     }
 
     .art-visual {
-      font-size: 5rem;
+      font-size: 4.8rem;
       filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.5));
       transition: transform 0.4s ease;
       z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
     }
 
     .game-card:hover .art-visual {
-      transform: scale(1.1) rotate(4deg);
+      transform: scale(1.1) rotate(3deg);
     }
 
-    /* Card Details */
     .card-content {
       padding: 1.5rem 1.75rem;
       display: flex;
@@ -410,6 +411,11 @@
       --art-bg: radial-gradient(circle at center, rgba(16, 185, 129, 0.25) 0%, rgba(15, 23, 42, 0.4) 70%);
     }
 
+    .card-vamana-guntalu {
+      --card-glow: rgba(217, 119, 6, 0.4);
+      --art-bg: radial-gradient(circle at center, rgba(180, 83, 9, 0.35) 0%, rgba(15, 23, 42, 0.5) 70%);
+    }
+
     /* ==========================================================================
        FOOTER
        ========================================================================== */
@@ -478,7 +484,7 @@
         <span class="status-dot"></span> Online Hub
       </span>
       <span class="status-pill">
-        3 Live Games Ready
+        4 Live Games Ready
       </span>
     </div>
   </header>
@@ -558,19 +564,43 @@
       <a href="games/Snakes-and-Ladders/Snakes-and-Ladders.html" class="game-card card-snakes" data-category="board multiplayer">
         <span class="card-badge badge-classic">Classic</span>
         <div class="card-art">
-          <div class="art-visual" style="display:flex; align-items:center; gap:0.5rem;">
+          <div class="art-visual">
             <span>🐍</span>
             <span>🪜</span>
           </div>
         </div>
         <div class="card-content">
           <div class="card-pills">
-            <span class="meta-pill">1-4 Players</span>
-            <span class="meta-pill">Dice Roll</span>
-            <span class="meta-pill">Quick Play</span>
+            <span class="meta-pill">2-4 Players</span>
+            <span class="meta-pill">3D Dice</span>
+            <span class="meta-pill">5 Board Maps</span>
           </div>
           <div class="card-title-row">
             <h4 class="card-title">Snakes &amp; Ladders</h4>
+            <div class="play-arrow">
+              <i class="fa-solid fa-arrow-right"></i>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- 4. VAMANA-GUNTALU -->
+      <a href="games/Vamana-Guntalu/Vamana-Guntalu.html" class="game-card card-vamana-guntalu" data-category="board multiplayer">
+        <span class="card-badge badge-ancient">Ancient Classic</span>
+        <div class="card-art">
+          <div class="art-visual">
+            <span>🪵</span>
+            <span>🐚</span>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="card-pills">
+            <span class="meta-pill">2 Players</span>
+            <span class="meta-pill">14 Guntalu</span>
+            <span class="meta-pill">Smart Bot</span>
+          </div>
+          <div class="card-title-row">
+            <h4 class="card-title">Vamana-Guntalu</h4>
             <div class="play-arrow">
               <i class="fa-solid fa-arrow-right"></i>
             </div>

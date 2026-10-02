@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Vamana-Guntalu | Game Zone</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="Vamana-Guntalu.css" />
+</head>
+<body>
+
+  <!-- TOP HEADER -->
+  <header class="game-header">
+    <div class="header-left">
+      <a href="../../index.html" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span class="back-label">Game Zone</span>
+      </a>
+      <div class="header-divider"></div>
+      <div class="game-brand">
+        <span class="brand-badge"><i class="fa-solid fa-gem"></i> Ancient Classic</span>
+        <h1 class="brand-title">Vamana-Guntalu</h1>
+      </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="header-actions">
+      <!-- Clickable Styles Button that opens the dedicated Styles Menu -->
+      <button id="quick-theme-btn" class="header-btn theme-btn" title="Board &amp; Coin Styles">
+        <i class="fa-solid fa-palette"></i>
+        <span class="btn-text">Styles</span>
+      </button>
+      <button id="sound-toggle-btn" class="header-btn icon-only" title="Toggle Sound">
+        <i class="fa-solid fa-volume-high"></i>
+      </button>
+      <button id="rules-btn" class="header-btn" title="Game Rules">
+        <i class="fa-solid fa-circle-question"></i>
+        <span class="btn-text">Rules</span>
+      </button>
+      <button id="new-game-btn" class="header-btn primary-btn">
+        <i class="fa-solid fa-rotate-right"></i>
+        <span class="btn-text">New Match</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN ARENA -->
+  <main class="arena-layout">
+    <!-- LEFT PANEL: PLAYERS & ACTIVE STYLE INFO -->
+    <aside class="panel players-panel">
+      <div class="panel-header">
+        <h2><i class="fa-solid fa-users"></i> Standings</h2>
+        <span class="count-pill">2 Players</span>
+      </div>
+
+      <!-- Player 2 / Bot Card -->
+      <div id="player-card-1" class="player-card" style="--player-theme: #38bdf8;">
+        <div class="p-avatar">
+          <i class="fa-solid fa-robot" id="p2-avatar-icon"></i>
+          <span class="bot-tag" id="p2-bot-tag">BOT</span>
+        </div>
+        <div class="p-meta">
+          <div class="p-name-row">
+            <span class="p-name" id="p2-display-name">Smart Bot</span>
+            <span class="p-shells-badge"><span id="p2-score">0</span> Coins</span>
+          </div>
+          <span class="p-side-label">Top Row (Guntalu 8–14)</span>
+        </div>
+      </div>
+
+      <!-- Player 1 Card -->
+      <div id="player-card-0" class="player-card active-turn" style="--player-theme: #f59e0b;">
+        <div class="p-avatar">
+          <i class="fa-solid fa-user"></i>
+        </div>
+        <div class="p-meta">
+          <div class="p-name-row">
+            <span class="p-name" id="p1-display-name">Player 1</span>
+            <span class="p-shells-badge"><span id="p1-score">0</span> Coins</span>
+          </div>
+          <span class="p-side-label">Bottom Row (Guntalu 1–7)</span>
+        </div>
+      </div>
+
+      <!-- ACTIVE STYLES CARD WITH DIRECT OPEN BUTTON -->
+      <div class="theme-info-box">
+        <div class="theme-info-head">
+          <span><i class="fa-solid fa-brush"></i> Active Design</span>
+          <button id="open-styles-card-btn" class="open-styles-badge-btn" title="Open Styles Palette">
+            <i class="fa-solid fa-pen-to-square"></i> Change
+          </button>
+        </div>
+        <div class="theme-detail-row">
+          <span class="theme-label">Board:</span>
+          <strong id="active-board-label">Classic Teak Wood</strong>
+        </div>
+        <div class="theme-detail-row">
+          <span class="theme-label">Coin:</span>
+          <strong id="active-token-label">Cowrie Shells</strong>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CENTER: RESPONSIVE CARVED VAMANA-GUNTALU BOARD -->
+    <section class="board-stage">
+      <div class="board-scroll-wrapper">
+        <div id="board-container" class="wooden-board-container theme-teak">
+          <!-- BRASS ACCENTS -->
+          <div class="brass-corner top-left"></div>
+          <div class="brass-corner top-right"></div>
+          <div class="brass-corner bottom-left"></div>
+          <div class="brass-corner bottom-right"></div>
+          <div class="brass-center-hinge"></div>
+
+          <!-- ROW 2: PLAYER 2 PITS (GUNTALU 13 DOWN TO 7) -->
+          <div class="board-row top-row" id="row-player-2">
+            <!-- Injected via JS -->
+          </div>
+
+          <!-- ROW 1: PLAYER 1 PITS (GUNTALU 0 TO 6) -->
+          <div class="board-row bottom-row" id="row-player-1">
+            <!-- Injected via JS -->
+          </div>
+        </div>
+      </div>
+
+      <div class="board-direction-guide">
+        <i class="fa-solid fa-arrow-rotate-left"></i>
+        <span>Counter-Clockwise Continuous Relay Loop</span>
+      </div>
+    </section>
+
+    <!-- RIGHT PANEL: TURN STATUS & ACTION HUD -->
+    <aside class="panel controls-panel">
+      <div class="turn-station">
+        <span class="turn-sub">CURRENT TURN</span>
+        <h3 id="current-turn-name">Player 1</h3>
+        
+        <div class="status-indicator-box">
+          <div class="token-hand-preview" id="hand-token-preview">
+            <!-- Dynamically rendered token preview -->
+          </div>
+          <div class="status-meta">
+            <span class="status-label">Coins in Hand</span>
+            <strong id="hand-count-text">0</strong>
+          </div>
+        </div>
+
+        <p id="turn-guide-text" class="turn-guide-text">Select any pit on your side to sow.</p>
+      </div>
+    </aside>
+  </main>
+
+  <!-- =========================================================================
+       DEDICATED STYLES MODAL (APPEARS WHEN CLICKING "STYLES" IN HEADER)
+       ========================================================================= -->
+  <div id="styles-modal" class="modal-backdrop hidden">
+    <div class="modal-card styles-card">
+      <div class="modal-head">
+        <div class="modal-head-top">
+          <h2><i class="fa-solid fa-palette"></i> Board &amp; Coin Styles</h2>
+          <button id="close-styles-btn" class="icon-close-btn" title="Close">&times;</button>
+        </div>
+        <p>Switch your board wood or coin material live during the match.</p>
+      </div>
+      
+      <div class="styles-modal-body">
+        <!-- 1. BOARD MATERIALS -->
+        <div class="style-category-block">
+          <div class="category-title-row">
+            <label class="form-label"><i class="fa-solid fa-layer-group"></i> 1. Board Designs (6 Options)</label>
+            <span class="active-tag-indicator" id="modal-board-indicator">Active: Classic Teak</span>
+          </div>
+
+          <div class="board-grid-large">
+            <button type="button" class="board-option-card active" data-board="teak">
+              <span class="board-card-preview teak-bg"></span>
+              <div class="board-card-info">
+                <strong>Classic Teak</strong>
+                <small>Golden Amber Wood</small>
+              </div>
+            </button>
+
+            <button type="button" class="board-option-card" data-board="rosewood">
+              <span class="board-card-preview rosewood-bg"></span>
+              <div class="board-card-info">
+                <strong>Antique Rosewood</strong>
+                <small>Crimson Timber &amp; Brass</small>
+              </div>
+            </button>
+
+            <button type="button" class="board-option-card" data-board="temple">
+              <span class="board-card-preview temple-bg"></span>
+              <div class="board-card-info">
+                <strong>Temple Sandstone</strong>
+                <small>Carved South Stone</small>
+              </div>
+            </button>
+
+            <button type="button" class="board-option-card" data-board="ebony-gold">
+              <span class="board-card-preview ebony-bg"></span>
+              <div class="board-card-info">
+                <strong>Royal Ebony &amp; Gold</strong>
+                <small>24K Gold Inlay</small>
+              </div>
+            </button>
+
+            <button type="button" class="board-option-card" data-board="terracotta">
+              <span class="board-card-preview terracotta-bg"></span>
+              <div class="board-card-info">
+                <strong>Red Terracotta</strong>
+                <small>Rustic Earthen Clay</small>
+              </div>
+            </button>
+
+            <button type="button" class="board-option-card" data-board="marble-jade">
+              <span class="board-card-preview marble-bg"></span>
+              <div class="board-card-info">
+                <strong>Imperial Marble</strong>
+                <small>Jade Green Accents</small>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. COIN / TOKEN TYPES -->
+        <div class="style-category-block">
+          <div class="category-title-row">
+            <label class="form-label"><i class="fa-solid fa-coins"></i> 2. Coins &amp; Tokens (6 Options)</label>
+            <span class="active-tag-indicator" id="modal-token-indicator">Active: Cowrie Shells</span>
+          </div>
+
+          <div class="tokens-grid-large">
+            <button type="button" class="token-option-card active" data-token="cowrie">
+              <div class="token-preview-circle">
+                <span class="token-cowrie"></span>
+              </div>
+              <div class="token-card-info">
+                <strong>Cowrie Shells</strong>
+                <small>Gavvalu</small>
+              </div>
+            </button>
+
+            <button type="button" class="token-option-card" data-token="tamarind">
+              <div class="token-preview-circle">
+                <span class="token-tamarind"></span>
+              </div>
+              <div class="token-card-info">
+                <strong>Tamarind Seeds</strong>
+                <small>Chinta Gikkalu</small>
+              </div>
+            </button>
+
+            <button type="button" class="token-option-card" data-token="brass-coins">
+              <div class="token-preview-circle">
+                <span class="token-brass-coins"></span>
+              </div>
+              <div class="token-card-info">
+                <strong>Brass Coins</strong>
+                <small>Royal Seals</small>
+              </div>
+            </button>
+
+            <button type="button" class="token-option-card" data-token="gemstones">
+              <div class="token-preview-circle">
+                <span class="token-gemstones"></span>
+              </div>
+              <div class="token-card-info">
+                <strong>Gemstones</strong>
+                <small>Rubies &amp; Emeralds</small>
+              </div>
+            </button>
+
+            <button type="button" class="token-option-card" data-token="river-pebbles">
+              <div class="token-preview-circle">
+                <span class="token-river-pebbles"></span>
+              </div>
+              <div class="token-card-info">
+                <strong>River Stones</strong>
+                <small>Smooth Zen Slate</small>
+              </div>
+            </button>
+
+            <button type="button" class="token-option-card" data-token="coral-beads">
+              <div class="token-preview-circle">
+                <span class="token-coral-beads"></span>
+              </div>
+              <div class="token-card-info">
+                <strong>Red Corals</strong>
+                <small>Pavalalu</small>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-foot">
+        <button id="styles-apply-btn" class="modal-btn-primary">
+          <i class="fa-solid fa-check"></i> Done
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOBBY SETUP MODAL (FOR STARTING MATCHES) -->
+  <div id="lobby-modal" class="modal-backdrop">
+    <div class="modal-card lobby-card">
+      <div class="modal-head">
+        <div class="modal-head-top">
+          <button id="lobby-back-btn" class="modal-nav-btn" title="Back">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span id="lobby-back-text">Back to Game Zone</span>
+          </button>
+          <button id="lobby-close-btn" class="icon-close-btn" title="Close">&times;</button>
+        </div>
+        <h2><i class="fa-solid fa-gamepad"></i> Match Setup</h2>
+        <p>Configure players, game mode, and coin quantity.</p>
+      </div>
+      
+      <div class="lobby-form">
+        <!-- Opponent Mode -->
+        <div class="form-group">
+          <label class="form-label">Game Mode</label>
+          <div class="mode-selector">
+            <button type="button" class="mode-btn active" data-mode="bot">
+              <i class="fa-solid fa-robot"></i>
+              <strong>Player vs Bot</strong>
+              <small>Challenge AI</small>
+            </button>
+            <button type="button" class="mode-btn" data-mode="local">
+              <i class="fa-solid fa-user-group"></i>
+              <strong>Pass &amp; Play</strong>
+              <small>Local 2 Players</small>
+            </button>
+          </div>
+        </div>
+
+        <!-- Coins per Pit -->
+        <div class="form-group">
+          <label class="form-label">Coins Per Pit</label>
+          <div class="shell-count-selector">
+            <button type="button" class="shell-opt-btn active" data-shells="5">5 Coins (Standard)</button>
+            <button type="button" class="shell-opt-btn" data-shells="6">6 Coins (Extended Match)</button>
+          </div>
+        </div>
+
+        <!-- Player Names -->
+        <div class="form-group">
+          <label class="form-label">Player Names</label>
+          <div class="name-inputs-col">
+            <div class="name-input-group">
+              <span class="name-tag p1">P1</span>
+              <input type="text" id="p1-name-input" value="Player 1" placeholder="Player 1 Name" />
+            </div>
+            <div class="name-input-group">
+              <span class="name-tag p2">P2</span>
+              <input type="text" id="p2-name-input" value="Smart Bot" placeholder="Player 2 Name" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-foot">
+        <button id="start-match-btn" class="modal-btn-primary">
+          <i class="fa-solid fa-play"></i> Start Match
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIRMATION MODAL -->
+  <div id="confirm-modal" class="modal-backdrop hidden">
+    <div class="modal-card confirm-card">
+      <div class="modal-head">
+        <h2><i class="fa-solid fa-triangle-exclamation" style="color: #f59e0b;"></i> Start New Match?</h2>
+      </div>
+      <div class="confirm-body">
+        <p>A match is currently active.</p>
+        <p class="confirm-sub">
+          Restarting will discard current player positions and collected tokens.
+        </p>
+      </div>
+      <div class="modal-foot confirm-actions">
+        <button id="cancel-confirm-btn" class="header-btn">
+          <i class="fa-solid fa-arrow-left"></i> Keep Playing
+        </button>
+        <button id="accept-confirm-btn" class="modal-btn-danger">
+          <i class="fa-solid fa-rotate-right"></i> Restart &amp; Open Setup
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES MODAL -->
+  <div id="rules-modal" class="modal-backdrop hidden">
+    <div class="modal-card rules-card">
+      <div class="modal-head">
+        <div class="modal-head-top" style="justify-content: flex-end;">
+          <button id="close-rules-btn" class="icon-close-btn">&times;</button>
+        </div>
+        <h2><i class="fa-solid fa-book-open"></i> How to Play Vamana-Guntalu</h2>
+      </div>
+      <div class="rules-body">
+        <div class="rule-item">
+          <span class="rule-icon"><i class="fa-solid fa-table-cells"></i></span>
+          <div>
+            <strong>14 Carved Pits (Guntalu)</strong>
+            <p>The board features 14 carved pits (7 on your side, 7 on your opponent's side), initially holding 5 or 6 coins each.</p>
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-icon"><i class="fa-solid fa-arrows-spin"></i></span>
+          <div>
+            <strong>Counter-Clockwise Sowing</strong>
+            <p>Pick up all coins from any pit on your side and distribute them one by one into subsequent pits moving counter-clockwise.</p>
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-icon"><i class="fa-solid fa-hand-holding-hand"></i></span>
+          <div>
+            <strong>Relay Continuation</strong>
+            <p>When you drop your last coin, check the next pit: if it holds coins, gather them all and keep sowing uninterrupted!</p>
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-icon"><i class="fa-solid fa-sack-dollar"></i></span>
+          <div>
+            <strong>Capturing (Thattu)</strong>
+            <p>If your hand empties and the next pit is empty, you capture all coins from the pit right after it into your score vault.</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button id="rules-ack-btn" class="modal-btn-primary">Got It</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CELEBRATORY VICTORY MODAL WITH CONFETTI CANVAS & EXIT BUTTON -->
+  <div id="victory-modal" class="modal-backdrop hidden">
+    <canvas id="victory-confetti-canvas" class="confetti-canvas"></canvas>
+
+    <div class="modal-card victory-card">
+      <div class="victory-halo"></div>
+
+      <div class="trophy-emitter">
+        <i class="fa-solid fa-crown trophy-crown"></i>
+        <div class="trophy-sparkle-stars">
+          <span class="sparkle s1">✦</span>
+          <span class="sparkle s2">✦</span>
+          <span class="sparkle s3">✦</span>
+        </div>
+      </div>
+
+      <span class="victory-subtitle">CHAMPIONSHIP CONCLUDED</span>
+      <h2 class="victory-title">VICTORY!</h2>
+      <p id="winner-announcement" class="winner-announcement">Player 1 wins the match!</p>
+      
+      <div class="victory-stats">
+        <div class="stat-box">
+          <span class="stat-label">P1 Coins</span>
+          <span id="stat-p1-shells" class="stat-value">0</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">P2 Coins</span>
+          <span id="stat-p2-shells" class="stat-value">0</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Total Rounds</span>
+          <span id="stat-rounds" class="stat-value">0</span>
+        </div>
+      </div>
+
+      <div class="modal-foot victory-actions">
+        <button id="victory-exit-btn" class="modal-btn-secondary exit-btn" title="Exit to Game Zone">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Exit to Game Zone</span>
+        </button>
+        <button id="victory-replay-btn" class="modal-btn-primary play-again-btn">
+          <i class="fa-solid fa-rotate-right"></i>
+          <span>Play Again</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="Vamana-Guntalu.js"></script>
+</body>
+</html>
