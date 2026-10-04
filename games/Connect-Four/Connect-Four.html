@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connect Four | Game Zone</title>
+  <link rel="stylesheet" href="Connect-Four.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Confetti Container -->
+  <div id="confetti-container"></div>
+
+  <div class="game-container">
+    <header class="game-header">
+      <a href="../../index.html" class="nav-btn">
+        <i class="fa-solid fa-arrow-left"></i> Game Zone
+      </a>
+      <div class="title-wrap">
+        <h1>CONNECT <span class="highlight">FOUR</span></h1>
+      </div>
+      <div class="action-icons">
+        <button id="sound-btn" class="icon-btn" title="Toggle Sound">
+          <i class="fa-solid fa-volume-high"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Control Bar -->
+    <section class="control-bar">
+      <div id="current-mode-display" class="mode-display">Mode: vs Bot (Medium)</div>
+      
+      <div id="turn-indicator" class="turn-pill">
+        <span id="turn-disc" class="disc-indicator red"></span>
+        <span id="turn-text">Player 1's Turn</span>
+      </div>
+
+      <div class="game-actions">
+        <button id="rules-btn" class="btn btn-secondary">Rules</button>
+        <button id="restart-btn" class="btn btn-primary">Restart</button>
+      </div>
+    </section>
+
+    <!-- Scoreboard -->
+    <section class="scoreboard">
+      <div id="card-p1" class="score-card player1 active">
+        <div id="score-disc-p1" class="score-disc red"></div>
+        <span id="display-p1-name" class="player-name">Player 1</span>
+        <span id="score-p1" class="score-num">0</span>
+      </div>
+      <div class="score-card draws">
+        <span class="draw-label">DRAWS</span>
+        <span id="score-draws" class="score-num">0</span>
+      </div>
+      <div id="card-p2" class="score-card player2">
+        <span id="display-p2-name" class="player-name">Bot</span>
+        <span id="score-p2" class="score-num">0</span>
+        <div id="score-disc-p2" class="score-disc yellow"></div>
+      </div>
+    </section>
+
+    <!-- Board Area -->
+    <main class="board-wrapper">
+      <div id="drop-preview-bar" class="drop-preview-bar"></div>
+      <div class="board-frame">
+        <div class="board-leg left"></div>
+        <div class="board-leg right"></div>
+        <div id="board" class="board-grid"></div>
+        <div class="board-feet"></div>
+      </div>
+    </main>
+
+    <!-- Setup Modal (Shows on load / fresh restart) -->
+    <div id="setup-modal" class="modal-overlay">
+      <div class="modal-box setup-box">
+        <h2>Game Setup</h2>
+        <div class="setup-form">
+          <div class="input-group">
+            <label for="mode-select">Game Mode:</label>
+            <select id="mode-select">
+              <option value="pve-easy">vs Bot (Easy)</option>
+              <option value="pve-medium" selected>vs Bot (Medium)</option>
+              <option value="pve-hard">vs Bot (Hard)</option>
+              <option value="pvp">2 Players (Local)</option>
+            </select>
+          </div>
+          
+          <div class="input-group">
+            <label for="p1-name-input">Player 1 Name:</label>
+            <input type="text" id="p1-name-input" value="Player 1" maxlength="12">
+          </div>
+          <div class="input-group" id="p2-name-group" style="display: none;">
+            <label for="p2-name-input">Player 2 Name:</label>
+            <input type="text" id="p2-name-input" value="Player 2" maxlength="12">
+          </div>
+
+          <div class="input-group">
+            <label>Player 1 Color:</label>
+            <div class="color-picker">
+              <label class="color-option" title="Red"><input type="radio" name="p1-color" value="red" checked><span class="color-swatch red"></span></label>
+              <label class="color-option" title="Yellow"><input type="radio" name="p1-color" value="yellow"><span class="color-swatch yellow"></span></label>
+              <label class="color-option" title="Green"><input type="radio" name="p1-color" value="green"><span class="color-swatch green"></span></label>
+              <label class="color-option" title="Purple"><input type="radio" name="p1-color" value="purple"><span class="color-swatch purple"></span></label>
+              <label class="color-option" title="Cyan"><input type="radio" name="p1-color" value="cyan"><span class="color-swatch cyan"></span></label>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label id="p2-color-label">Bot Color:</label>
+            <div class="color-picker">
+              <label class="color-option" title="Red"><input type="radio" name="p2-color" value="red"><span class="color-swatch red"></span></label>
+              <label class="color-option" title="Yellow"><input type="radio" name="p2-color" value="yellow" checked><span class="color-swatch yellow"></span></label>
+              <label class="color-option" title="Green"><input type="radio" name="p2-color" value="green"><span class="color-swatch green"></span></label>
+              <label class="color-option" title="Purple"><input type="radio" name="p2-color" value="purple"><span class="color-swatch purple"></span></label>
+              <label class="color-option" title="Cyan"><input type="radio" name="p2-color" value="cyan"><span class="color-swatch cyan"></span></label>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; margin-top: 20px;">
+          <a href="../../index.html" class="btn btn-secondary start-btn" style="text-decoration: none; display: flex; align-items: center; justify-content: center; width: 30%;">Exit</a>
+          <button id="start-game-btn" class="btn btn-primary start-btn" style="width: 70%;">Start Game</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rules Modal -->
+    <div id="rules-modal" class="modal-overlay hidden">
+      <div class="modal-box setup-box">
+        <h2>Game Rules</h2>
+        <div style="text-align: left; color: #94a3b8; font-size: 0.9rem; line-height: 1.5; margin: 15px 0; display: flex; flex-direction: column; gap: 8px;">
+          <p>1. <strong>Objective:</strong> Be the first player to connect 4 of your colored coins in a line (horizontally, vertically, or diagonally).</p>
+          <p>2. <strong>Turns:</strong> Players take turns dropping one coin into any of the 7 unfull columns.</p>
+          <p>3. <strong>Gravity:</strong> Coins fall downward, occupying the lowest available space within the chosen column.</p>
+          <p>4. <strong>Draw:</strong> If the 7x6 board fills completely without any player getting 4 in a row, the game ends in a draw.</p>
+        </div>
+        <button id="close-rules-btn" class="btn btn-primary start-btn">Got It</button>
+      </div>
+    </div>
+
+    <!-- Winner / Draw Modal -->
+    <div id="status-modal" class="modal-overlay hidden">
+      <div class="modal-box">
+        <h2 id="modal-title">Player 1 Wins!</h2>
+        <p id="modal-desc">Well played! Connect four achieved.</p>
+        <div class="modal-actions" style="display: flex; gap: 12px; justify-content: center;">
+          <button id="modal-play-again" class="btn btn-primary">Play Again</button>
+          <a href="../../index.html" id="modal-exit" class="btn btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center;">Exit Game</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="Connect-Four.js"></script>
+</body>
+</html>

@@ -27,7 +27,7 @@
       </div>
 
       <div class="header-controls">
-        <div class="active-badge" id="hud-mode-badge">4 Players</div>
+        <div class="active-badge" id="hud-mode-badge">2 Players</div>
         <div class="active-badge bot-badge" id="hud-diff-badge" style="display: none;">Hard Bot</div>
         <button id="btn-mobile-help" class="btn btn-secondary" onclick="LudoModule.openMobileGuide()" title="How to play on Phone">📱 Mobile</button>
         <button id="btn-open-lobby" class="btn btn-secondary" onclick="LudoModule.openLobby()">⚙ Match Setup</button>
@@ -36,10 +36,10 @@
       </div>
     </header>
 
-    <!-- MAIN ARENA STAGE (Up to 6 Player Stations + Ludo Board) -->
-    <main class="arena-stage">
+    <!-- MAIN ARENA STAGE -->
+    <main class="arena-stage" id="arena-stage">
       
-      <!-- Slot 0: Top-Left (Player 1) -->
+      <!-- Slot 0 -->
       <div class="corner-profile slot-card-0" id="profile-slot-0">
         <div class="profile-header-row">
           <div class="avatar-card">
@@ -55,7 +55,6 @@
           <button class="seat-exit-btn" id="exit-btn-0" title="Exit match" onclick="LudoModule.confirmPlayerExit(0)">Exit</button>
         </div>
         
-        <!-- Edge-Cut 3D Realistic Dice Dock -->
         <div class="corner-dice-dock" id="dice-dock-0" onclick="LudoModule.triggerSlotDice(0)">
           <div class="dice-scene">
             <div class="cube-dice show-1" id="dice-cube-0">
@@ -63,7 +62,11 @@
               <div class="cube-face face-back"><span class="pip pip-tl"></span><span class="pip pip-tr"></span><span class="pip pip-ml"></span><span class="pip pip-mr"></span><span class="pip pip-bl"></span><span class="pip pip-br"></span></div>
               <div class="cube-face face-right"><span class="pip pip-tl"></span><span class="pip pip-c"></span><span class="pip pip-br"></span></div>
               <div class="cube-face face-left"><span class="pip pip-tl"></span><span class="pip pip-tr"></span><span class="pip pip-bl"></span><span class="pip pip-br"></span></div>
-              <div class="cube-face face-top"><span class="pip pip-tl"></span><span class="pip pip-tr"></span><span class="pip pip-c"></span><span class="pip pip-bl"></span><span class="pip pip-br"></span></div>
+              <div class="cube-face face-top">
+                <span class="pip pip-tl"></span><span class="pip pip-tr"></span>
+                <span class="pip pip-c"></span>
+                <span class="pip pip-bl"></span><span class="pip pip-br"></span>
+              </div>
               <div class="cube-face face-bottom"><span class="pip pip-tl"></span><span class="pip pip-br"></span></div>
             </div>
             <div class="dice-shadow" id="dice-shadow-0"></div>
@@ -72,14 +75,14 @@
         </div>
       </div>
 
-      <!-- Slot 1: Top-Right (Player 2) -->
+      <!-- Slot 1 -->
       <div class="corner-profile slot-card-1" id="profile-slot-1">
         <div class="profile-header-row">
           <div class="avatar-card">
             <div class="avatar-icon" id="avatar-slot-1">👤</div>
             <div class="player-meta">
               <div class="player-name-wrap">
-                <span class="player-color-box" id="box-badge-slot-1">G</span>
+                <span class="player-color-box" id="box-badge-slot-1">B</span>
                 <span class="player-name" id="name-slot-1">Player 2</span>
               </div>
               <span class="player-score" id="score-slot-1">0/4 Home</span>
@@ -96,7 +99,11 @@
               <div class="cube-face face-back"><span class="pip pip-tl"></span><span class="pip pip-tr"></span><span class="pip pip-ml"></span><span class="pip pip-mr"></span><span class="pip pip-bl"></span><span class="pip pip-br"></span></div>
               <div class="cube-face face-right"><span class="pip pip-tl"></span><span class="pip pip-c"></span><span class="pip pip-br"></span></div>
               <div class="cube-face face-left"><span class="pip pip-tl"></span><span class="pip pip-tr"></span><span class="pip pip-bl"></span><span class="pip pip-br"></span></div>
-              <div class="cube-face face-top"><span class="pip pip-tl"></span><span class="pip pip-tr"></span><span class="pip pip-c"></span><span class="pip pip-bl"></span><span class="pip pip-br"></span></div>
+              <div class="cube-face face-top">
+                <span class="pip pip-tl"></span><span class="pip pip-tr"></span>
+                <span class="pip pip-c"></span>
+                <span class="pip pip-bl"></span><span class="pip pip-br"></span>
+              </div>
               <div class="cube-face face-bottom"><span class="pip pip-tl"></span><span class="pip pip-br"></span></div>
             </div>
             <div class="dice-shadow" id="dice-shadow-1"></div>
@@ -104,7 +111,7 @@
         </div>
       </div>
 
-      <!-- Slot 5: Middle-Left (Player 6 in 6P mode) -->
+      <!-- Slot 5 -->
       <div class="corner-profile slot-card-5" id="profile-slot-5">
         <div class="profile-header-row">
           <div class="avatar-card">
@@ -127,7 +134,11 @@
               <div class="cube-face face-back"><span class="pip pip-tl"></span><span class="pip pip-tr"></span><span class="pip pip-ml"></span><span class="pip pip-mr"></span><span class="pip pip-bl"></span><span class="pip pip-br"></span></div>
               <div class="cube-face face-right"><span class="pip pip-tl"></span><span class="pip pip-c"></span><span class="pip pip-br"></span></div>
               <div class="cube-face face-left"><span class="pip pip-tl"></span><span class="pip pip-tr"></span><span class="pip pip-bl"></span><span class="pip pip-br"></span></div>
-              <div class="cube-face face-top"><span class="pip pip-tl"></span><span class="pip pip-tr"></span><span class="pip pip-c"></span><span class="pip pip-bl"></span><span class="pip pip-br"></span></div>
+              <div class="cube-face face-top">
+                <span class="pip pip-tl"></span><span class="pip pip-tr"></span>
+                <span class="pip pip-c"></span>
+                <span class="pip pip-bl"></span><span class="pip pip-br"></span>
+              </div>
               <div class="cube-face face-bottom"><span class="pip pip-tl"></span><span class="pip pip-br"></span></div>
             </div>
             <div class="dice-shadow" id="dice-shadow-5"></div>
@@ -138,10 +149,10 @@
 
       <!-- Ludo Board Container -->
       <div class="board-container">
-        <div id="ludo-board" class="ludo-board"></div>
+        <div id="ludo-board" class="ludo-board board-grid-15"></div>
       </div>
 
-      <!-- Slot 2: Middle-Right (Player 3 in 6P mode / Bottom-Right in 4P mode) -->
+      <!-- Slot 2 -->
       <div class="corner-profile slot-card-2" id="profile-slot-2">
         <div class="profile-header-row">
           <div class="avatar-card">
@@ -165,7 +176,11 @@
               <div class="cube-face face-back"><span class="pip pip-tl"></span><span class="pip pip-tr"></span><span class="pip pip-ml"></span><span class="pip pip-mr"></span><span class="pip pip-bl"></span><span class="pip pip-br"></span></div>
               <div class="cube-face face-right"><span class="pip pip-tl"></span><span class="pip pip-c"></span><span class="pip pip-br"></span></div>
               <div class="cube-face face-left"><span class="pip pip-tl"></span><span class="pip pip-tr"></span><span class="pip pip-bl"></span><span class="pip pip-br"></span></div>
-              <div class="cube-face face-top"><span class="pip pip-tl"></span><span class="pip pip-tr"></span><span class="pip pip-c"></span><span class="pip pip-bl"></span><span class="pip pip-br"></span></div>
+              <div class="cube-face face-top">
+                <span class="pip pip-tl"></span><span class="pip pip-tr"></span>
+                <span class="pip pip-c"></span>
+                <span class="pip pip-bl"></span><span class="pip pip-br"></span>
+              </div>
               <div class="cube-face face-bottom"><span class="pip pip-tl"></span><span class="pip pip-br"></span></div>
             </div>
             <div class="dice-shadow" id="dice-shadow-2"></div>
@@ -173,14 +188,14 @@
         </div>
       </div>
 
-      <!-- Slot 3: Bottom-Left (Player 4 in 4P mode) -->
+      <!-- Slot 3 -->
       <div class="corner-profile slot-card-3" id="profile-slot-3">
         <div class="profile-header-row">
           <div class="avatar-card">
             <div class="avatar-icon" id="avatar-slot-3">👤</div>
             <div class="player-meta">
               <div class="player-name-wrap">
-                <span class="player-color-box" id="box-badge-slot-3">B</span>
+                <span class="player-color-box" id="box-badge-slot-3">G</span>
                 <span class="player-name" id="name-slot-3">Player 4</span>
               </div>
               <span class="player-score" id="score-slot-3">0/4 Home</span>
@@ -196,7 +211,11 @@
               <div class="cube-face face-back"><span class="pip pip-tl"></span><span class="pip pip-tr"></span><span class="pip pip-ml"></span><span class="pip pip-mr"></span><span class="pip pip-bl"></span><span class="pip pip-br"></span></div>
               <div class="cube-face face-right"><span class="pip pip-tl"></span><span class="pip pip-c"></span><span class="pip pip-br"></span></div>
               <div class="cube-face face-left"><span class="pip pip-tl"></span><span class="pip pip-tr"></span><span class="pip pip-bl"></span><span class="pip pip-br"></span></div>
-              <div class="cube-face face-top"><span class="pip pip-tl"></span><span class="pip pip-tr"></span><span class="pip pip-c"></span><span class="pip pip-bl"></span><span class="pip pip-br"></span></div>
+              <div class="cube-face face-top">
+                <span class="pip pip-tl"></span><span class="pip pip-tr"></span>
+                <span class="pip pip-c"></span>
+                <span class="pip pip-bl"></span><span class="pip pip-br"></span>
+              </div>
               <div class="cube-face face-bottom"><span class="pip pip-tl"></span><span class="pip pip-br"></span></div>
             </div>
             <div class="dice-shadow" id="dice-shadow-3"></div>
@@ -205,7 +224,7 @@
         </div>
       </div>
 
-      <!-- Slot 4: Bottom-Right (Player 5 in 6P mode) -->
+      <!-- Slot 4 -->
       <div class="corner-profile slot-card-4" id="profile-slot-4">
         <div class="profile-header-row">
           <div class="avatar-card">
@@ -229,7 +248,11 @@
               <div class="cube-face face-back"><span class="pip pip-tl"></span><span class="pip pip-tr"></span><span class="pip pip-ml"></span><span class="pip pip-mr"></span><span class="pip pip-bl"></span><span class="pip pip-br"></span></div>
               <div class="cube-face face-right"><span class="pip pip-tl"></span><span class="pip pip-c"></span><span class="pip pip-br"></span></div>
               <div class="cube-face face-left"><span class="pip pip-tl"></span><span class="pip pip-tr"></span><span class="pip pip-bl"></span><span class="pip pip-br"></span></div>
-              <div class="cube-face face-top"><span class="pip pip-tl"></span><span class="pip pip-tr"></span><span class="pip pip-c"></span><span class="pip pip-bl"></span><span class="pip pip-br"></span></div>
+              <div class="cube-face face-top">
+                <span class="pip pip-tl"></span><span class="pip pip-tr"></span>
+                <span class="pip pip-c"></span>
+                <span class="pip pip-bl"></span><span class="pip pip-br"></span>
+              </div>
               <div class="cube-face face-bottom"><span class="pip pip-tl"></span><span class="pip pip-br"></span></div>
             </div>
             <div class="dice-shadow" id="dice-shadow-4"></div>
@@ -245,9 +268,7 @@
     </footer>
   </div>
 
-  <!-- =========================================================
-       PRE-MATCH SETUP LOBBY MODAL (With Back to Home Button)
-       ========================================================= -->
+  <!-- MATCH SETUP LOBBY MODAL -->
   <div id="lobby-modal" class="modal-overlay">
     <div class="lobby-card">
       <div class="lobby-header">
@@ -260,15 +281,11 @@
         <p>Edit player names, choose colors & select your coin</p>
       </div>
 
-      <!-- Step 1: Number of Players (1 to 6) -->
+      <!-- Step 1: Number of Players (2 to 6) -->
       <div class="lobby-section">
         <label class="section-label">1. Number of Players</label>
         <div class="player-count-pills" id="player-count-pills">
-          <button class="pill-btn" data-count="1" onclick="LudoModule.setPlayerCount(1)">
-            <span class="count-num">1</span>
-            <span class="count-desc">vs Bot</span>
-          </button>
-          <button class="pill-btn" data-count="2" onclick="LudoModule.setPlayerCount(2)">
+          <button class="pill-btn active" data-count="2" onclick="LudoModule.setPlayerCount(2)">
             <span class="count-num">2</span>
             <span class="count-desc">Players</span>
           </button>
@@ -276,22 +293,22 @@
             <span class="count-num">3</span>
             <span class="count-desc">Players</span>
           </button>
-          <button class="pill-btn active" data-count="4" onclick="LudoModule.setPlayerCount(4)">
+          <button class="pill-btn" data-count="4" onclick="LudoModule.setPlayerCount(4)">
             <span class="count-num">4</span>
             <span class="count-desc">Players</span>
           </button>
           <button class="pill-btn" data-count="5" onclick="LudoModule.setPlayerCount(5)">
             <span class="count-num">5</span>
-            <span class="count-desc">Players</span>
+            <span class="count-desc">Players (Pentagonal Board)</span>
           </button>
           <button class="pill-btn" data-count="6" onclick="LudoModule.setPlayerCount(6)">
             <span class="count-num">6</span>
-            <span class="count-desc">Players</span>
+            <span class="count-desc">Players (Hexagonal Board)</span>
           </button>
         </div>
       </div>
 
-      <!-- Step 2: Select Your Coin (3 Options) -->
+      <!-- Step 2: Select Your Coin -->
       <div class="lobby-section">
         <label class="section-label">2. Select Your Coin</label>
         <div class="coin-style-options" id="coin-style-selector">
@@ -300,8 +317,18 @@
               <div class="token-demo token-style-pawn color-red"></div>
             </div>
             <div class="coin-option-text">
-              <span class="coin-title">Royal Pawn</span>
-              <span class="coin-sub">Slim 3D Pin</span>
+              <span class="coin-title">Classic Pawn</span>
+              <span class="coin-sub">Traditional Pin</span>
+            </div>
+          </div>
+
+          <div class="coin-option-card" data-style="metallic" onclick="LudoModule.setCoinStyle('metallic')">
+            <div class="coin-preview-box">
+              <div class="token-demo token-style-metallic color-blue"></div>
+            </div>
+            <div class="coin-option-text">
+              <span class="coin-title">Metallic</span>
+              <span class="coin-sub">Glossy Finish</span>
             </div>
           </div>
 
@@ -310,37 +337,35 @@
               <div class="token-demo token-style-crown color-yellow">👑</div>
             </div>
             <div class="coin-option-text">
-              <span class="coin-title">Crown Token</span>
+              <span class="coin-title">Crown</span>
               <span class="coin-sub">Royal Medallion</span>
             </div>
           </div>
 
           <div class="coin-option-card" data-style="star" onclick="LudoModule.setCoinStyle('star')">
             <div class="coin-preview-box">
-              <div class="token-demo token-style-star color-blue">⚝</div>
+              <div class="token-demo token-style-star color-green">⚝</div>
             </div>
             <div class="coin-option-text">
-              <span class="coin-title">Star Medallion</span>
+              <span class="coin-title">Star</span>
               <span class="coin-sub">Gold Emblem</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Step 3: Individual Seat Setup (Name, Exclusive Color, Human/Bot role) -->
+      <!-- Step 3: Individual Seat Setup -->
       <div class="lobby-section">
         <div class="section-header-flex">
           <label class="section-label">3. Players & Colors</label>
           <button class="text-link-btn" id="btn-quick-toggle" onclick="LudoModule.toggleAllBotsMode()">👥 Remove All Bots (All Friends)</button>
         </div>
-        <div class="seats-config-list" id="seats-config-container">
-          <!-- Injected dynamically by Ludo.js -->
-        </div>
+        <div class="seats-config-list" id="seats-config-container"></div>
       </div>
 
-      <!-- Step 4: Bot Difficulty Level (HIDDEN if >2 Players or if no bots) -->
+      <!-- Step 4: Bot Difficulty Level -->
       <div class="lobby-section" id="bot-difficulty-section" style="display: none;">
-        <label class="section-label">4. Bot Toughness (1v1 vs Bot)</label>
+        <label class="section-label">4. Bot Toughness</label>
         <div class="difficulty-pills" id="difficulty-pills">
           <button class="diff-btn diff-easy" data-level="easy" onclick="LudoModule.setBotLevel('easy')">
             <span class="diff-dot"></span>
@@ -370,14 +395,16 @@
     </div>
   </div>
 
-  <!-- VICTORY / FORFEIT MODAL OVERLAY -->
+  <!-- VICTORY / LEADERBOARD MODAL -->
   <div id="winner-modal" class="modal-overlay hidden">
     <div class="modal-card">
       <div class="trophy-emoji">🏆</div>
-      <h2 id="winner-title">Player Wins!</h2>
-      <p id="winner-desc">All opponents have exited the match or all 4 tokens reached home!</p>
+      <h2 id="winner-title">Match Completed!</h2>
+      <p id="winner-desc">Final Standings & Rankings</p>
+      <div id="rankings-list" style="margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; text-align: left;"></div>
       <div class="modal-actions">
-        <button class="btn btn-secondary" onclick="LudoModule.changeSetupFromWinner()">Change Match Setup</button>
+        <button class="btn btn-secondary" onclick="LudoModule.lobbyBack()">🚪 Exit</button>
+        <button class="btn btn-primary" onclick="LudoModule.changeSetupFromWinner()">Change Setup</button>
         <button class="btn btn-primary" onclick="LudoModule.restartCurrentMatch()">Play Again</button>
       </div>
     </div>
@@ -386,7 +413,7 @@
   <!-- EXIT CONFIRMATION MODAL -->
   <div id="exit-modal" class="modal-overlay hidden">
     <div class="modal-card mini-card">
-      <div class="exit-warn-icon">⚠️</div>
+      <div class="exit-warn-icon">⚠</div>
       <h3 id="exit-modal-title">Exit Match</h3>
       <p id="exit-modal-desc">Confirm exit?</p>
       <div class="modal-actions">
@@ -409,12 +436,12 @@
     </div>
   </div>
 
-  <!-- QUIT MATCH CONFIRMATION MODAL (Returns to Match Setup) -->
+  <!-- QUIT MATCH CONFIRMATION MODAL -->
   <div id="quit-modal" class="modal-overlay hidden">
     <div class="modal-card mini-card">
       <div class="exit-warn-icon">🚪</div>
       <h3>Quit Match?</h3>
-      <p>Are you sure you want to quit? You will return to the match setup.</p>
+      <p>Are you sure you want to quit? You will return to match setup.</p>
       <div class="modal-actions">
         <button class="btn btn-secondary" onclick="LudoModule.cancelQuit()">Cancel</button>
         <button class="btn btn-danger" onclick="LudoModule.executeQuit()">Confirm Quit</button>
@@ -430,9 +457,9 @@
       <div class="mobile-guide-content">
         <p><strong>Yes, this game is 100% playable on any smartphone!</strong></p>
         <ol>
-          <li><strong>Same Wi-Fi network:</strong> Find your computer's IP address and open <code>http://&lt;your-ip&gt;:5500/games/Ludo/Ludo.html</code> on your phone.</li>
-          <li><strong>Online hosting:</strong> Host this folder for free on <strong>GitHub Pages</strong>, <strong>Netlify</strong>, or <strong>Vercel</strong> and open the link on mobile.</li>
-          <li><strong>Full Screen App Mode:</strong> In Safari/Chrome on phone, tap <em>Share</em> or <em>Menu</em> &rarr; tap <strong>"Add to Home Screen"</strong> to play without browser address bars!</li>
+          <li><strong>Same Wi-Fi network:</strong> Open <code>http://&lt;your-ip&gt;:5500/games/Ludo/Ludo.html</code> on your phone.</li>
+          <li><strong>Online hosting:</strong> Host on <strong>GitHub Pages</strong>, <strong>Netlify</strong>, or <strong>Vercel</strong>.</li>
+          <li><strong>App Mode:</strong> Tap <em>Share</em> &rarr; <strong>"Add to Home Screen"</strong> to play full screen!</li>
         </ol>
       </div>
       <button class="btn btn-primary" onclick="LudoModule.closeMobileGuide()">Got it!</button>
