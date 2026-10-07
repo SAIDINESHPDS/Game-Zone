@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Pachisi | Game Zone</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="Pachisi.css" />
+</head>
+<body>
+
+  <!-- TOP HEADER -->
+  <header class="game-header">
+    <div class="header-left">
+      <a href="../../index.html" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span class="back-label">Game Zone</span>
+      </a>
+      <div class="header-divider"></div>
+      <div class="game-brand">
+        <span class="brand-badge"><i class="fa-solid fa-crown"></i> Royal Classic</span>
+        <h1 class="brand-title">Pachisi</h1>
+      </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="header-actions">
+      <button id="quick-theme-btn" class="header-btn theme-btn" title="Board &amp; Goti Styles">
+        <i class="fa-solid fa-palette"></i>
+        <span class="btn-text">Styles</span>
+      </button>
+      <button id="sound-toggle-btn" class="header-btn icon-only" title="Toggle Sound">
+        <i class="fa-solid fa-volume-high"></i>
+      </button>
+      <button id="rules-btn" class="header-btn" title="Game Rules">
+        <i class="fa-solid fa-circle-question"></i>
+        <span class="btn-text">Rules</span>
+      </button>
+      <button id="new-game-btn" class="header-btn primary-btn">
+        <i class="fa-solid fa-rotate-right"></i>
+        <span class="btn-text">New Match</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN ARENA -->
+  <main class="arena-layout">
+    <!-- LEFT PANEL: PLAYERS & ACTIVE DESIGN -->
+    <aside class="panel players-panel">
+      <div class="panel-header">
+        <h2><i class="fa-solid fa-users"></i> Standings</h2>
+        <span id="player-count-badge" class="count-pill">2 Players</span>
+      </div>
+
+      <div id="players-list" class="players-list">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- ACTIVE DESIGN CARD WITH LIVE CUSTOMIZE BUTTON -->
+      <div class="theme-info-box">
+        <div class="theme-info-head">
+          <span><i class="fa-solid fa-brush"></i> Active Design</span>
+          <button id="open-styles-card-btn" class="open-styles-badge-btn" title="Change board & gotis">
+            <i class="fa-solid fa-pen-to-square"></i> Change
+          </button>
+        </div>
+        <div class="theme-detail-row">
+          <span class="theme-label">Board:</span>
+          <strong id="active-board-label">Royal Silk Cloth</strong>
+        </div>
+        <div class="theme-detail-row">
+          <span class="theme-label">Gotis:</span>
+          <strong id="active-goti-label">Royal Bell Gotis</strong>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CENTER: ROYAL PACHISI CROSS BOARD -->
+    <section class="board-stage">
+      <div class="board-wrapper">
+        <div id="pachisi-board" class="pachisi-cloth-board theme-silk">
+          <!-- Dynamic SVG Cross Canvas rendered by JS -->
+        </div>
+
+        <!-- MATHEMATICALLY ALIGNED PAWNS LAYER -->
+        <div id="pawns-layer" class="pawns-layer"></div>
+      </div>
+    </section>
+
+    <!-- RIGHT PANEL: 6-COWRIE THROW STATION & CONTROLS -->
+    <aside class="panel controls-panel">
+      <div class="turn-station">
+        <span class="turn-sub">CURRENT TURN</span>
+        <h3 id="current-turn-name">Yellow King</h3>
+
+        <!-- DUAL-SIDED GAVVA / COWRIES THROW ARENA -->
+        <div class="cowries-throw-arena">
+          <div class="cowrie-legend-bar">
+            <div class="legend-side">
+              <span class="legend-mini-shell mouth-preview"></span>
+              <span>Mouth Up (బొమ్మ)</span>
+            </div>
+            <div class="legend-divider"></div>
+            <div class="legend-side">
+              <span class="legend-mini-shell back-preview"></span>
+              <span>Back Up (బొరుసు)</span>
+            </div>
+          </div>
+
+          <!-- 6 Dual-Faced 3D Cowrie Shells -->
+          <div class="cowries-tray" id="cowries-tray">
+            <div class="cowrie-flipper-3d" id="c0">
+              <div class="shell-flipper">
+                <div class="shell-side shell-mouth"><div class="mouth-ridge"></div></div>
+                <div class="shell-side shell-back"><div class="dorsal-ring"></div></div>
+              </div>
+            </div>
+            <div class="cowrie-flipper-3d" id="c1">
+              <div class="shell-flipper">
+                <div class="shell-side shell-mouth"><div class="mouth-ridge"></div></div>
+                <div class="shell-side shell-back"><div class="dorsal-ring"></div></div>
+              </div>
+            </div>
+            <div class="cowrie-flipper-3d" id="c2">
+              <div class="shell-flipper">
+                <div class="shell-side shell-mouth"><div class="mouth-ridge"></div></div>
+                <div class="shell-side shell-back"><div class="dorsal-ring"></div></div>
+              </div>
+            </div>
+            <div class="cowrie-flipper-3d" id="c3">
+              <div class="shell-flipper">
+                <div class="shell-side shell-mouth"><div class="mouth-ridge"></div></div>
+                <div class="shell-side shell-back"><div class="dorsal-ring"></div></div>
+              </div>
+            </div>
+            <div class="cowrie-flipper-3d" id="c4">
+              <div class="shell-flipper">
+                <div class="shell-side shell-mouth"><div class="mouth-ridge"></div></div>
+                <div class="shell-side shell-back"><div class="dorsal-ring"></div></div>
+              </div>
+            </div>
+            <div class="cowrie-flipper-3d" id="c5">
+              <div class="shell-flipper">
+                <div class="shell-side shell-mouth"><div class="mouth-ridge"></div></div>
+                <div class="shell-side shell-back"><div class="dorsal-ring"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="shell-counts-breakdown" id="shell-counts-breakdown">
+            <span>6 Shells Ready to Roll</span>
+          </div>
+        </div>
+
+        <div class="throw-result-badge">
+          <span class="result-label">Points:</span>
+          <strong id="throw-points-text">-</strong>
+          <span id="throw-name-tag" class="throw-name-tag">Roll Cowries</span>
+        </div>
+
+        <button id="roll-button" class="roll-action-btn">
+          <span>THROW COWRIES</span>
+          <kbd>SPACE</kbd>
+        </button>
+
+        <p id="turn-guide-text" class="turn-guide-text">Roll the 6 cowries to begin your turn.</p>
+      </div>
+    </aside>
+  </main>
+
+  <!-- DEDICATED STYLES MODAL (6 BOARDS + 6 GOTIS) -->
+  <div id="styles-modal" class="modal-backdrop hidden">
+    <div class="modal-card styles-card">
+      <div class="modal-head">
+        <div class="modal-head-top">
+          <h2><i class="fa-solid fa-palette"></i> Board &amp; Goti Styles</h2>
+          <button id="close-styles-btn" class="icon-close-btn" title="Close">&times;</button>
+        </div>
+        <p>Switch your board fabric or goti coin material live during the match.</p>
+      </div>
+      
+      <div class="styles-modal-body">
+        <!-- 1. 6 BOARD DESIGNS -->
+        <div class="style-category-block">
+          <div class="category-title-row">
+            <label class="form-label"><i class="fa-solid fa-layer-group"></i> 1. Board Designs (6 Options)</label>
+            <span class="active-tag-indicator" id="modal-board-indicator">Active: Royal Silk</span>
+          </div>
+
+          <div class="board-grid-large">
+            <button type="button" class="board-option-card active" data-board="silk">
+              <span class="board-card-preview silk-bg"></span>
+              <div class="board-card-info">
+                <strong>Royal Silk Cloth</strong>
+                <small>Navy &amp; Magenta Silk</small>
+              </div>
+            </button>
+
+            <button type="button" class="board-option-card" data-board="mughal">
+              <span class="board-card-preview mughal-bg"></span>
+              <div class="board-card-info">
+                <strong>Mughal Velvet</strong>
+                <small>Crimson &amp; Gold Zardozi</small>
+              </div>
+            </button>
+
+            <button type="button" class="board-option-card" data-board="brocade">
+              <span class="board-card-preview brocade-bg"></span>
+              <div class="board-card-info">
+                <strong>Varanasi Brocade</strong>
+                <small>Saffron &amp; Purple Silver</small>
+              </div>
+            </button>
+
+            <button type="button" class="board-option-card" data-board="temple">
+              <span class="board-card-preview temple-bg"></span>
+              <div class="board-card-info">
+                <strong>Temple Sandstone</strong>
+                <small>Carved Ancient Stone</small>
+              </div>
+            </button>
+
+            <button type="button" class="board-option-card" data-board="ebony">
+              <span class="board-card-preview ebony-bg"></span>
+              <div class="board-card-info">
+                <strong>Royal Ebony &amp; Ivory</strong>
+                <small>Polished Black Lacquer</small>
+              </div>
+            </button>
+
+            <button type="button" class="board-option-card" data-board="marble">
+              <span class="board-card-preview marble-bg"></span>
+              <div class="board-card-info">
+                <strong>Udaipur Marble</strong>
+                <small>Turquoise Pietre Dure</small>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. 6 COINS / GOTI TYPES -->
+        <div class="style-category-block">
+          <div class="category-title-row">
+            <label class="form-label"><i class="fa-solid fa-chess-pawn"></i> 2. Gotis &amp; Coins (6 Options)</label>
+            <span class="active-tag-indicator" id="modal-goti-indicator">Active: Royal Bell Gotis</span>
+          </div>
+
+          <div class="tokens-grid-large">
+            <button type="button" class="goti-option-card active" data-goti="bell">
+              <div class="goti-preview-circle">
+                <span class="preview-bell goti-yellow"></span>
+              </div>
+              <div class="goti-card-info">
+                <strong>Royal Bell Gotis</strong>
+                <small>Classic Fluted Pawns</small>
+              </div>
+            </button>
+
+            <button type="button" class="goti-option-card" data-goti="wood">
+              <div class="goti-preview-circle">
+                <span class="preview-wood goti-yellow"></span>
+              </div>
+              <div class="goti-card-info">
+                <strong>Carved Minarets</strong>
+                <small>Turned Wooden Gotis</small>
+              </div>
+            </button>
+
+            <button type="button" class="goti-option-card" data-goti="gem">
+              <div class="goti-preview-circle">
+                <span class="preview-gem goti-yellow"></span>
+              </div>
+              <div class="goti-card-info">
+                <strong>Faceted Gemstones</strong>
+                <small>Radiant Cut Jewels</small>
+              </div>
+            </button>
+
+            <button type="button" class="goti-option-card" data-goti="marble">
+              <div class="goti-preview-circle">
+                <span class="preview-marble goti-yellow"></span>
+              </div>
+              <div class="goti-card-info">
+                <strong>Glass Marbles</strong>
+                <small>Vivid Spiral Cores</small>
+              </div>
+            </button>
+
+            <button type="button" class="goti-option-card" data-goti="coin">
+              <div class="goti-preview-circle">
+                <span class="preview-coin goti-yellow"></span>
+              </div>
+              <div class="goti-card-info">
+                <strong>Stamped Coins</strong>
+                <small>Imperial Gold Crests</small>
+              </div>
+            </button>
+
+            <button type="button" class="goti-option-card" data-goti="jade">
+              <div class="goti-preview-circle">
+                <span class="preview-jade goti-yellow"></span>
+              </div>
+              <div class="goti-card-info">
+                <strong>Polished Jade Cones</strong>
+                <small>Ribbed Ring Tokens</small>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-foot">
+        <button id="styles-done-btn" class="modal-btn-primary">
+          <i class="fa-solid fa-check"></i> Done
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOBBY SETUP MODAL -->
+  <div id="lobby-modal" class="modal-backdrop">
+    <div class="modal-card lobby-card">
+      <div class="modal-head">
+        <div class="modal-head-top">
+          <button id="lobby-back-btn" class="modal-nav-btn" title="Back">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span id="lobby-back-text">Back to Game Zone</span>
+          </button>
+          <button id="lobby-close-btn" class="icon-close-btn" title="Close">&times;</button>
+        </div>
+        <h2><i class="fa-solid fa-gamepad"></i> Match Setup</h2>
+        <p>Choose players, colors, and smart bots.</p>
+      </div>
+      
+      <div class="lobby-form">
+        <div class="form-group">
+          <label class="form-label">Player Count</label>
+          <div class="count-selector">
+            <button type="button" class="count-btn active" data-count="2">2 Players</button>
+            <button type="button" class="count-btn" data-count="4">4 Players</button>
+          </div>
+        </div>
+
+        <div id="lobby-slots" class="lobby-slots">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+
+      <div class="modal-foot">
+        <button id="start-match-btn" class="modal-btn-primary">
+          <i class="fa-solid fa-play"></i> Start Match
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIRMATION MODAL -->
+  <div id="confirm-modal" class="modal-backdrop hidden">
+    <div class="modal-card confirm-card">
+      <div class="modal-head">
+        <h2><i class="fa-solid fa-triangle-exclamation" style="color: #f59e0b;"></i> Start New Match?</h2>
+      </div>
+      <div class="confirm-body">
+        <p>A match is currently in progress.</p>
+        <p class="confirm-sub">
+          Restarting will reset all player pawns and current board standings.
+        </p>
+      </div>
+      <div class="modal-foot confirm-actions">
+        <button id="cancel-confirm-btn" class="header-btn">
+          <i class="fa-solid fa-arrow-left"></i> Keep Playing
+        </button>
+        <button id="accept-confirm-btn" class="modal-btn-danger">
+          <i class="fa-solid fa-rotate-right"></i> Restart &amp; Proceed
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES MODAL -->
+  <div id="rules-modal" class="modal-backdrop hidden">
+    <div class="modal-card rules-card">
+      <div class="modal-head">
+        <div class="modal-head-top" style="justify-content: flex-end;">
+          <button id="close-rules-btn" class="icon-close-btn">&times;</button>
+        </div>
+        <h2><i class="fa-solid fa-book-open"></i> How to Play Pachisi</h2>
+      </div>
+      <div class="rules-body">
+        <div class="rule-item">
+          <span class="rule-icon"><i class="fa-solid fa-dharmachakra"></i></span>
+          <div>
+            <strong>6 Cowrie Shells Scoring</strong>
+            <p><strong>1 Mouth Up:</strong> 10 points + Extra Turn<br>
+               <strong>2, 3, 4 Mouths Up:</strong> 2, 3, 4 points<br>
+               <strong>5 Mouths Up:</strong> 25 points (Pachisi) + Extra Turn<br>
+               <strong>6 Mouths Up (All Mouths):</strong> 12 points + Extra Turn<br>
+               <strong>0 Mouths Up (All Backs):</strong> 6 points + Extra Turn</p>
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-icon"><i class="fa-solid fa-play"></i></span>
+          <div>
+            <strong>Starter Pawns Active</strong>
+            <p>Every player starts with 1 pawn already on their starting square to begin racing immediately!</p>
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-icon"><i class="fa-solid fa-door-open"></i></span>
+          <div>
+            <strong>Entering New Pawns</strong>
+            <p>Roll a bonus throw (6, 10, 12, or 25 points) to enter a new pawn from your Charkoni onto your starting square.</p>
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-icon"><i class="fa-solid fa-shield-halved"></i></span>
+          <div>
+            <strong>Castles &amp; Sanctuaries ("X" Squares)</strong>
+            <p>Squares marked with an <strong>X</strong> are safe sanctuaries where pawns cannot be cut.</p>
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-icon"><i class="fa-solid fa-crosshairs"></i></span>
+          <div>
+            <strong>Cutting / Capturing</strong>
+            <p>Landing on an opponent's pawn cuts it back to their Charkoni and grants an extra throw! You must cut at least one pawn to enter the home path.</p>
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-icon"><i class="fa-solid fa-trophy"></i></span>
+          <div>
+            <strong>Reaching Home (Charkoni)</strong>
+            <p>The first player to navigate all 4 pawns back to the central Charkoni wins the match!</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button id="rules-ack-btn" class="modal-btn-primary">Got It</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VICTORY CELEBRATION MODAL -->
+  <div id="victory-modal" class="modal-backdrop hidden">
+    <canvas id="victory-confetti-canvas" class="confetti-canvas"></canvas>
+
+    <div class="modal-card victory-card">
+      <div class="victory-halo"></div>
+
+      <div class="trophy-emitter">
+        <i class="fa-solid fa-crown trophy-crown"></i>
+        <div class="trophy-sparkle-stars">
+          <span class="sparkle s1">✦</span>
+          <span class="sparkle s2">✦</span>
+          <span class="sparkle s3">✦</span>
+        </div>
+      </div>
+
+      <span class="victory-subtitle">CHAMPIONSHIP CONCLUDED</span>
+      <h2 class="victory-title">VICTORY!</h2>
+      <p id="winner-announcement" class="winner-announcement">Yellow King wins the game!</p>
+      
+      <div class="victory-stats">
+        <div class="stat-box">
+          <span class="stat-label">Total Turns</span>
+          <span id="stat-turns" class="stat-value">0</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Pawns Home</span>
+          <span id="stat-home" class="stat-value">4 / 4</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Kills Made</span>
+          <span id="stat-kills" class="stat-value">0</span>
+        </div>
+      </div>
+
+      <div class="modal-foot victory-actions">
+        <button id="victory-exit-btn" class="modal-btn-secondary exit-btn" title="Exit to Game Zone">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Exit to Game Zone</span>
+        </button>
+        <button id="victory-replay-btn" class="modal-btn-primary play-again-btn">
+          <i class="fa-solid fa-rotate-right"></i>
+          <span>Play Again</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="Pachisi.js"></script>
+</body>
+</html>

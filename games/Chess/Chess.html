@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Chess | Game Zone</title>
+  <link rel="stylesheet" href="Chess.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body data-board-theme="tournament-green" data-piece-theme="master-staunton">
+  <div id="confetti-container"></div>
+
+  <!-- Shared Global Vector Gradients -->
+  <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" aria-hidden="true">
+    <defs>
+      <!-- Master Staunton Gradients -->
+      <linearGradient id="grad-master-white" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#ffffff"/>
+        <stop offset="65%" stop-color="#f8f9fa"/>
+        <stop offset="100%" stop-color="#e2e8f0"/>
+      </linearGradient>
+      <linearGradient id="grad-master-black" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#475569"/>
+        <stop offset="35%" stop-color="#1e293b"/>
+        <stop offset="100%" stop-color="#090d16"/>
+      </linearGradient>
+
+      <!-- Neo Tournament Gradients -->
+      <linearGradient id="neo-white" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#ffffff"/>
+        <stop offset="60%" stop-color="#fdfdfd"/>
+        <stop offset="100%" stop-color="#e9ebee"/>
+      </linearGradient>
+      <linearGradient id="neo-black" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#55585d"/>
+        <stop offset="50%" stop-color="#3c3f44"/>
+        <stop offset="100%" stop-color="#24272b"/>
+      </linearGradient>
+
+      <!-- Woodmaster Gradients -->
+      <linearGradient id="wood-white" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#fff8ed"/>
+        <stop offset="40%" stop-color="#faeccf"/>
+        <stop offset="100%" stop-color="#ddbe8e"/>
+      </linearGradient>
+      <linearGradient id="wood-black" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#3d2c20"/>
+        <stop offset="50%" stop-color="#261a12"/>
+        <stop offset="100%" stop-color="#110b07"/>
+      </linearGradient>
+
+      <!-- Classic Royal Gradients -->
+      <linearGradient id="royal-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#fffbeb" />
+        <stop offset="35%" stop-color="#fde047" />
+        <stop offset="70%" stop-color="#eab308" />
+        <stop offset="100%" stop-color="#9a6207" />
+      </linearGradient>
+      <linearGradient id="royal-onyx" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#475569"/>
+        <stop offset="40%" stop-color="#1e293b"/>
+        <stop offset="100%" stop-color="#020617"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <div class="game-container">
+    <!-- Header -->
+    <header class="game-header">
+      <a href="../../index.html" class="nav-btn" id="back-nav-btn">
+        <i class="fa-solid fa-arrow-left"></i> Game Zone
+      </a>
+      <div class="title-wrap">
+        <h1>CHESS</h1>
+      </div>
+      <div class="action-icons">
+        <button id="theme-btn" class="icon-btn" title="Board & Coin Customizer">
+          <i class="fa-solid fa-palette"></i>
+        </button>
+        <button id="sound-btn" class="icon-btn" title="Toggle Sound">
+          <i class="fa-solid fa-volume-high"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Top Action Bar -->
+    <section class="control-bar">
+      <div id="mode-display" class="mode-display">Mode: 2 Players</div>
+      
+      <div id="turn-indicator" class="turn-pill">
+        <span id="turn-dot" class="turn-dot white"></span>
+        <span id="turn-text">Player 1's Turn</span>
+      </div>
+
+      <div class="game-actions">
+        <button id="draw-btn" class="btn btn-secondary" title="Offer Draw">
+          <i class="fa-solid fa-handshake"></i> Draw
+        </button>
+        <button id="resign-btn" class="btn btn-danger" title="Resign Game">
+          <i class="fa-solid fa-flag"></i> Resign
+        </button>
+        <button id="exit-btn" class="btn btn-secondary" title="Exit Game">
+          <i class="fa-solid fa-right-from-bracket"></i> Exit
+        </button>
+        <button id="rules-btn" class="btn btn-secondary">Rules</button>
+        <button id="restart-btn" class="btn btn-primary">Setup / New</button>
+      </div>
+    </section>
+
+    <!-- Player Stats & Clocks -->
+    <section class="status-panel">
+      <!-- Black Card -->
+      <div id="card-black" class="player-card black">
+        <div class="player-meta">
+          <div class="player-identity">
+            <span class="player-avatar">♚</span>
+            <div>
+              <div id="black-name" class="player-name">Player 2</div>
+              <div class="player-sub">Black</div>
+            </div>
+          </div>
+          <div id="black-clock" class="player-clock">10:00</div>
+        </div>
+        <div id="captured-by-black" class="captured-box"></div>
+      </div>
+
+      <!-- Center Status -->
+      <div class="center-status">
+        <span id="game-status-pill" class="status-badge">Active Match</span>
+      </div>
+
+      <!-- White Card -->
+      <div id="card-white" class="player-card white active">
+        <div class="player-meta text-right">
+          <div id="white-clock" class="player-clock">10:00</div>
+          <div class="player-identity">
+            <div>
+              <div id="white-name" class="player-name">Player 1</div>
+              <div class="player-sub">White</div>
+            </div>
+            <span class="player-avatar">♔</span>
+          </div>
+        </div>
+        <div id="captured-by-white" class="captured-box"></div>
+      </div>
+    </section>
+
+    <!-- Board Arena -->
+    <main class="board-area">
+      <div class="board-frame" id="board-outer-frame">
+        <span class="corner-filigree top-left">❖</span>
+        <span class="corner-filigree top-right">❖</span>
+        <span class="corner-filigree bottom-left">❖</span>
+        <span class="corner-filigree bottom-right">❖</span>
+
+        <div class="coords-col left">
+          <span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span>
+        </div>
+
+        <div class="board-core-wrap">
+          <div id="board" class="chess-grid"></div>
+          <div class="coords-row">
+            <span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span>
+          </div>
+        </div>
+
+        <div class="coords-col right-trim">
+          <span>•</span><span>•</span><span>•</span><span>•</span><span>•</span><span>•</span><span>•</span><span>•</span>
+        </div>
+      </div>
+    </main>
+
+    <!-- Notation History -->
+    <div class="history-tray">
+      <span class="history-title"><i class="fa-solid fa-list-ol"></i> Moves:</span>
+      <div id="move-history" class="history-list">
+        <span class="empty-history">Game started...</span>
+      </div>
+    </div>
+
+    <!-- Setup Modal (Names, Mode, Board, & 6 Piece Styles) -->
+    <div id="setup-modal" class="modal-overlay">
+      <div class="modal-box setup-box">
+        <h2>Game Setup</h2>
+        <div class="setup-form">
+          <div class="input-group">
+            <label for="mode-select">Type of Game (Mode):</label>
+            <select id="mode-select">
+              <option value="pvp" selected>2 Players (Local Pass &amp; Play)</option>
+              <option value="pve-easy">vs Computer (🟢 Easy)</option>
+              <option value="pve-medium">vs Computer (🔵 Medium)</option>
+              <option value="pve-hard">vs Computer (🟠 Hard)</option>
+              <option value="pve-expert">vs Computer (🔴 Expert)</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="p1-name-input">White Player Name:</label>
+            <input type="text" id="p1-name-input" value="Player 1" maxlength="14" />
+          </div>
+
+          <div class="input-group" id="p2-name-group">
+            <label for="p2-name-input">Black Player Name:</label>
+            <input type="text" id="p2-name-input" value="Player 2" maxlength="14" />
+          </div>
+
+          <div class="input-group" id="player-side-group" style="display: none;">
+            <label for="side-select">Play As:</label>
+            <select id="side-select">
+              <option value="w" selected>White (Moves First)</option>
+              <option value="b">Black</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="time-select">Match Timer:</label>
+            <select id="time-select">
+              <option value="0">Untimed (Progress Auto-Saved!)</option>
+              <option value="300">5 Minutes (Blitz)</option>
+              <option value="600" selected>10 Minutes (Rapid)</option>
+              <option value="900">15 Minutes (Classical)</option>
+            </select>
+          </div>
+
+          <!-- Board Design Selector -->
+          <div class="input-group">
+            <label>Select Board Design:</label>
+            <div class="visual-theme-grid" id="setup-board-grid">
+              <button type="button" class="theme-card-btn active" data-board="tournament-green">
+                <span class="preview-board tournament-green"></span>
+                <span class="preview-label">Tournament Green</span>
+              </button>
+              <button type="button" class="theme-card-btn" data-board="woodmaster">
+                <span class="preview-board woodmaster"></span>
+                <span class="preview-label">Woodmaster Walnut</span>
+              </button>
+              <button type="button" class="theme-card-btn" data-board="traditional">
+                <span class="preview-board traditional"></span>
+                <span class="preview-label">Traditional Royal</span>
+              </button>
+              <button type="button" class="theme-card-btn" data-board="marble">
+                <span class="preview-board marble"></span>
+                <span class="preview-label">Marble Imperial</span>
+              </button>
+              <button type="button" class="theme-card-btn" data-board="sapphire">
+                <span class="preview-board sapphire"></span>
+                <span class="preview-label">Sapphire</span>
+              </button>
+              <button type="button" class="theme-card-btn" data-board="emerald">
+                <span class="preview-board emerald"></span>
+                <span class="preview-label">Emerald</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Coin / Piece Selector (6 Distinct Types) -->
+          <div class="input-group">
+            <label>Select Coin / Piece Style (6 Types):</label>
+            <div class="visual-theme-grid" id="setup-piece-grid">
+              <button type="button" class="piece-card-btn active" data-piece="master-staunton">
+                <span class="preview-piece-mini">
+                  <svg viewBox="0 0 64 64"><path d="M32 4v7m-4-3.5h8M21 16c3 3 5 5 11 5s8-2 11-5c3 0 6 3 6 8 0 5-4 8-7 10l2 11H20l2-11c-3-2-7-5-7-10 0-5 3-8 6-8zm-2 35h26v4H19zm-3 6h32v4H16z" fill="#ffffff" stroke="#000000" stroke-width="2.5"/></svg>
+                  <svg viewBox="0 0 64 64"><path d="M32 4v7m-4-3.5h8M21 16c3 3 5 5 11 5s8-2 11-5c3 0 6 3 6 8 0 5-4 8-7 10l2 11H20l2-11c-3-2-7-5-7-10 0-5 3-8 6-8zm-2 35h26v4H19zm-3 6h32v4H16z" fill="#1e293b" stroke="#ffffff" stroke-width="2.5"/></svg>
+                </span>
+                <span class="preview-label">1. Master Staunton</span>
+              </button>
+
+              <button type="button" class="piece-card-btn" data-piece="neo-staunton">
+                <span class="preview-piece-mini">
+                  <svg viewBox="0 0 64 64"><path d="M22 52h20v5H22zm4-6h12l1-12c2-2 3-5 3-8 0-6-4-11-10-11s-10 5-10 11c0 3 1 6 3 8l1 12zm6-24v-6m-3 3h6" fill="#ffffff" stroke="#24272b" stroke-width="2.5"/></svg>
+                  <svg viewBox="0 0 64 64"><path d="M22 52h20v5H22zm4-6h12l1-12c2-2 3-5 3-8 0-6-4-11-10-11s-10 5-10 11c0 3 1 6 3 8l1 12zm6-24v-6m-3 3h6" fill="#3c3f44" stroke="#ffffff" stroke-width="2.5"/></svg>
+                </span>
+                <span class="preview-label">2. Neo Tournament</span>
+              </button>
+
+              <button type="button" class="piece-card-btn" data-piece="woodmaster-pieces">
+                <span class="preview-piece-mini">
+                  <svg viewBox="0 0 64 64"><path d="M22 52h20v5H22zm4-6h12l1-12c2-2 3-5 3-8 0-6-4-11-10-11s-10 5-10 11c0 3 1 6 3 8l1 12zm6-24v-6m-3 3h6" fill="#faeccf" stroke="#78350f" stroke-width="2.2"/></svg>
+                  <svg viewBox="0 0 64 64"><path d="M22 52h20v5H22zm4-6h12l1-12c2-2 3-5 3-8 0-6-4-11-10-11s-10 5-10 11c0 3 1 6 3 8l1 12zm6-24v-6m-3 3h6" fill="#261a12" stroke="#ddbe8e" stroke-width="2.2"/></svg>
+                </span>
+                <span class="preview-label">3. Woodmaster Classics</span>
+              </button>
+
+              <button type="button" class="piece-card-btn" data-piece="classic-royal">
+                <span class="preview-piece-mini">
+                  <svg viewBox="0 0 64 64"><path d="M32 4v6m-3-3h6M24 16c2 4 4 5 8 5s6-1 8-5c3 0 7 3 7 7 0 5-4 8-7 10l2 11H20l2-11c-3-2-7-5-7-10 0-4 4-7 7-7zm-4 35h24v4H20zm-3 6h30v4H17z" fill="#fde047" stroke="#78350f" stroke-width="2"/></svg>
+                  <svg viewBox="0 0 64 64"><path d="M32 4v6m-3-3h6M24 16c2 4 4 5 8 5s6-1 8-5c3 0 7 3 7 7 0 5-4 8-7 10l2 11H20l2-11c-3-2-7-5-7-10 0-4 4-7 7-7zm-4 35h24v4H20zm-3 6h30v4H17z" fill="#1e293b" stroke="#f1f5f9" stroke-width="2"/></svg>
+                </span>
+                <span class="preview-label">4. Classic Royal</span>
+              </button>
+
+              <button type="button" class="piece-card-btn" data-piece="medieval">
+                <span class="preview-piece-mini">
+                  <svg viewBox="0 0 64 64"><path d="M19 14h26v8h-4v-4h-4v4h-6v-4h-4v4h-4zm3 10h20l-1 16H23zm-1 19h22v4H21zm-3 6h28v4H18z" fill="#cbd5e1" stroke="#334155" stroke-width="2"/></svg>
+                  <svg viewBox="0 0 64 64"><path d="M19 14h26v8h-4v-4h-4v4h-6v-4h-4v4h-4zm3 10h20l-1 16H23zm-1 19h22v4H21zm-3 6h28v4H18z" fill="#0f172a" stroke="#94a3b8" stroke-width="2"/></svg>
+                </span>
+                <span class="preview-label">5. Medieval Knights</span>
+              </button>
+
+              <button type="button" class="piece-card-btn" data-piece="maharaja">
+                <span class="preview-piece-mini">
+                  <svg viewBox="0 0 64 64"><path d="M32 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 3c-5 0-9 4-9 10 0 4 2 8 4 10l-1 10h12l-1-10c2-2 4-6 4-10 0-6-4-10-9-10zm21 33H11v4h42zm-3 6H14v4h36z" fill="#f59e0b" stroke="#78350f" stroke-width="2"/></svg>
+                  <svg viewBox="0 0 64 64"><path d="M32 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 3c-5 0-9 4-9 10 0 4 2 8 4 10l-1 10h12l-1-10c2-2 4-6 4-10 0-6-4-10-9-10zm21 33H11v4h42zm-3 6H14v4h36z" fill="#be123c" stroke="#fde047" stroke-width="2"/></svg>
+                </span>
+                <span class="preview-label">6. Maharaja Heritage</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-btn-row">
+          <button id="modal-exit-btn" class="btn btn-secondary modal-btn-exit">Exit</button>
+          <button id="start-game-btn" class="btn btn-primary modal-btn-start">Start Game</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Theme Switcher Modal -->
+    <div id="theme-modal" class="modal-overlay hidden">
+      <div class="modal-box theme-box">
+        <h2>Appearance Customizer</h2>
+        
+        <div class="theme-section">
+          <h3><i class="fa-solid fa-chess-board"></i> Board Design</h3>
+          <div class="visual-theme-grid">
+            <button class="theme-card-btn active" data-board="tournament-green">
+              <span class="preview-board tournament-green"></span>
+              <span class="preview-label">Tournament Green</span>
+            </button>
+            <button class="theme-card-btn" data-board="woodmaster">
+              <span class="preview-board woodmaster"></span>
+              <span class="preview-label">Woodmaster Walnut</span>
+            </button>
+            <button class="theme-card-btn" data-board="traditional">
+              <span class="preview-board traditional"></span>
+              <span class="preview-label">Traditional Royal</span>
+            </button>
+            <button class="theme-card-btn" data-board="marble">
+              <span class="preview-board marble"></span>
+              <span class="preview-label">Marble Imperial</span>
+            </button>
+            <button class="theme-card-btn" data-board="sapphire">
+              <span class="preview-board sapphire"></span>
+              <span class="preview-label">Sapphire</span>
+            </button>
+            <button class="theme-card-btn" data-board="emerald">
+              <span class="preview-board emerald"></span>
+              <span class="preview-label">Emerald</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="theme-section">
+          <h3><i class="fa-solid fa-chess-knight"></i> Coin (Piece) Design</h3>
+          <div class="visual-theme-grid">
+            <button class="piece-card-btn active" data-piece="master-staunton">
+              <span class="preview-piece-mini">
+                <svg viewBox="0 0 64 64"><path d="M32 4v7m-4-3.5h8M21 16c3 3 5 5 11 5s8-2 11-5c3 0 6 3 6 8 0 5-4 8-7 10l2 11H20l2-11c-3-2-7-5-7-10 0-5 3-8 6-8zm-2 35h26v4H19zm-3 6h32v4H16z" fill="#ffffff" stroke="#000000" stroke-width="2.5"/></svg>
+                <svg viewBox="0 0 64 64"><path d="M32 4v7m-4-3.5h8M21 16c3 3 5 5 11 5s8-2 11-5c3 0 6 3 6 8 0 5-4 8-7 10l2 11H20l2-11c-3-2-7-5-7-10 0-5 3-8 6-8zm-2 35h26v4H19zm-3 6h32v4H16z" fill="#1e293b" stroke="#ffffff" stroke-width="2.5"/></svg>
+              </span>
+              <span class="preview-label">1. Master Staunton</span>
+            </button>
+            <button class="piece-card-btn" data-piece="neo-staunton">
+              <span class="preview-piece-mini">
+                <svg viewBox="0 0 64 64"><path d="M22 52h20v5H22zm4-6h12l1-12c2-2 3-5 3-8 0-6-4-11-10-11s-10 5-10 11c0 3 1 6 3 8l1 12zm6-24v-6m-3 3h6" fill="#ffffff" stroke="#24272b" stroke-width="2.5"/></svg>
+                <svg viewBox="0 0 64 64"><path d="M22 52h20v5H22zm4-6h12l1-12c2-2 3-5 3-8 0-6-4-11-10-11s-10 5-10 11c0 3 1 6 3 8l1 12zm6-24v-6m-3 3h6" fill="#3c3f44" stroke="#ffffff" stroke-width="2.5"/></svg>
+              </span>
+              <span class="preview-label">2. Neo Tournament</span>
+            </button>
+            <button class="piece-card-btn" data-piece="woodmaster-pieces">
+              <span class="preview-piece-mini">
+                <svg viewBox="0 0 64 64"><path d="M22 52h20v5H22zm4-6h12l1-12c2-2 3-5 3-8 0-6-4-11-10-11s-10 5-10 11c0 3 1 6 3 8l1 12zm6-24v-6m-3 3h6" fill="#faeccf" stroke="#78350f" stroke-width="2.2"/></svg>
+                <svg viewBox="0 0 64 64"><path d="M22 52h20v5H22zm4-6h12l1-12c2-2 3-5 3-8 0-6-4-11-10-11s-10 5-10 11c0 3 1 6 3 8l1 12zm6-24v-6m-3 3h6" fill="#261a12" stroke="#ddbe8e" stroke-width="2.2"/></svg>
+              </span>
+              <span class="preview-label">3. Woodmaster Classics</span>
+            </button>
+            <button class="piece-card-btn" data-piece="classic-royal">
+              <span class="preview-piece-mini">
+                <svg viewBox="0 0 64 64"><path d="M32 4v6m-3-3h6M24 16c2 4 4 5 8 5s6-1 8-5c3 0 7 3 7 7 0 5-4 8-7 10l2 11H20l2-11c-3-2-7-5-7-10 0-4 4-7 7-7zm-4 35h24v4H20zm-3 6h30v4H17z" fill="#fde047" stroke="#78350f" stroke-width="2"/></svg>
+                <svg viewBox="0 0 64 64"><path d="M32 4v6m-3-3h6M24 16c2 4 4 5 8 5s6-1 8-5c3 0 7 3 7 7 0 5-4 8-7 10l2 11H20l2-11c-3-2-7-5-7-10 0-4 4-7 7-7zm-4 35h24v4H20zm-3 6h30v4H17z" fill="#1e293b" stroke="#f1f5f9" stroke-width="2"/></svg>
+              </span>
+              <span class="preview-label">4. Classic Royal</span>
+            </button>
+            <button class="piece-card-btn" data-piece="medieval">
+              <span class="preview-piece-mini">
+                <svg viewBox="0 0 64 64"><path d="M19 14h26v8h-4v-4h-4v4h-6v-4h-4v4h-4zm3 10h20l-1 16H23zm-1 19h22v4H21zm-3 6h28v4H18z" fill="#cbd5e1" stroke="#334155" stroke-width="2"/></svg>
+                <svg viewBox="0 0 64 64"><path d="M19 14h26v8h-4v-4h-4v4h-6v-4h-4v4h-4zm3 10h20l-1 16H23zm-1 19h22v4H21zm-3 6h28v4H18z" fill="#0f172a" stroke="#94a3b8" stroke-width="2"/></svg>
+              </span>
+              <span class="preview-label">5. Medieval Knights</span>
+            </button>
+            <button class="piece-card-btn" data-piece="maharaja">
+              <span class="preview-piece-mini">
+                <svg viewBox="0 0 64 64"><path d="M32 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 3c-5 0-9 4-9 10 0 4 2 8 4 10l-1 10h12l-1-10c2-2 4-6 4-10 0-6-4-10-9-10zm21 33H11v4h42zm-3 6H14v4h36z" fill="#f59e0b" stroke="#78350f" stroke-width="2"/></svg>
+                <svg viewBox="0 0 64 64"><path d="M32 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 3c-5 0-9 4-9 10 0 4 2 8 4 10l-1 10h12l-1-10c2-2 4-6 4-10 0-6-4-10-9-10zm21 33H11v4h42zm-3 6H14v4h36z" fill="#be123c" stroke="#fde047" stroke-width="2"/></svg>
+              </span>
+              <span class="preview-label">6. Maharaja Heritage</span>
+            </button>
+          </div>
+        </div>
+
+        <button id="close-theme-btn" class="btn btn-primary modal-btn-start" style="margin-top: 15px; width: 100%;">Apply Styles</button>
+      </div>
+    </div>
+
+    <!-- Exit Confirmation Modal -->
+    <div id="exit-modal" class="modal-overlay hidden">
+      <div class="modal-box">
+        <h2>Exit Match?</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin: 12px 0 18px;">
+          Are you sure you want to exit? <strong>This match will not be saved.</strong>
+        </p>
+        <div class="modal-btn-row">
+          <button id="cancel-exit-btn" class="btn btn-secondary">Stay</button>
+          <button id="confirm-exit-btn" class="btn btn-danger">Confirm &amp; Exit</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pawn Promotion Modal -->
+    <div id="promotion-modal" class="modal-overlay hidden">
+      <div class="modal-box promotion-box">
+        <h3>Pawn Promotion</h3>
+        <p>Promote your pawn to a higher piece:</p>
+        <div class="promotion-choices">
+          <button class="promo-btn" data-piece="q"><span class="promo-icon">♛</span>Queen</button>
+          <button class="promo-btn" data-piece="r"><span class="promo-icon">♜</span>Rook</button>
+          <button class="promo-btn" data-piece="b"><span class="promo-icon">♝</span>Bishop</button>
+          <button class="promo-btn" data-piece="n"><span class="promo-icon">♞</span>Knight</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rules Modal -->
+    <div id="rules-modal" class="modal-overlay hidden">
+      <div class="modal-box rules-box">
+        <h2>Official Chess Rules</h2>
+        <div class="rules-content">
+          <p>1. <strong>Objective:</strong> Checkmate the opponent King so it cannot escape attack.</p>
+          <p>2. <strong>Movement:</strong>
+            <br>&bull; <strong>Pawn (♟):</strong> 1 square forward (or 2 on initial move). Captures 1 square diagonally forward.
+            <br>&bull; <strong>Knight (♞):</strong> L-shaped movement (2+1 squares). Jumps over pieces.
+            <br>&bull; <strong>Bishop (♝):</strong> Diagonal paths across same-colored squares.
+            <br>&bull; <strong>Rook (♜):</strong> Straight horizontal and vertical paths.
+            <br>&bull; <strong>Queen (♛):</strong> Combines movements of Rook and Bishop.
+            <br>&bull; <strong>King (♚):</strong> 1 square in any direction. Must never enter check.
+          </p>
+          <p>3. <strong>Castling:</strong> If neither King nor Rook has moved, and passing squares are safe, King slides 2 squares towards Rook and Rook jumps over.</p>
+          <p>4. <strong>En Passant:</strong> A pawn advancing 2 squares past an opposing pawn can be captured diagonally on the immediate next turn.</p>
+          <p>5. <strong>Draw Conditions:</strong> Stalemate, 3-fold repetition, 50-move rule, or insufficient material (K vs K, K+B vs K, K+N vs K).</p>
+        </div>
+        <button id="close-rules-btn" class="btn btn-primary">Got It</button>
+      </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="game-over-modal" class="modal-overlay hidden">
+      <div class="modal-box">
+        <h2 id="winner-title">Checkmate!</h2>
+        <p id="winner-desc">White wins the match!</p>
+        <div class="modal-btn-row">
+          <button id="play-again-btn" class="btn btn-primary">Play Again</button>
+          <button id="gameover-exit-btn" class="btn btn-secondary modal-btn-exit">Exit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="Chess.js"></script>
+</body>
+</html>

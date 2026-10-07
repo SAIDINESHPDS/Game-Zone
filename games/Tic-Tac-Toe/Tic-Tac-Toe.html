@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Tic-Tac-Toe | Game Zone</title>
+  <link rel="stylesheet" href="Tic-Tac-Toe.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body data-board-theme="cyber-neon">
+  <div id="confetti-container"></div>
+
+  <div class="game-container">
+    <!-- Header -->
+    <header class="game-header">
+      <a href="../../index.html" class="nav-btn" id="back-nav-btn">
+        <i class="fa-solid fa-arrow-left"></i> Game Zone
+      </a>
+      <div class="title-wrap">
+        <h1>TIC-TAC-TOE</h1>
+      </div>
+      <div class="action-icons">
+        <button id="theme-btn" class="icon-btn" title="Theme Selector">
+          <i class="fa-solid fa-palette"></i>
+        </button>
+        <button id="sound-btn" class="icon-btn" title="Toggle Sound">
+          <i class="fa-solid fa-volume-high"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Top Action Bar -->
+    <section class="control-bar">
+      <div id="mode-display" class="mode-display">Mode: vs Bot (Medium)</div>
+      
+      <div id="turn-indicator" class="turn-pill">
+        <span id="turn-symbol" class="turn-symbol x-sym">X</span>
+        <span id="turn-text">Player 1's Turn</span>
+      </div>
+
+      <div class="game-actions">
+        <button id="exit-btn" class="btn btn-secondary" title="Exit Match">
+          <i class="fa-solid fa-right-from-bracket"></i> Exit
+        </button>
+        <button id="restart-btn" class="btn btn-primary">Setup / New</button>
+      </div>
+    </section>
+
+    <!-- Scoreboards -->
+    <section class="status-panel">
+      <!-- Player X Card -->
+      <div id="card-x" class="player-card x-card active">
+        <div class="player-meta">
+          <div class="player-identity">
+            <span class="player-avatar x-avatar">✕</span>
+            <div>
+              <div id="x-name" class="player-name">Player 1</div>
+              <div class="player-sub">Symbol: X</div>
+            </div>
+          </div>
+          <div id="x-score" class="player-score">0</div>
+        </div>
+      </div>
+
+      <!-- Center Rounds Info -->
+      <div class="center-status">
+        <span id="round-badge" class="status-badge">Round 1</span>
+        <div id="target-score-text" class="sub-status">First to 3</div>
+      </div>
+
+      <!-- Player O Card -->
+      <div id="card-o" class="player-card o-card">
+        <div class="player-meta text-right">
+          <div id="o-score" class="player-score">0</div>
+          <div class="player-identity">
+            <div>
+              <div id="o-name" class="player-name">Bot (Medium)</div>
+              <div class="player-sub">Symbol: O</div>
+            </div>
+            <span class="player-avatar o-avatar">◯</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Board Arena -->
+    <main class="board-area">
+      <div class="board-frame" id="board-outer-frame">
+        <div id="board" class="ttt-grid">
+          <button class="cell" data-index="0"></button>
+          <button class="cell" data-index="1"></button>
+          <button class="cell" data-index="2"></button>
+          <button class="cell" data-index="3"></button>
+          <button class="cell" data-index="4"></button>
+          <button class="cell" data-index="5"></button>
+          <button class="cell" data-index="6"></button>
+          <button class="cell" data-index="7"></button>
+          <button class="cell" data-index="8"></button>
+          <div id="winning-line" class="winning-line"></div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Match Stats Footer Bar -->
+    <div class="stats-tray">
+      <div class="stat-item"><span class="stat-label">Ties / Draws:</span> <strong id="tie-score">0</strong></div>
+      <div class="stat-item"><span class="stat-label">Total Rounds:</span> <strong id="total-rounds">1</strong></div>
+      <button id="next-round-btn" class="btn btn-secondary hidden">Next Round <i class="fa-solid fa-forward"></i></button>
+    </div>
+
+    <!-- Setup Modal (Names, Mode, Target Rounds, & Theme) -->
+    <div id="setup-modal" class="modal-overlay">
+      <div class="modal-box setup-box">
+        <h2>Game Setup</h2>
+        <div class="setup-form">
+          <div class="input-group">
+            <label for="mode-select">Game Mode:</label>
+            <select id="mode-select">
+              <option value="pvp">2 Players (Local Pass &amp; Play)</option>
+              <option value="pve-easy">vs Computer (🟢 Easy)</option>
+              <option value="pve-medium" selected>vs Computer (🔵 Medium)</option>
+              <option value="pve-hard">vs Computer (🔴 Unbeatable Minimax)</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="x-name-input">Player X Name:</label>
+            <input type="text" id="x-name-input" value="Player 1" maxlength="14" />
+          </div>
+
+          <div class="input-group" id="o-name-group" style="display: none;">
+            <label for="o-name-input">Player O Name:</label>
+            <input type="text" id="o-name-input" value="Player 2" maxlength="14" />
+          </div>
+
+          <div class="input-group" id="side-select-group">
+            <label for="side-select">You Play As:</label>
+            <select id="side-select">
+              <option value="X" selected>X (First Turn)</option>
+              <option value="O">O (Second Turn)</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="target-select">Match Target:</label>
+            <select id="target-select">
+              <option value="1">Single Match (1 Game)</option>
+              <option value="3" selected>Best of 3 (First to 2 Wins)</option>
+              <option value="5">Best of 5 (First to 3 Wins)</option>
+              <option value="999">Endless Free Play</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label>Board Theme:</label>
+            <div class="visual-theme-grid">
+              <button type="button" class="theme-card-btn active" data-board="cyber-neon">
+                <span class="preview-theme cyber-neon"></span>
+                <span class="preview-label">Cyber Neon</span>
+              </button>
+              <button type="button" class="theme-card-btn" data-board="classic-royal">
+                <span class="preview-theme classic-royal"></span>
+                <span class="preview-label">Classic Royal</span>
+              </button>
+              <button type="button" class="theme-card-btn" data-board="dark-emerald">
+                <span class="preview-theme dark-emerald"></span>
+                <span class="preview-label">Dark Emerald</span>
+              </button>
+              <button type="button" class="theme-card-btn" data-board="clean-minimal">
+                <span class="preview-theme clean-minimal"></span>
+                <span class="preview-label">Clean Minimal</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-btn-row">
+          <button id="modal-exit-btn" class="btn btn-secondary modal-btn-exit">Exit</button>
+          <button id="start-game-btn" class="btn btn-primary modal-btn-start">Start Match</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Theme Switcher Modal -->
+    <div id="theme-modal" class="modal-overlay hidden">
+      <div class="modal-box theme-box">
+        <h2>Appearance Customizer</h2>
+        <div class="visual-theme-grid" style="margin-top: 14px;">
+          <button class="theme-card-btn active" data-board="cyber-neon">
+            <span class="preview-theme cyber-neon"></span>
+            <span class="preview-label">Cyber Neon</span>
+          </button>
+          <button class="theme-card-btn" data-board="classic-royal">
+            <span class="preview-theme classic-royal"></span>
+            <span class="preview-label">Classic Royal</span>
+          </button>
+          <button class="theme-card-btn" data-board="dark-emerald">
+            <span class="preview-theme dark-emerald"></span>
+            <span class="preview-label">Dark Emerald</span>
+          </button>
+          <button class="theme-card-btn" data-board="clean-minimal">
+            <span class="preview-theme clean-minimal"></span>
+            <span class="preview-label">Clean Minimal</span>
+          </button>
+        </div>
+        <button id="close-theme-btn" class="btn btn-primary modal-btn-start" style="margin-top: 18px; width: 100%;">Apply</button>
+      </div>
+    </div>
+
+    <!-- Exit Confirmation Modal -->
+    <div id="exit-modal" class="modal-overlay hidden">
+      <div class="modal-box">
+        <h2>Exit Match?</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin: 12px 0 18px;">
+          Are you sure you want to exit? <strong>Unfinished match progress will be cleared.</strong>
+        </p>
+        <div class="modal-btn-row">
+          <button id="cancel-exit-btn" class="btn btn-secondary">Stay</button>
+          <button id="confirm-exit-btn" class="btn btn-danger">Confirm &amp; Exit</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="game-over-modal" class="modal-overlay hidden">
+      <div class="modal-box">
+        <h2 id="winner-title">Match Finished!</h2>
+        <p id="winner-desc" style="color: var(--text-muted); font-size: 0.92rem; margin: 8px 0 18px;">Player 1 has won the series.</p>
+        <div class="modal-btn-row">
+          <button id="play-again-btn" class="btn btn-primary">Play Again</button>
+          <button id="gameover-exit-btn" class="btn btn-secondary modal-btn-exit">Exit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="Tic-Tac-Toe.js"></script>
+</body>
+</html>
