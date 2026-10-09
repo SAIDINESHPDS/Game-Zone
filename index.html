@@ -14,6 +14,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <style>
+    /* ==========================================================================
+       DESIGN SYSTEM & THEME VARIABLES
+       ========================================================================== */
     :root {
       --bg-space: #090d18;
       --bg-card: rgba(20, 27, 45, 0.65);
@@ -59,6 +62,7 @@
       overflow-x: hidden;
     }
 
+    /* NAVIGATION */
     .site-nav {
       height: 72px;
       display: flex;
@@ -139,6 +143,7 @@
       color: #38bdf8;
     }
 
+    /* HERO */
     .hero-section {
       text-align: center;
       padding: 3.5rem 1rem 2.5rem;
@@ -219,6 +224,7 @@
       box-shadow: 0 4px 14px var(--primary-blue-glow);
     }
 
+    /* SHOWCASE GRID */
     .games-section {
       max-width: 1400px;
       margin: 0 auto;
@@ -249,6 +255,7 @@
       gap: 1.5rem;
     }
 
+    /* GAME CARDS */
     .game-card {
       position: relative;
       background: var(--bg-card);
@@ -419,6 +426,7 @@
     .card-sudoku { --card-glow: rgba(99, 102, 241, 0.4); --art-bg: radial-gradient(circle at center, rgba(99, 102, 241, 0.3) 0%, rgba(15, 23, 42, 0.6) 70%); }
     .card-peg { --card-glow: rgba(239, 68, 68, 0.4); --art-bg: radial-gradient(circle at center, rgba(239, 68, 68, 0.3) 0%, rgba(15, 23, 42, 0.6) 70%); }
 
+    /* FOOTER */
     .site-footer {
       margin-top: auto;
       border-top: 1px solid var(--border-glass);
@@ -529,11 +537,17 @@
         </div>
       </a>
 
-      <!-- 3. SNAKES & LADDERS (IMAGE ASSET) -->
+      <!-- 3. SNAKES & LADDERS (BULLETPROOF FALLBACK) -->
       <a href="games/Snakes-and-Ladders/Snakes-and-Ladders.html" class="game-card card-snakes" data-category="board multiplayer">
         <span class="card-badge badge-classic">Classic</span>
         <div class="card-art">
-          <img src="assets/images/Snakes&Ladders.jpg" alt="Snakes and Ladders Icon" class="art-visual-img" onerror="this.onerror=null; this.src='assets/images/Playful Snakes and Ladders Adventur....png';" />
+          <img 
+            src="assets/images/Snakes&Ladders.jpg" 
+            alt="Snakes and Ladders Icon" 
+            class="art-visual-img" 
+            onerror="if (!this.dataset.retry) { this.dataset.retry = '1'; this.src = 'assets/images/Playful Snakes and Ladders Adventur....png'; } else { this.style.display = 'none'; this.nextElementSibling.style.display = 'flex'; }" 
+          />
+          <div class="art-visual" style="display: none;"><span>🐍</span><span>🪜</span></div>
         </div>
         <div class="card-content">
           <div class="card-pills">
@@ -612,11 +626,17 @@
         </div>
       </a>
 
-      <!-- 8. CHESS -->
+      <!-- 8. CHESS (BULLETPROOF FALLBACK) -->
       <a href="games/Chess/Chess.html" class="game-card card-chess" data-category="board strategy multiplayer">
         <span class="card-badge badge-royal">Grandmaster</span>
         <div class="card-art">
-          <img src="assets/images/Chess.jpg" alt="Chess Icon" class="art-visual-img" onerror="this.onerror=null; this.src='assets/images/Chess.png';">
+          <img 
+            src="assets/images/Chess.jpg" 
+            alt="Chess Icon" 
+            class="art-visual-img" 
+            onerror="if (!this.dataset.retry) { this.dataset.retry = '1'; this.src = 'assets/images/Chess.png'; } else { this.style.display = 'none'; this.nextElementSibling.style.display = 'flex'; }" 
+          />
+          <div class="art-visual" style="display: none;"><span>♟️</span><span>👑</span></div>
         </div>
         <div class="card-content">
           <div class="card-pills">
@@ -629,11 +649,17 @@
         </div>
       </a>
 
-      <!-- 9. TIC-TAC-TOE (IMAGE ASSET) -->
+      <!-- 9. TIC-TAC-TOE (BULLETPROOF ICON RESOLVER) -->
       <a href="games/Tic-Tac-Toe/Tic-Tac-Toe.html" class="game-card card-tictactoe" data-category="strategy board multiplayer">
         <span class="card-badge badge-popular">Quick Play</span>
         <div class="card-art">
-          <img src="assets/images/tic-tac-toe.jpg" alt="Tic-Tac-Toe Icon" class="art-visual-img" onerror="this.onerror=null; this.src='assets/images/Neon Tic-tac-toe Showdown.png';" />
+          <img 
+            src="assets/images/Tic-Tac-Toe.jpg" 
+            alt="Tic-Tac-Toe Icon" 
+            class="art-visual-img" 
+            onerror="if (!this.dataset.retry) { this.dataset.retry = '1'; this.src = 'assets/images/tic-tac-toe.jpg'; } else if (this.dataset.retry === '1') { this.dataset.retry = '2'; this.src = 'assets/images/Neon Tic-tac-toe Showdown.png'; } else { this.style.display = 'none'; this.nextElementSibling.style.display = 'flex'; }" 
+          />
+          <div class="art-visual" style="display: none;"><span>❌</span><span>⭕</span></div>
         </div>
         <div class="card-content">
           <div class="card-pills">
@@ -646,17 +672,23 @@
         </div>
       </a>
 
-      <!-- 10. CARROM (IMAGE ASSET) -->
+      <!-- 10. CARROM (CLEARANCE MODE & BULLETPROOF IMAGE) -->
       <a href="games/Carrom/Carrom.html" class="game-card card-carrom" data-category="board multiplayer">
         <span class="card-badge badge-royal">Tabletop</span>
         <div class="card-art">
-          <img src="assets/images/Carrom.jpg" alt="Carrom Icon" class="art-visual-img" onerror="this.onerror=null; this.src='assets/images/Carrom.png';" />
+          <img 
+            src="assets/images/Carrom.jpg" 
+            alt="Carrom Icon" 
+            class="art-visual-img" 
+            onerror="if (!this.dataset.retry) { this.dataset.retry = '1'; this.src = 'assets/images/Carrom.png'; } else { this.style.display = 'none'; this.nextElementSibling.style.display = 'flex'; }" 
+          />
+          <div class="art-visual" style="display: none;"><span>🎯</span><span>⚪</span></div>
         </div>
         <div class="card-content">
           <div class="card-pills">
-            <span class="meta-pill">2 Players / AI</span>
+            <span class="meta-pill">Clearance Mode</span>
             <span class="meta-pill">2D Physics</span>
-            <span class="meta-pill">Queen Rules</span>
+            <span class="meta-pill">Pink Queen ★</span>
           </div>
           <div class="card-title-row">
             <h4 class="card-title">Carrom</h4>
