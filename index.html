@@ -11,12 +11,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <style>
-    /* ==========================================================================
-       DESIGN SYSTEM & THEME VARIABLES
-       ========================================================================== */
     :root {
       --bg-space: #090d18;
       --bg-card: rgba(20, 27, 45, 0.65);
@@ -62,7 +59,6 @@
       overflow-x: hidden;
     }
 
-    /* NAVIGATION */
     .site-nav {
       height: 72px;
       display: flex;
@@ -143,7 +139,6 @@
       color: #38bdf8;
     }
 
-    /* HERO */
     .hero-section {
       text-align: center;
       padding: 3.5rem 1rem 2.5rem;
@@ -224,7 +219,6 @@
       box-shadow: 0 4px 14px var(--primary-blue-glow);
     }
 
-    /* SHOWCASE GRID */
     .games-section {
       max-width: 1400px;
       margin: 0 auto;
@@ -255,7 +249,6 @@
       gap: 1.5rem;
     }
 
-    /* GAME CARDS */
     .game-card {
       position: relative;
       background: var(--bg-card);
@@ -416,7 +409,7 @@
     .card-puli-meka { --card-glow: rgba(249, 115, 22, 0.45); --art-bg: radial-gradient(circle at center, rgba(249, 115, 22, 0.35) 0%, rgba(15, 23, 42, 0.6) 70%); }
     .card-chess { --card-glow: rgba(234, 179, 8, 0.45); --art-bg: radial-gradient(circle at center, rgba(234, 179, 8, 0.25) 0%, rgba(15, 23, 42, 0.6) 70%); }
     .card-tictactoe { --card-glow: rgba(56, 189, 248, 0.45); --art-bg: radial-gradient(circle at center, rgba(56, 189, 248, 0.35) 0%, rgba(15, 23, 42, 0.6) 70%); }
-    .card-carrom { --card-glow: rgba(217, 119, 6, 0.35); --art-bg: radial-gradient(circle at center, rgba(217, 119, 6, 0.3) 0%, rgba(15, 23, 42, 0.6) 70%); }
+    .card-carrom { --card-glow: rgba(217, 119, 6, 0.45); --art-bg: radial-gradient(circle at center, rgba(217, 119, 6, 0.35) 0%, rgba(15, 23, 42, 0.6) 70%); }
     .card-dominoes { --card-glow: rgba(203, 213, 225, 0.35); --art-bg: radial-gradient(circle at center, rgba(203, 213, 225, 0.2) 0%, rgba(15, 23, 42, 0.6) 70%); }
     .card-uno { --card-glow: rgba(234, 179, 8, 0.4); --art-bg: radial-gradient(circle at center, rgba(234, 179, 8, 0.3) 0%, rgba(239, 68, 68, 0.25) 50%, rgba(15, 23, 42, 0.6) 70%); }
     .card-rps { --card-glow: rgba(14, 165, 233, 0.4); --art-bg: radial-gradient(circle at center, rgba(14, 165, 233, 0.3) 0%, rgba(15, 23, 42, 0.6) 70%); }
@@ -426,7 +419,6 @@
     .card-sudoku { --card-glow: rgba(99, 102, 241, 0.4); --art-bg: radial-gradient(circle at center, rgba(99, 102, 241, 0.3) 0%, rgba(15, 23, 42, 0.6) 70%); }
     .card-peg { --card-glow: rgba(239, 68, 68, 0.4); --art-bg: radial-gradient(circle at center, rgba(239, 68, 68, 0.3) 0%, rgba(15, 23, 42, 0.6) 70%); }
 
-    /* FOOTER */
     .site-footer {
       margin-top: auto;
       border-top: 1px solid var(--border-glass);
@@ -453,7 +445,6 @@
       color: #fff;
     }
 
-    /* RESPONSIVE MOBILE STYLES */
     @media (max-width: 768px) {
       .games-section { padding: 1rem 1rem 3rem; }
       .games-grid { grid-template-columns: 1fr; gap: 1rem; }
@@ -538,7 +529,7 @@
         </div>
       </a>
 
-      <!-- 3. SNAKES & LADDERS (UPDATED WITH ASSET IMAGE) -->
+      <!-- 3. SNAKES & LADDERS (IMAGE ASSET) -->
       <a href="games/Snakes-and-Ladders/Snakes-and-Ladders.html" class="game-card card-snakes" data-category="board multiplayer">
         <span class="card-badge badge-classic">Classic</span>
         <div class="card-art">
@@ -638,7 +629,7 @@
         </div>
       </a>
 
-      <!-- 9. TIC-TAC-TOE (UPDATED WITH ASSET IMAGE) -->
+      <!-- 9. TIC-TAC-TOE (IMAGE ASSET) -->
       <a href="games/Tic-Tac-Toe/Tic-Tac-Toe.html" class="game-card card-tictactoe" data-category="strategy board multiplayer">
         <span class="card-badge badge-popular">Quick Play</span>
         <div class="card-art">
@@ -655,13 +646,17 @@
         </div>
       </a>
 
-      <!-- 10. CARROM -->
+      <!-- 10. CARROM (IMAGE ASSET) -->
       <a href="games/Carrom/Carrom.html" class="game-card card-carrom" data-category="board multiplayer">
         <span class="card-badge badge-royal">Tabletop</span>
-        <div class="card-art"><div class="art-visual"><span>🎯</span><span>⚪</span></div></div>
+        <div class="card-art">
+          <img src="assets/images/Carrom.jpg" alt="Carrom Icon" class="art-visual-img" onerror="this.onerror=null; this.src='assets/images/Carrom.png';" />
+        </div>
         <div class="card-content">
           <div class="card-pills">
-            <span class="meta-pill">2-4 Players</span><span class="meta-pill">Striker &amp; Queen</span><span class="meta-pill">Physics</span>
+            <span class="meta-pill">2 Players / AI</span>
+            <span class="meta-pill">2D Physics</span>
+            <span class="meta-pill">Queen Rules</span>
           </div>
           <div class="card-title-row">
             <h4 class="card-title">Carrom</h4>

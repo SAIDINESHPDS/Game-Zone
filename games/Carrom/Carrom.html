@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Carrom Board | Game Zone</title>
+  <link rel="stylesheet" href="Carrom.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body data-board-theme="traditional-ply">
+  <div id="confetti-container"></div>
+
+  <div class="game-container">
+    <!-- Header -->
+    <header class="game-header">
+      <a href="../../index.html" class="nav-btn" id="back-nav-btn">
+        <i class="fa-solid fa-arrow-left"></i> Game Zone
+      </a>
+      <div class="title-wrap">
+        <h1>CARROM</h1>
+      </div>
+      <div class="action-icons">
+        <button id="theme-btn" class="icon-btn" title="Board & Striker Customizer">
+          <i class="fa-solid fa-palette"></i>
+        </button>
+        <button id="sound-btn" class="icon-btn" title="Toggle Sound">
+          <i class="fa-solid fa-volume-high"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Top Action Bar -->
+    <section class="control-bar">
+      <div id="mode-display" class="mode-display">Mode: vs Computer (Medium)</div>
+      
+      <div id="turn-indicator" class="turn-pill">
+        <span id="turn-color-dot" class="turn-dot white-coin"></span>
+        <span id="turn-text">Player 1's Turn</span>
+      </div>
+
+      <div class="game-actions">
+        <button id="exit-btn" class="btn btn-secondary" title="Exit Match">
+          <i class="fa-solid fa-right-from-bracket"></i> Exit
+        </button>
+        <button id="rules-btn" class="btn btn-secondary">Rules</button>
+        <button id="restart-btn" class="btn btn-primary">Setup / New</button>
+      </div>
+    </section>
+
+    <!-- Score & Coins Pocketed Bar -->
+    <section class="status-panel">
+      <!-- Player 1 Card -->
+      <div id="card-p1" class="player-card p1-card active">
+        <div class="player-meta">
+          <div class="player-identity">
+            <span class="coin-avatar white-avatar"></span>
+            <div>
+              <div id="p1-name" class="player-name">Player 1</div>
+              <div class="player-sub" id="p1-sub-info">9 Coins Remaining</div>
+            </div>
+          </div>
+          <div id="p1-score" class="player-score">0</div>
+        </div>
+        <div id="p1-pocketed-tray" class="coin-mini-tray"></div>
+      </div>
+
+      <!-- Center Queen & Status Indicator -->
+      <div class="center-status">
+        <span id="queen-status-badge" class="queen-pill on-board">
+          <span class="queen-dot">★</span> <span id="queen-status-text">Pink Queen in Center</span>
+        </span>
+        <div id="status-msg" class="sub-status-msg">Click baseline to place striker, pull back to flick!</div>
+      </div>
+
+      <!-- Player 2 Card -->
+      <div id="card-p2" class="player-card p2-card">
+        <div class="player-meta text-right">
+          <div id="p2-score" class="player-score">0</div>
+          <div class="player-identity">
+            <div>
+              <div id="p2-name" class="player-name">Bot (Medium)</div>
+              <div class="player-sub" id="p2-sub-info">9 Coins Remaining</div>
+            </div>
+            <span class="coin-avatar black-avatar"></span>
+          </div>
+        </div>
+        <div id="p2-pocketed-tray" class="coin-mini-tray text-right"></div>
+      </div>
+    </section>
+
+    <!-- Board Arena Canvas -->
+    <main class="board-area">
+      <div class="board-frame" id="carrom-frame">
+        <canvas id="carrom-canvas" width="600" height="600"></canvas>
+      </div>
+    </main>
+
+    <!-- Force Meter Guide Footer -->
+    <div class="power-meter-container" id="power-meter-wrap">
+      <span class="meter-label"><i class="fa-solid fa-bolt"></i> Flick Power:</span>
+      <div class="meter-track">
+        <div id="power-fill" class="meter-fill"></div>
+      </div>
+      <span id="power-num" class="power-text">0%</span>
+    </div>
+
+    <!-- Setup Modal -->
+    <div id="setup-modal" class="modal-overlay">
+      <div class="modal-box setup-box">
+        <h2>Carrom Setup</h2>
+        <div class="setup-form">
+          <div class="input-group">
+            <label for="mode-select">Game Mode:</label>
+            <select id="mode-select">
+              <option value="pvp">2 Players (Pass &amp; Play)</option>
+              <option value="pve-easy">vs Computer (🟢 Easy)</option>
+              <option value="pve-medium" selected>vs Computer (🔵 Medium)</option>
+              <option value="pve-hard">vs Computer (🔴 Master Bot)</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="game-type-select">Match Rule Style:</label>
+            <select id="game-type-select">
+              <option value="clearance" selected>🌟 Board Clearance (Must Sink All Coins + Pink Queen!)</option>
+              <option value="points">🎯 Point Target Race (12 Points)</option>
+              <option value="championship">🏆 Full Championship (21 Points)</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="p1-name-input">White Player (Breaks First):</label>
+            <input type="text" id="p1-name-input" value="Player 1" maxlength="14" />
+          </div>
+
+          <div class="input-group" id="p2-name-group" style="display: none;">
+            <label for="p2-name-input">Black Player:</label>
+            <input type="text" id="p2-name-input" value="Player 2" maxlength="14" />
+          </div>
+
+          <div class="input-group">
+            <label>Board Wood Style:</label>
+            <div class="visual-theme-grid">
+              <button type="button" class="theme-card-btn active" data-board="traditional-ply">
+                <span class="preview-swatch ply-wood"></span>
+                <span class="preview-label">Indian Birch Ply</span>
+              </button>
+              <button type="button" class="theme-card-btn" data-board="dark-rosewood">
+                <span class="preview-swatch dark-rose"></span>
+                <span class="preview-label">Dark Rosewood</span>
+              </button>
+              <button type="button" class="theme-card-btn" data-board="matte-championship">
+                <span class="preview-swatch champ-matte"></span>
+                <span class="preview-label">Tournament Matte</span>
+              </button>
+              <button type="button" class="theme-card-btn" data-board="modern-cyber">
+                <span class="preview-swatch cyber-glow"></span>
+                <span class="preview-label">Cyber Arena</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label>Striker Design (With Star Emblem):</label>
+            <div class="visual-theme-grid" id="striker-theme-grid">
+              <button type="button" class="theme-card-btn active" data-striker="tournament-geometric">
+                <span class="striker-preview geometric">★</span>
+                <span class="preview-label">Ivory Star</span>
+              </button>
+              <button type="button" class="theme-card-btn" data-striker="gold-crest">
+                <span class="striker-preview gold">★</span>
+                <span class="preview-label">Golden Royal Star</span>
+              </button>
+              <button type="button" class="theme-card-btn" data-striker="ruby-gem">
+                <span class="striker-preview ruby">★</span>
+                <span class="preview-label">Ruby Star</span>
+              </button>
+              <button type="button" class="theme-card-btn" data-striker="emerald-star">
+                <span class="striker-preview emerald">★</span>
+                <span class="preview-label">Emerald Star</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-btn-row">
+          <button id="modal-exit-btn" class="btn btn-secondary modal-btn-exit">Exit</button>
+          <button id="start-game-btn" class="btn btn-primary modal-btn-start">Start Carrom</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Appearance Customizer Modal -->
+    <div id="theme-modal" class="modal-overlay hidden">
+      <div class="modal-box theme-box">
+        <h2>Appearance Customizer</h2>
+        
+        <h3 class="modal-subheading"><i class="fa-solid fa-chess-board"></i> Board Style</h3>
+        <div class="visual-theme-grid" style="margin-top: 8px;">
+          <button class="theme-card-btn active" data-board="traditional-ply">
+            <span class="preview-swatch ply-wood"></span>
+            <span class="preview-label">Indian Birch Ply</span>
+          </button>
+          <button class="theme-card-btn" data-board="dark-rosewood">
+            <span class="preview-swatch dark-rose"></span>
+            <span class="preview-label">Dark Rosewood</span>
+          </button>
+          <button class="theme-card-btn" data-board="matte-championship">
+            <span class="preview-swatch champ-matte"></span>
+            <span class="preview-label">Tournament Matte</span>
+          </button>
+          <button class="theme-card-btn" data-board="modern-cyber">
+            <span class="preview-swatch cyber-glow"></span>
+            <span class="preview-label">Cyber Arena</span>
+          </button>
+        </div>
+
+        <h3 class="modal-subheading" style="margin-top: 14px;"><i class="fa-solid fa-circle-dot"></i> Striker Design (All With Stars)</h3>
+        <div class="visual-theme-grid" style="margin-top: 8px;">
+          <button class="theme-card-btn active" data-striker="tournament-geometric">
+            <span class="striker-preview geometric">★</span>
+            <span class="preview-label">Ivory Star</span>
+          </button>
+          <button class="theme-card-btn" data-striker="gold-crest">
+            <span class="striker-preview gold">★</span>
+            <span class="preview-label">Golden Royal Star</span>
+          </button>
+          <button class="theme-card-btn" data-striker="ruby-gem">
+            <span class="striker-preview ruby">★</span>
+            <span class="preview-label">Ruby Star</span>
+          </button>
+          <button class="theme-card-btn" data-striker="emerald-star">
+            <span class="striker-preview emerald">★</span>
+            <span class="preview-label">Emerald Star</span>
+          </button>
+        </div>
+
+        <button id="close-theme-btn" class="btn btn-primary modal-btn-start" style="margin-top: 18px; width: 100%;">Apply</button>
+      </div>
+    </div>
+
+    <!-- Exit Confirmation Modal -->
+    <div id="exit-modal" class="modal-overlay hidden">
+      <div class="modal-box">
+        <h2>Exit Carrom?</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin: 12px 0 18px;">
+          Are you sure you want to return to Game Zone? <strong>Match progress will not be saved.</strong>
+        </p>
+        <div class="modal-btn-row">
+          <button id="cancel-exit-btn" class="btn btn-secondary">Stay</button>
+          <button id="confirm-exit-btn" class="btn btn-danger">Confirm &amp; Exit</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rules Modal -->
+    <div id="rules-modal" class="modal-overlay hidden">
+      <div class="modal-box rules-box">
+        <h2>Official Carrom Rules</h2>
+        <div class="rules-content">
+          <p>1. <strong>Board Clearance Mode:</strong> To win, a player must sink all 9 of their coins AND the Pink Queen must be pocketed &amp; covered.</p>
+          <p>2. <strong>Pink Queen (★) Rules:</strong>
+            <br>&bull; You can sink the Pink Queen, but you must <strong>cover it</strong> by pocketing one of your own coins on the immediate next shot (or in the same strike).
+            <br>&bull; If you fail to cover it, or commit a foul, the Queen returns to the center circle.
+          </p>
+          <p>3. <strong>Direct Baseline Placement:</strong> Click or drag your cursor anywhere across your baseline to place your striker. Pull back to choose angle and power.</p>
+          <p>4. <strong>Fouls:</strong> Sinking the striker returns 1 of your pocketed carrom men to the center and forfeits your turn.</p>
+        </div>
+        <button id="close-rules-btn" class="btn btn-primary">Got It</button>
+      </div>
+    </div>
+
+    <!-- Game Over Modal with Celebration -->
+    <div id="game-over-modal" class="modal-overlay hidden">
+      <div class="modal-box victory-box">
+        <div class="trophy-bounce">🏆</div>
+        <h2 id="winner-title" class="victory-title">VICTORY CELEBRATION!</h2>
+        <p id="winner-desc" class="victory-desc">Sai cleared all coins and conquered the board!</p>
+        <div class="modal-btn-row">
+          <button id="play-again-btn" class="btn btn-primary">Play Again</button>
+          <button id="gameover-exit-btn" class="btn btn-secondary modal-btn-exit">Exit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="Carrom.js"></script>
+</body>
+</html>
