@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Dominoes | Game Zone</title>
+  <link rel="stylesheet" href="Dominoes.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body data-tile-theme="classic-ivory">
+  <div id="confetti-container"></div>
+
+  <div class="game-container">
+    <!-- Header -->
+    <header class="game-header">
+      <a href="../../index.html" class="nav-btn" id="back-nav-btn">
+        <i class="fa-solid fa-arrow-left"></i> Game Zone
+      </a>
+      <div class="title-wrap">
+        <h1>DOMINOES</h1>
+      </div>
+      <div class="action-icons">
+        <button id="theme-btn" class="icon-btn" title="Tile Theme Customizer">
+          <i class="fa-solid fa-palette"></i>
+        </button>
+        <button id="sound-btn" class="icon-btn" title="Toggle Sound">
+          <i class="fa-solid fa-volume-high"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Top Action Bar -->
+    <section class="control-bar">
+      <div id="mode-display" class="mode-display">Mode: 2 Players (vs Bot)</div>
+      
+      <div id="turn-indicator" class="turn-pill">
+        <span id="turn-dot" class="turn-dot p1-turn"></span>
+        <span id="turn-text">Player 1's Turn</span>
+      </div>
+
+      <div class="game-actions">
+        <button id="exit-btn" class="btn btn-secondary" title="Exit Match">
+          <i class="fa-solid fa-right-from-bracket"></i> Exit
+        </button>
+        <button id="rules-btn" class="btn btn-secondary">Rules</button>
+        <button id="restart-btn" class="btn btn-primary">Setup / New</button>
+      </div>
+    </section>
+
+    <!-- Status Panel (2 or 4 Players) -->
+    <section class="status-panel" id="status-panel">
+      <!-- Player 1 -->
+      <div id="card-p1" class="player-card active">
+        <div class="player-meta">
+          <div class="player-identity">
+            <span class="avatar-badge p1-badge">P1</span>
+            <div>
+              <div id="p1-name" class="player-name">Player 1</div>
+              <div class="player-sub" id="p1-tiles-count">7 Tiles</div>
+            </div>
+          </div>
+          <div id="p1-score" class="player-score">0</div>
+        </div>
+      </div>
+
+      <!-- Player 2 -->
+      <div id="card-p2" class="player-card">
+        <div class="player-meta">
+          <div class="player-identity">
+            <span class="avatar-badge p2-badge">P2</span>
+            <div>
+              <div id="p2-name" class="player-name">Bot 1</div>
+              <div class="player-sub" id="p2-tiles-count">7 Tiles</div>
+            </div>
+          </div>
+          <div id="p2-score" class="player-score">0</div>
+        </div>
+      </div>
+
+      <!-- Player 3 -->
+      <div id="card-p3" class="player-card hidden-player">
+        <div class="player-meta">
+          <div class="player-identity">
+            <span class="avatar-badge p3-badge">P3</span>
+            <div>
+              <div id="p3-name" class="player-name">Bot 2</div>
+              <div class="player-sub" id="p3-tiles-count">5 Tiles</div>
+            </div>
+          </div>
+          <div id="p3-score" class="player-score">0</div>
+        </div>
+      </div>
+
+      <!-- Player 4 -->
+      <div id="card-p4" class="player-card hidden-player">
+        <div class="player-meta">
+          <div class="player-identity">
+            <span class="avatar-badge p4-badge">P4</span>
+            <div>
+              <div id="p4-name" class="player-name">Bot 3</div>
+              <div class="player-sub" id="p4-tiles-count">5 Tiles</div>
+            </div>
+          </div>
+          <div id="p4-score" class="player-score">0</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Center Stock & Match Notice -->
+    <div class="boneyard-status-strip">
+      <div class="boneyard-actions">
+        <button id="draw-boneyard-btn" class="boneyard-btn" title="Draw tile from stock">
+          <i class="fa-solid fa-cubes-stacked"></i> Boneyard (<span id="boneyard-count">14</span>)
+        </button>
+        <span class="open-ends-tag">Open Ends: <strong id="open-ends-label">None</strong></span>
+      </div>
+      <div id="status-msg" class="sub-status-msg">Match tiles to either open end!</div>
+    </div>
+
+    <!-- Table Canvas Board -->
+    <main class="table-area" id="table-area">
+      <div class="table-felt-surface" id="table-felt-surface">
+        <div class="chain-board-canvas" id="chain-board"></div>
+      </div>
+    </main>
+
+    <!-- Opponent Hand Bar -->
+    <section class="opponent-hand-bar" id="opponent-hand-bar"></section>
+
+    <!-- Player Hand Bar -->
+    <section class="player-hand-container">
+      <div class="hand-header">
+        <span class="hand-label" id="current-player-hand-label">Your Hand:</span>
+        <div class="hand-btn-group">
+          <button id="hint-btn" class="btn btn-hint" title="Show Playable Tile Hint">
+            <i class="fa-solid fa-lightbulb"></i> Hint
+          </button>
+          <button id="pass-turn-btn" class="btn btn-secondary hidden">Pass Turn <i class="fa-solid fa-forward"></i></button>
+        </div>
+      </div>
+      <div class="player-hand-tray" id="player-hand-tray"></div>
+    </section>
+
+    <!-- Choice Modal (Left vs Right End) -->
+    <div id="choice-modal" class="modal-overlay hidden">
+      <div class="modal-box choice-box">
+        <h3>Connect Tile</h3>
+        <p id="choice-desc">This tile connects to both ends of the chain.</p>
+        <div class="choice-btn-row">
+          <button id="choose-left-btn" class="btn btn-primary">◀ Connect to Left</button>
+          <button id="choose-right-btn" class="btn btn-primary">Connect to Right ▶</button>
+        </div>
+        <button id="cancel-choice-btn" class="btn btn-secondary" style="margin-top: 12px; width: 100%;">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Setup Modal -->
+    <div id="setup-modal" class="modal-overlay">
+      <div class="modal-box setup-box">
+        <h2>Dominoes Match Setup</h2>
+        <div class="setup-form">
+          <div class="input-group">
+            <label for="player-count-select">Number of Players:</label>
+            <select id="player-count-select">
+              <option value="2" selected>2 Players (7 Tiles each)</option>
+              <option value="4">4 Players (5 Tiles each, 4-Way)</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="mode-select">Game Type:</label>
+            <select id="mode-select">
+              <option value="pve" selected>vs Computer (Smart Tactical Bot)</option>
+              <option value="pvp">Local Pass &amp; Play</option>
+            </select>
+          </div>
+
+          <div class="input-group" id="name-fields-container">
+            <label for="p1-name-input">Player 1 Name:</label>
+            <input type="text" id="p1-name-input" value="Player 1" maxlength="14" />
+
+            <div id="p2-name-wrap" style="margin-top: 8px;">
+              <label for="p2-name-input">Player 2 Name:</label>
+              <input type="text" id="p2-name-input" value="Player 2" maxlength="14" />
+            </div>
+
+            <div id="p3-name-wrap" style="margin-top: 8px; display: none;">
+              <label for="p3-name-input">Player 3 Name:</label>
+              <input type="text" id="p3-name-input" value="Player 3" maxlength="14" />
+            </div>
+
+            <div id="p4-name-wrap" style="margin-top: 8px; display: none;">
+              <label for="p4-name-input">Player 4 Name:</label>
+              <input type="text" id="p4-name-input" value="Player 4" maxlength="14" />
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="target-score-select">Target Points:</label>
+            <select id="target-score-select">
+              <option value="50">50 Points (Quick Round)</option>
+              <option value="100" selected>100 Points (Standard)</option>
+              <option value="150">150 Points (Tournament)</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label>Tile Style:</label>
+            <div class="visual-theme-grid">
+              <button type="button" class="theme-card-btn active" data-theme="classic-ivory">
+                <span class="preview-tile ivory-tile"></span>
+                <span class="preview-label">Classic Ivory</span>
+              </button>
+              <button type="button" class="theme-card-btn" data-theme="dark-ebony">
+                <span class="preview-tile ebony-tile"></span>
+                <span class="preview-label">Dark Ebony</span>
+              </button>
+              <button type="button" class="theme-card-btn" data-theme="vintage-wood">
+                <span class="preview-tile wood-tile"></span>
+                <span class="preview-label">Vintage Wood</span>
+              </button>
+              <button type="button" class="theme-card-btn" data-theme="cyber-glow">
+                <span class="preview-tile cyber-tile"></span>
+                <span class="preview-label">Cyber Glow</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-btn-row">
+          <button id="modal-exit-btn" class="btn btn-secondary modal-btn-exit">Exit</button>
+          <button id="start-game-btn" class="btn btn-primary modal-btn-start">Start Game</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Appearance Customizer Modal -->
+    <div id="theme-modal" class="modal-overlay hidden">
+      <div class="modal-box theme-box">
+        <h2>Appearance Customizer</h2>
+        <div class="visual-theme-grid" style="margin-top: 14px;">
+          <button class="theme-card-btn active" data-theme="classic-ivory">
+            <span class="preview-tile ivory-tile"></span>
+            <span class="preview-label">Classic Ivory</span>
+          </button>
+          <button class="theme-card-btn" data-theme="dark-ebony">
+            <span class="preview-tile ebony-tile"></span>
+            <span class="preview-label">Dark Ebony</span>
+          </button>
+          <button class="theme-card-btn" data-theme="vintage-wood">
+            <span class="preview-tile wood-tile"></span>
+            <span class="preview-label">Vintage Wood</span>
+          </button>
+          <button class="theme-card-btn" data-theme="cyber-glow">
+            <span class="preview-tile cyber-tile"></span>
+            <span class="preview-label">Cyber Glow</span>
+          </button>
+        </div>
+        <button id="close-theme-btn" class="btn btn-primary modal-btn-start" style="margin-top: 18px; width: 100%;">Apply</button>
+      </div>
+    </div>
+
+    <!-- Exit Confirmation Modal -->
+    <div id="exit-modal" class="modal-overlay hidden">
+      <div class="modal-box">
+        <h2>Exit Dominoes?</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin: 12px 0 18px;">
+          Return to Game Zone? <strong>Current game progress will be lost.</strong>
+        </p>
+        <div class="modal-btn-row">
+          <button id="cancel-exit-btn" class="btn btn-secondary">Stay</button>
+          <button id="confirm-exit-btn" class="btn btn-danger">Confirm &amp; Exit</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rules Modal -->
+    <div id="rules-modal" class="modal-overlay hidden">
+      <div class="modal-box rules-box">
+        <h2>Official Dominoes Rules</h2>
+        <div class="rules-content">
+          <p>1. <strong>Tile Set:</strong> Standard 28 Double-Six set (0-0 to 6-6). 2 players receive 7 tiles; 4 players receive 5 tiles.</p>
+          <p>2. <strong>First Turn:</strong> The player holding the highest double tile (e.g. 6-6, 5-5) leads the game. If nobody holds a double, the heaviest pip tile opens.</p>
+          <p>3. <strong>Snaking Chain &amp; Order:</strong> Connected touching sides must match identically (e.g., 4-1 with 1-4, 4-5 with 5-6). The chain snakes cleanly across the board.</p>
+          <p>4. <strong>Stock &amp; Passing:</strong> If you have no valid move, draw from the Boneyard. If empty, click Pass Turn.</p>
+          <p>5. <strong>Blocked Match:</strong> If all players pass consecutively and no one can play, the player with the lowest remaining pip count wins the round!</p>
+          <p>6. <strong>Scoring:</strong> The round winner receives the total pip count of all opponents' remaining tiles.</p>
+        </div>
+        <button id="close-rules-btn" class="btn btn-primary">Got It</button>
+      </div>
+    </div>
+
+    <!-- Victory Celebration Modal -->
+    <div id="game-over-modal" class="modal-overlay hidden">
+      <div class="modal-box victory-box">
+        <div class="trophy-bounce">🏆</div>
+        <h2 id="winner-title" class="victory-title">DOMINO! VICTORY!</h2>
+        <p id="winner-desc" class="victory-desc">Winner reached the target score!</p>
+        <div class="modal-btn-row">
+          <button id="play-again-btn" class="btn btn-primary">Play Again</button>
+          <button id="gameover-exit-btn" class="btn btn-secondary modal-btn-exit">Exit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="Dominoes.js"></script>
+</body>
+</html>

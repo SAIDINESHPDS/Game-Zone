@@ -14,9 +14,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <style>
-    /* ==========================================================================
-       DESIGN SYSTEM & THEME VARIABLES
-       ========================================================================== */
     :root {
       --bg-space: #090d18;
       --bg-card: rgba(20, 27, 45, 0.65);
@@ -417,8 +414,8 @@
     .card-chess { --card-glow: rgba(234, 179, 8, 0.45); --art-bg: radial-gradient(circle at center, rgba(234, 179, 8, 0.25) 0%, rgba(15, 23, 42, 0.6) 70%); }
     .card-tictactoe { --card-glow: rgba(56, 189, 248, 0.45); --art-bg: radial-gradient(circle at center, rgba(56, 189, 248, 0.35) 0%, rgba(15, 23, 42, 0.6) 70%); }
     .card-carrom { --card-glow: rgba(217, 119, 6, 0.45); --art-bg: radial-gradient(circle at center, rgba(217, 119, 6, 0.35) 0%, rgba(15, 23, 42, 0.6) 70%); }
-    .card-dominoes { --card-glow: rgba(203, 213, 225, 0.35); --art-bg: radial-gradient(circle at center, rgba(203, 213, 225, 0.2) 0%, rgba(15, 23, 42, 0.6) 70%); }
-    .card-uno { --card-glow: rgba(234, 179, 8, 0.4); --art-bg: radial-gradient(circle at center, rgba(234, 179, 8, 0.3) 0%, rgba(239, 68, 68, 0.25) 50%, rgba(15, 23, 42, 0.6) 70%); }
+    .card-dominoes { --card-glow: rgba(203, 213, 225, 0.45); --art-bg: radial-gradient(circle at center, rgba(203, 213, 225, 0.3) 0%, rgba(15, 23, 42, 0.6) 70%); }
+    .card-uno { --card-glow: rgba(239, 68, 68, 0.45); --art-bg: radial-gradient(circle at center, rgba(239, 68, 68, 0.35) 0%, rgba(245, 158, 11, 0.2) 50%, rgba(15, 23, 42, 0.6) 70%); }
     .card-rps { --card-glow: rgba(14, 165, 233, 0.4); --art-bg: radial-gradient(circle at center, rgba(14, 165, 233, 0.3) 0%, rgba(15, 23, 42, 0.6) 70%); }
     .card-memory { --card-glow: rgba(168, 85, 247, 0.4); --art-bg: radial-gradient(circle at center, rgba(168, 85, 247, 0.3) 0%, rgba(15, 23, 42, 0.6) 70%); }
     .card-battleship { --card-glow: rgba(6, 182, 212, 0.4); --art-bg: radial-gradient(circle at center, rgba(6, 182, 212, 0.35) 0%, rgba(15, 23, 42, 0.6) 70%); }
@@ -426,7 +423,6 @@
     .card-sudoku { --card-glow: rgba(99, 102, 241, 0.4); --art-bg: radial-gradient(circle at center, rgba(99, 102, 241, 0.3) 0%, rgba(15, 23, 42, 0.6) 70%); }
     .card-peg { --card-glow: rgba(239, 68, 68, 0.4); --art-bg: radial-gradient(circle at center, rgba(239, 68, 68, 0.3) 0%, rgba(15, 23, 42, 0.6) 70%); }
 
-    /* FOOTER */
     .site-footer {
       margin-top: auto;
       border-top: 1px solid var(--border-glass);
@@ -537,17 +533,11 @@
         </div>
       </a>
 
-      <!-- 3. SNAKES & LADDERS (BULLETPROOF FALLBACK) -->
+      <!-- 3. SNAKES & LADDERS -->
       <a href="games/Snakes-and-Ladders/Snakes-and-Ladders.html" class="game-card card-snakes" data-category="board multiplayer">
         <span class="card-badge badge-classic">Classic</span>
         <div class="card-art">
-          <img 
-            src="assets/images/Snakes&Ladders.jpg" 
-            alt="Snakes and Ladders Icon" 
-            class="art-visual-img" 
-            onerror="if (!this.dataset.retry) { this.dataset.retry = '1'; this.src = 'assets/images/Playful Snakes and Ladders Adventur....png'; } else { this.style.display = 'none'; this.nextElementSibling.style.display = 'flex'; }" 
-          />
-          <div class="art-visual" style="display: none;"><span>🐍</span><span>🪜</span></div>
+          <img src="assets/images/Snakes&Ladders.jpg" alt="Snakes and Ladders Icon" class="art-visual-img" onerror="this.onerror=null; this.src='assets/images/Playful Snakes and Ladders Adventur....png';" />
         </div>
         <div class="card-content">
           <div class="card-pills">
@@ -626,7 +616,7 @@
         </div>
       </a>
 
-      <!-- 8. CHESS (BULLETPROOF FALLBACK) -->
+      <!-- 8. CHESS -->
       <a href="games/Chess/Chess.html" class="game-card card-chess" data-category="board strategy multiplayer">
         <span class="card-badge badge-royal">Grandmaster</span>
         <div class="card-art">
@@ -649,17 +639,17 @@
         </div>
       </a>
 
-      <!-- 9. TIC-TAC-TOE (BULLETPROOF ICON RESOLVER) -->
+      <!-- 9. TIC-TAC-TOE -->
       <a href="games/Tic-Tac-Toe/Tic-Tac-Toe.html" class="game-card card-tictactoe" data-category="strategy board multiplayer">
         <span class="card-badge badge-popular">Quick Play</span>
         <div class="card-art">
           <img 
-            src="assets/images/Tic-Tac-Toe.jpg" 
+            src="assets/images/Tic-tac-toe.jpg" 
             alt="Tic-Tac-Toe Icon" 
             class="art-visual-img" 
-            onerror="if (!this.dataset.retry) { this.dataset.retry = '1'; this.src = 'assets/images/tic-tac-toe.jpg'; } else if (this.dataset.retry === '1') { this.dataset.retry = '2'; this.src = 'assets/images/Neon Tic-tac-toe Showdown.png'; } else { this.style.display = 'none'; this.nextElementSibling.style.display = 'flex'; }" 
+            onerror="if (!this.dataset.retry) { this.dataset.retry = '1'; this.src = 'assets/images/Neon Tic-tac-toe Showdown.png'; } else { this.style.display = 'none'; this.nextElementSibling.style.display = 'flex'; }" 
           />
-          <div class="art-visual" style="display: none;"><span>❌</span><span>⭕</span></div>
+          <div class="art-visual" style="display: none; font-size: 3.5rem;"><span>❌</span><span>⭕</span></div>
         </div>
         <div class="card-content">
           <div class="card-pills">
@@ -672,7 +662,7 @@
         </div>
       </a>
 
-      <!-- 10. CARROM (CLEARANCE MODE & BULLETPROOF IMAGE) -->
+      <!-- 10. CARROM -->
       <a href="games/Carrom/Carrom.html" class="game-card card-carrom" data-category="board multiplayer">
         <span class="card-badge badge-royal">Tabletop</span>
         <div class="card-art">
@@ -700,10 +690,18 @@
       <!-- 11. DOMINOES -->
       <a href="games/Dominoes/Dominoes.html" class="game-card card-dominoes" data-category="board strategy multiplayer">
         <span class="card-badge badge-classic">Tabletop</span>
-        <div class="card-art"><div class="art-visual"><span>🁓</span><span>🁞</span></div></div>
+        <div class="card-art">
+          <img 
+            src="assets/images/Dominoes.jpg" 
+            alt="Dominoes Icon" 
+            class="art-visual-img" 
+            onerror="if (!this.dataset.retry) { this.dataset.retry = '1'; this.src = 'assets/images/dominoes.jpg'; } else { this.style.display = 'none'; this.nextElementSibling.style.display = 'flex'; }" 
+          />
+          <div class="art-visual" style="display: none;"><span>🁓</span><span>🁞</span></div>
+        </div>
         <div class="card-content">
           <div class="card-pills">
-            <span class="meta-pill">2-4 Players</span><span class="meta-pill">Tile Chain</span><span class="meta-pill">Tactical</span>
+            <span class="meta-pill">2-4 Players / AI</span><span class="meta-pill">Tile Chain</span><span class="meta-pill">Block &amp; Draw</span>
           </div>
           <div class="card-title-row">
             <h4 class="card-title">Dominoes</h4>
@@ -712,13 +710,21 @@
         </div>
       </a>
 
-      <!-- 12. UNO-STYLE CARD GAME -->
+      <!-- 12. UNO STYLE CARD GAME -->
       <a href="games/Uno/Uno.html" class="game-card card-uno" data-category="cards multiplayer">
         <span class="card-badge badge-popular">Card Battler</span>
-        <div class="card-art"><div class="art-visual"><span>🃏</span><span>🎨</span></div></div>
+        <div class="card-art">
+          <img 
+            src="assets/images/Uno.jpg" 
+            alt="UNO Cards Icon" 
+            class="art-visual-img" 
+            onerror="if (!this.dataset.retry) { this.dataset.retry = '1'; this.src = 'assets/images/Vibrant UNO Card Game Icon.png'; } else { this.style.display = 'none'; this.nextElementSibling.style.display = 'flex'; }" 
+          />
+          <div class="art-visual" style="display: none;"><span>🃏</span><span>🎨</span></div>
+        </div>
         <div class="card-content">
           <div class="card-pills">
-            <span class="meta-pill">2-4 Players</span><span class="meta-pill">Action Cards</span><span class="meta-pill">Color Match</span>
+            <span class="meta-pill">2-4 Players</span><span class="meta-pill">Official Rules</span><span class="meta-pill">Challenge +4</span>
           </div>
           <div class="card-title-row">
             <h4 class="card-title">UNO Cards</h4>
